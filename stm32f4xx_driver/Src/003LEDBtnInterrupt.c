@@ -26,7 +26,7 @@ int main(void)
 
 
 	//Configure the User LED, on GPIOA5
-	GPIOx_PeriClkControl(GPOA, ENABLE);I
+	GPIOx_PeriClkControl(GPIOA, ENABLE);
 
 	GPIOLed.pGPIOx = GPIOA;
 	GPIOLed.GPIOx_PinConfig.GPIOx_PinNumber = GPIO_PIN_NO_5;
