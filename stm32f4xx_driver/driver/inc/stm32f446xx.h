@@ -278,14 +278,14 @@ typedef struct
 /**********************************************************************************
  * Peripheral Definition (Peripheral base address typecasted to xxxx_Reg_Def_ty).
 ***********************************************************************************/
-#define		GPIOA				((GPIOx_RegDef_ty* )GPIOA_BASEADDR)			//0x4002 0400
-#define		GPIOB				((GPIOx_RegDef_ty* )GPIOB_BASEADDR)			//0x4002 0800
-#define		GPIOC				((GPIOx_RegDef_ty* )GPIOC_BASEADDR) 		//0x4002 0C00
-#define		GPIOD				((GPIOx_RegDef_ty* )GPIOD_BASEADDR)			//0x4002 1000
-#define		GPIOE				((GPIOx_RegDef_ty* )GPIOE_BASEADDR)			//0x4002 1400
-#define		GPIOF				((GPIOx_RegDef_ty* )GPIOF_BASEADDR)			//0x4002 1800
-#define		GPIOG				((GPIOx_RegDef_ty* )GPIOG_BASEADDR)			//0x4002 1C00
-#define		GPIOH				((GPIOx_RegDef_ty* )GPIOH_BASEADDR)			//0x4002 3000
+#define		GPIOA				((GPIOx_RegDef_ty* )GPIOA_BASEADDR)			//0x4002 0000
+#define		GPIOB				((GPIOx_RegDef_ty* )GPIOB_BASEADDR)			//0x4002 0400
+#define		GPIOC				((GPIOx_RegDef_ty* )GPIOC_BASEADDR) 		//0x4002 0800
+#define		GPIOD				((GPIOx_RegDef_ty* )GPIOD_BASEADDR)			//0x4002 0C00
+#define		GPIOE				((GPIOx_RegDef_ty* )GPIOE_BASEADDR)			//0x4002 1000
+#define		GPIOF				((GPIOx_RegDef_ty* )GPIOF_BASEADDR)			//0x4002 1400
+#define		GPIOG				((GPIOx_RegDef_ty* )GPIOG_BASEADDR)			//0x4002 1800
+#define		GPIOH				((GPIOx_RegDef_ty* )GPIOH_BASEADDR)			//0x4002 1C00
 
 #define     RCC    				((RCC_RegDef_ty* )RCC_BASEADDR)
 

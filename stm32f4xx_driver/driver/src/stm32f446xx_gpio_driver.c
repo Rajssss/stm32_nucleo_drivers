@@ -77,6 +77,9 @@ void GPIOx_Init(GPIOx_Handler_ty *pGPIOHandler)
 				EXTI->RTSR |= (1 << pGPIOHandler->GPIOx_PinConfig.GPIOx_PinNumber);		//RSTR and FTSR bit
 			}
 
+			//Enable Clock for SYSCFG
+			SYSCFG_PCLK_EN();
+
 			//Select and set the port for EXTI Line
 			//1. PinNumber / 4 will select the required EXTICR Register
 			//2. PinNumber % 4 will select the required bit range
@@ -87,7 +90,6 @@ void GPIOx_Init(GPIOx_Handler_ty *pGPIOHandler)
 
 			EXTI->IMR |= (1 << pGPIOHandler->GPIOx_PinConfig.GPIOx_PinNumber);			//0: Interrupt request from line x is masked
 																						//1: Interrupt request from line x is not masked
-
 
 		}
 	}

@@ -44,7 +44,7 @@ int main(void)
 	GPIOButton.pGPIOx = GPIOC;
 	GPIOButton.GPIOx_PinConfig.GPIOx_PinNumber = GPIO_PIN_NO_13;
 	GPIOButton.GPIOx_PinConfig.GPIOx_PinMode = GPIO_MODE_IT_FT;
-	GPIOButton.GPIOx_PinConfig.GPIOx_PinPuPdControl = GPIO_PIN_PU;
+	GPIOButton.GPIOx_PinConfig.GPIOx_PinPuPdControl = GPIO_PIN_NO_PUPD;
 	GPIOButton.GPIOx_PinConfig.GPIOx_PinSpeed = GPIO_SPEED_FAST;
 
 	GPIOx_Init(&GPIOButton);
