@@ -164,6 +164,46 @@ typedef struct
 
 
 
+
+
+/**********************************************************************************
+ * External Interrupts (EXTI) Registers Structure
+***********************************************************************************/
+typedef struct
+{
+	__VOL uint32_t IMR;						//Interrupt mask register
+	__VOL uint32_t EMR;						//Event mask register
+	__VOL uint32_t RTSR;					//Rising trigger selection register
+	__VOL uint32_t FTSR;					//Falling trigger selection register
+	__VOL uint32_t SWIER;					//Software interrupt event register
+	__VOL uint32_t PR;						//Pending register
+
+}EXTI_RegDef_ty;
+
+
+
+
+
+/**********************************************************************************
+ * System Configuration (SYSCFG) Registers Structure
+***********************************************************************************/
+typedef struct
+{
+	__VOL uint32_t MEMRMP;					//SYSCFG memory remap register
+	__VOL uint32_t PMC;						//SYSCFG peripheral mode configuration register
+	__VOL uint32_t EXTICR[4];				//SYSCFG external interrupt configuration register 1
+		  uint32_t RESERVED1[2];			//Reserved memory regions
+	__VOL uint32_t CMPCR;					//Compensation cell control register
+		  uint32_t RESERVED2[2];			//Reserved memory regions
+	__VOL uint32_t CFGR;					//SYSCFG configuration register
+
+}SYSCFG_RegDef_ty;
+
+
+
+
+
+
 /**********************************************************************************
  * RCC Peripheral Registers Structure
 ***********************************************************************************/
@@ -210,6 +250,31 @@ typedef struct
 
 
 
+
+/**********************************************************************************
+ * GPIO Pin macros.
+***********************************************************************************/
+#define 	NVIC_IRQ_PRIO_0						0x0
+#define 	NVIC_IRQ_PRIO_1						0x1
+#define 	NVIC_IRQ_PRIO_2						0x2
+#define 	NVIC_IRQ_PRIO_3						0x3
+#define 	NVIC_IRQ_PRIO_4						0x4
+#define 	NVIC_IRQ_PRIO_5						0x5
+#define 	NVIC_IRQ_PRIO_6						0x6
+#define 	NVIC_IRQ_PRIO_7						0x7
+#define 	NVIC_IRQ_PRIO_8						0x8
+#define 	NVIC_IRQ_PRIO_9						0x9
+#define 	NVIC_IRQ_PRIO_10					0xA
+#define 	NVIC_IRQ_PRIO_11					0xB
+#define 	NVIC_IRQ_PRIO_12					0xC
+#define 	NVIC_IRQ_PRIO_13					0xD
+#define 	NVIC_IRQ_PRIO_14					0xE
+#define 	NVIC_IRQ_PRIO_15					0xF
+
+
+
+
+
 /**********************************************************************************
  * Peripheral Definition (Peripheral base address typecasted to xxxx_Reg_Def_ty).
 ***********************************************************************************/
@@ -223,6 +288,10 @@ typedef struct
 #define		GPIOH				((GPIOx_RegDef_ty* )GPIOH_BASEADDR)			//0x4002 3000
 
 #define     RCC    				((RCC_RegDef_ty* )RCC_BASEADDR)
+
+#define		EXTI				((EXTI_RegDef_ty* )EXTI_BASEADDR)
+
+#define 	SYSCFG				((SYSCFG_RegDef_ty* )SYSCFG_BASEADDR)
 
 
 
@@ -257,7 +326,7 @@ typedef struct
 
 
 /**********************************************************************************
- * Clock Disable Macro Definitions for GPIOx Peripherals
+ * Regsters Reset Macro Definitions for GPIOx Peripherals
 ***********************************************************************************/
 #define 	GPIOA_REG_RESET()		do{ ((RCC->AHB1RSTR)|= (1 << 0));	((RCC->AHB1RSTR)&= ~(1 << 0)); }while(0)
 #define 	GPIOB_REG_RESET()		do{ ((RCC->AHB1RSTR)|= (1 << 1));	((RCC->AHB1RSTR)&= ~(1 << 1)); }while(0)
@@ -282,7 +351,7 @@ typedef struct
 #define 	TIM7_PCLK_EN()			(RCC->APB1ENR |= (1<<5))
 #define 	TIM12_PCLK_EN()			(RCC->APB1ENR |= (1<<6))
 #define 	TIM13_PCLK_EN()			(RCC->APB1ENR |= (1<<7))
-#define 	TIM14_PCLK_EN()			(CC->APB1ENR |= (1<<8))
+#define 	TIM14_PCLK_EN()			(RCC->APB1ENR |= (1<<8))
 
 #define 	WWDG_PCLK_EN()			(RCC->APB1ENR |= (1<<11))
 
@@ -293,19 +362,21 @@ typedef struct
 
 #define 	USART2_PCLK_EN()		(RCC->APB1ENR |= (1<<17))
 #define 	USART3_PCLK_EN()		(RCC->APB1ENR |= (1<<18))
+#define 	UART4_PCLK_EN()			(RCC->APB1ENR |= (1<<19))
+#define 	UART5_PCLK_EN()			(RCC->APB1ENR |= (1<<20))
 
-#define 	UART4_PCLK_EN()			(RCC->APB1 |= (1<<19))
-#define 	UART5_PCLK_EN()			(RCC->APB1 |= (1<<20))
-#define 	I2C1_PCLK_EN()			(RCC->APB1 |= (1<<21))
-#define 	I2C2_PCLK_EN()			(RCC->APB1 |= (1<<22))
-#define 	I2C3_PCLK_EN()			(RCC->APB1 |= (1<<23))
+#define 	I2C1_PCLK_EN()			(RCC->APB1ENR |= (1<<21))
+#define 	I2C2_PCLK_EN()			(RCC->APB1ENR |= (1<<22))
+#define 	I2C3_PCLK_EN()			(RCC->APB1ENR |= (1<<23))
 
-#define 	FMPI2C1_PCLK_EN()		(RCC->APB1 |= (1<<24))
-#define 	CAN1_PCLK_EN()			(RCC->APB1 |= (1<<25))
-#define 	CAN2_PCLK_EN()			(RCC->APB1 |= (1<<26))
-#define 	CEC_PCLK_EN()			(RCC->APB1 |= (1<<27))
-#define 	PWR_PCLK_EN()			(RCC->APB1 |= (1<<28))
-#define 	DAC_PCLK_EN()			(RCC->APB1 |= (1<<29))
+#define 	FMPI2C1_PCLK_EN()		(RCC->APB1ENR |= (1<<24))
+
+#define 	CAN1_PCLK_EN()			(RCC->APB1ENR |= (1<<25))
+#define 	CAN2_PCLK_EN()			(RCC->APB1ENR |= (1<<26))
+
+#define 	CEC_PCLK_EN()			(RCC->APB1ENR |= (1<<27))
+#define 	PWR_PCLK_EN()			(RCC->APB1ENR |= (1<<28))
+#define 	DAC_PCLK_EN()			(RCC->APB1ENR |= (1<<29))
 
 
 
@@ -348,6 +419,163 @@ typedef struct
 #define 	CEC_PCLK_DI()			(RCC->APB1 &= ~(1<<27))
 #define 	PWR_PCLK_DI()			(RCC->APB1 &= ~(1<<28))
 #define 	DAC_PCLK_DI()			(RCC->APB1 &= ~(1<<29))
+
+
+
+
+
+/**********************************************************************************
+ * Clock Enable Macro Definitions for various Peripherals of APB2 Bus.
+***********************************************************************************/
+#define 	TIM1_PCLK_EN()			(RCC->APB2ENR |= (1<<0))
+#define 	TIM8_PCLK_EN()			(RCC->APB2ENR |= (1<<1))
+#define 	TIM9_PCLK_EN()			(RCC->APB2ENR |= (1<<16))
+#define 	TIM10_PCLK_EN()			(RCC->APB2ENR |= (1<<17))
+#define 	TIM11_PCLK_EN()			(RCC->APB2ENR |= (1<<18))
+
+#define 	USART1_PCLK_EN()		(RCC->APB2ENR |= (1<<4))
+#define 	USART6_PCLK_EN()		(RCC->APB2ENR |= (1<<5))
+
+#define 	ADC1_PCLK_EN()			(RCC->APB2ENR |= (1<<8))
+#define 	ADC2_PCLK_EN()			(RCC->APB2ENR |= (1<<9))
+#define 	ADC3_PCLK_EN()			(RCC->APB2ENR |= (1<<10))
+
+#define 	SDIO_PCLK_EN()			(RCC->APB2ENR |= (1<<11))
+
+#define 	SPI1_PCLK_EN()			(RCC->APB2eNR |= (1<<12))
+#define 	SPI4_PCLK_EN()			(RCC->APB2ENR |= (1<<13))
+
+#define 	SYSCFG_PCLK_EN()		(RCC->APB2ENR |= (1<<14))
+
+#define 	SAI1_PCLK_EN()			(RCC->APB2ENR |= (1<<22))
+#define 	SAI2_PCLK_EN()			(RCC->APB2ENR |= (1<<23))
+
+
+
+
+
+/**********************************************************************************
+ * Clock Disable Macro Definitions for various Peripherals of APB2 Bus.
+***********************************************************************************/
+#define 	TIM1_PCLK_DI()			(RCC->APB2ENR &= ~(1<<0))
+#define 	TIM8_PCLK_DI()			(RCC->APB2ENR &= ~(1<<1))
+#define 	TIM9_PCLK_DI()			(RCC->APB2ENR &= ~(1<<16))
+#define 	TIM10_PCLK_DI()			(RCC->APB2ENR &= ~(1<<17))
+#define 	TIM11_PCLK_DI()			(RCC->APB2ENR &= ~(1<<18))
+
+#define 	USART1_PCLK_DI()		(RCC->APB2ENR &= ~(1<<4))
+#define 	USART6_PCLK_DI()		(RCC->APB2ENR &= ~(1<<5))
+
+#define 	ADC1_PCLK_DI()			(RCC->APB2ENR &= ~(1<<8))
+#define 	ADC2_PCLK_DI()			(RCC->APB2ENR &= ~(1<<9))
+#define 	ADC3_PCLK_DI()			(RCC->APB2ENR &= ~(1<<10))
+
+#define 	SDIO_PCLK_DI()			(RCC->APB2ENR &= ~(1<<11))
+
+#define 	SPI1_PCLK_DI()			(RCC->APB2eNR &= ~(1<<12))
+#define 	SPI4_PCLK_DI()			(RCC->APB2ENR &= ~(1<<13))
+
+#define 	SYSCFG_PCLK_DI()		(RCC->APB2ENR &= ~(1<<14))
+
+#define 	SAI1_PCLK_DI()			(RCC->APB2ENR &= ~(1<<22))
+#define 	SAI2_PCLK_DI()			(RCC->APB2ENR &= ~(1<<23))
+
+
+
+
+
+/**********************************************************************************
+ * Returns a PORTCODE(1 - 7) based on the base address of the port
+***********************************************************************************/
+#define 	GPIO_BASEADDR_TO_CODE(x)		((x == GPIOA) ? 0 :\
+												(x == GPIOB) ? 1:\
+												(x == GPIOC) ? 2:\
+												(x == GPIOD) ? 3:\
+												(x == GPIOE) ? 4:\
+												(x == GPIOF) ? 5:\
+												(x == GPIOG) ? 6:\
+												(x == GPIOH) ? 7:0)
+
+
+
+
+
+
+/**********************************************************************************
+ * IRQ(Interrupt Request) Number Macros for EXTI Lines
+***********************************************************************************/
+#define 	IRQ_NO_EXTI0					6
+#define 	IRQ_NO_EXTI1					7
+#define 	IRQ_NO_EXTI2					8
+#define 	IRQ_NO_EXTI3					9
+#define 	IRQ_NO_EXTI4					10
+#define 	IRQ_NO_EXTI9_5					23
+#define 	IRQ_NO_EXTI15_10				40
+
+
+
+
+
+/**********************************************************************************
+ * NVIC ISERx Address Macros
+***********************************************************************************/
+#define 	NVIC_ISER0						((__VOL uint32_t* ) 0xE000E100)
+#define 	NVIC_ISER1						((__VOL uint32_t* ) 0xE000E104)
+#define 	NVIC_ISER2						((__VOL uint32_t* ) 0xE000E108)
+#define 	NVIC_ISER3						((__VOL uint32_t* ) 0xE000E10C)
+#define 	NVIC_ISER4						((__VOL uint32_t* ) 0xE000E110)
+#define 	NVIC_ISER5						((__VOL uint32_t* ) 0xE000E114)
+#define 	NVIC_ISER6						((__VOL uint32_t* ) 0xE000E118)
+#define 	NVIC_ISER7						((__VOL uint32_t* ) 0xE000E11C)
+
+
+
+/**********************************************************************************
+ * NVIC ICERx Address Macros
+***********************************************************************************/
+#define 	NVIC_ICER0						((__VOL uint32_t* ) 0XE000E180)
+#define 	NVIC_ICER1						((__VOL uint32_t* ) 0XE000E184)
+#define 	NVIC_ICER2						((__VOL uint32_t* ) 0XE000E188)
+#define 	NVIC_ICER3						((__VOL uint32_t* ) 0XE000E18C)
+#define 	NVIC_ICER4						((__VOL uint32_t* ) 0XE000E190)
+#define 	NVIC_ICER5						((__VOL uint32_t* ) 0XE000E194)
+#define 	NVIC_ICER6						((__VOL uint32_t* ) 0XE000E198)
+#define 	NVIC_ICER7						((__VOL uint32_t* ) 0XE000E19C)
+
+
+
+/**********************************************************************************
+ * NVIC Interrupt Priority Register Base Address Macros
+***********************************************************************************/
+#define 	NVIC_PR_BASE_ADDR				((__VOL uint32_t* ) 0xE000E400)
+
+//Number of Priority Register Bits implemented in STM32F446RE is 4
+#define 	NVIC_NO_PR_BITS_IMPLEMENTED			4
+
+
+
+
+
+
+/**********************************************************************************
+ * NVIC Interrupt Priority value macros
+***********************************************************************************/
+#define 	GPIO_PIN_NO_0						0x0
+#define 	GPIO_PIN_NO_1						0x1
+#define 	GPIO_PIN_NO_2						0x2
+#define 	GPIO_PIN_NO_3						0x3
+#define 	GPIO_PIN_NO_4						0x4
+#define 	GPIO_PIN_NO_5						0x5
+#define 	GPIO_PIN_NO_6						0x6
+#define 	GPIO_PIN_NO_7						0x7
+#define 	GPIO_PIN_NO_8						0x8
+#define 	GPIO_PIN_NO_9						0x9
+#define 	GPIO_PIN_NO_10						0xA
+#define 	GPIO_PIN_NO_11						0xB
+#define 	GPIO_PIN_NO_12						0xC
+#define 	GPIO_PIN_NO_13						0xD
+#define 	GPIO_PIN_NO_14						0xE
+#define 	GPIO_PIN_NO_15						0xF
 
 
 

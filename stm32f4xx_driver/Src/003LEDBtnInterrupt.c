@@ -1,10 +1,10 @@
 /*
- * 001LEDButton.c
+ * 003LEDBtnInterrupt.c
  *
- *  Created on: 07-May-2020
- *      Author: Rajssss@GitHub.com
- *      Description: LED Control with User Button Control with polling Example for STM32F446RE-Nucleo Board.
+ *  Created on: May 11, 2020
+ *      Author: Raj.S
  */
+
 
 #include <string.h>
 #include "stm32f446xx.h"
@@ -21,14 +21,15 @@ int main(void)
 {
 	GPIOx_Handler_ty GPIOLed, GPIOButton;
 
-	memset(&GPIOLed, 0, sizeof(GPIOLed));				//Initialize the whole structure with 0
+	memset(&GPIOLed, 0, sizeof(GPIOLed));
 	memset(&GPIOButton, 0, sizeof(GPIOButton));
 
+
 	//Configure the User LED, on GPIOA5
-	GPIOx_PeriClkControl(GPIOA, ENABLE);
+	GPIOx_PeriClkControl(GPOA, ENABLE);I
 
 	GPIOLed.pGPIOx = GPIOA;
-	GPIOLed.GPIOx_PinConfig.GPIOx_PinNumber = 5;
+	GPIOLed.GPIOx_PinConfig.GPIOx_PinNumber = GPIO_PIN_NO_5;
 	GPIOLed.GPIOx_PinConfig.GPIOx_PinMode = GPIO_MODE_OUT;
 	GPIOLed.GPIOx_PinConfig.GPIOx_PinOPType = GPIO_OP_TYPE_PP;
 	GPIOLed.GPIOx_PinConfig.GPIOx_PinPuPdControl = GPIO_PIN_NO_PUPD;
@@ -42,26 +43,37 @@ int main(void)
 
 	GPIOButton.pGPIOx = GPIOC;
 	GPIOButton.GPIOx_PinConfig.GPIOx_PinNumber = GPIO_PIN_NO_13;
-	GPIOButton.GPIOx_PinConfig.GPIOx_PinMode = GPIO_MODE_IN;
-	GPIOButton.GPIOx_PinConfig.GPIOx_PinPuPdControl = GPIO_PIN_NO_PUPD;
+	GPIOButton.GPIOx_PinConfig.GPIOx_PinMode = GPIO_MODE_IT_FT;
+	GPIOButton.GPIOx_PinConfig.GPIOx_PinPuPdControl = GPIO_PIN_PU;
 	GPIOButton.GPIOx_PinConfig.GPIOx_PinSpeed = GPIO_SPEED_FAST;
 
 	GPIOx_Init(&GPIOButton);
 
 
-	while(1)
-		{
-			if(!GPIOx_ReadFromInputPin(GPIOC, 13))				//if button status is high
-			{
-				delay();										//delay for button debouncing
-				GPIOx_WriteToOutputPin(GPIOA, 5, HIGH);			//set GPIPOA5(LED) to HIGH
-			}
-			else
-			{
-				delay();										//delay for button debouncing
-				GPIOx_WriteToOutputPin(GPIOA, 5, LOW);			//set GPIPOA5(LED) to LOW
-			}
-		}
+
+	//IRQ Configuration
+	GPIOx_IRQPriorityConfig(IRQ_NO_EXTI15_10, NVIC_IRQ_PRIO_15);
+	GPIOx_IRQInterruptConfig(IRQ_NO_EXTI15_10, ENABLE);
+
+
+	while(1);
+
 
 	return 0;
 }
+
+
+
+//ISR
+void EXTI15_10_IRQHandler(void)
+{
+
+	delay();
+	GPIOx_IRQHandling(GPIO_PIN_NO_13);
+
+	//Toggle the USER LED
+	GPIOx_ToggleOutputPin(GPIOA, GPIO_PIN_NO_5);
+
+}
+
+

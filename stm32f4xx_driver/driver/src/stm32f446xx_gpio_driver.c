@@ -43,7 +43,7 @@
  *
  * @return		-	void
  *
- * @Note		-	none
+ * @Note		-	1.FTSR: Bit 19 Reserved, must be kept at reset value.
  *
  */
 void GPIOx_Init(GPIOx_Handler_ty *pGPIOHandler)
@@ -57,8 +57,37 @@ void GPIOx_Init(GPIOx_Handler_ty *pGPIOHandler)
 		}
 
 
-		else												   				  //3 Interrupt specific Modes
+		else												   				  			//3 Interrupt specific Modes
 		{
+			if(pGPIOHandler->GPIOx_PinConfig.GPIOx_PinMode == GPIO_MODE_IT_FT)			//Falling Edge Trigger
+			{
+				EXTI->RTSR &= ~(1 << pGPIOHandler->GPIOx_PinConfig.GPIOx_PinNumber);	//clear corresponding RTSR bit
+				EXTI->FTSR |= (1 << pGPIOHandler->GPIOx_PinConfig.GPIOx_PinNumber);		//set corresponding FTSR bit
+			}
+
+			else if(pGPIOHandler->GPIOx_PinConfig.GPIOx_PinMode == GPIO_MODE_IT_RT)		//Rising Edge Trigger
+			{
+				EXTI->FTSR &= ~(1 << pGPIOHandler->GPIOx_PinConfig.GPIOx_PinNumber);	//clear corresponding FTSR bit
+				EXTI->RTSR |= (1 << pGPIOHandler->GPIOx_PinConfig.GPIOx_PinNumber);		//set corresponding RTSR bit
+			}
+
+			else if(pGPIOHandler->GPIOx_PinConfig.GPIOx_PinMode == GPIO_MODE_IT_RFT)
+			{
+				EXTI->FTSR |= (1 << pGPIOHandler->GPIOx_PinConfig.GPIOx_PinNumber);		//set both corresponding
+				EXTI->RTSR |= (1 << pGPIOHandler->GPIOx_PinConfig.GPIOx_PinNumber);		//RSTR and FTSR bit
+			}
+
+			//Select and set the port for EXTI Line
+			//1. PinNumber / 4 will select the required EXTICR Register
+			//2. PinNumber % 4 will select the required bit range
+			//3. (PinNumber % 4) * 4 will select the 4 bit set always
+			//4. GPIO_BASEADDR_TO_CODE(PORT_BASSADDRESS) will generate a PORTCODE based on the base address of the port
+			SYSCFG->EXTICR[pGPIOHandler->GPIOx_PinConfig.GPIOx_PinNumber / 4] |= (GPIO_BASEADDR_TO_CODE(pGPIOHandler->pGPIOx) << ((pGPIOHandler->GPIOx_PinConfig.GPIOx_PinNumber % 4) * 4));
+
+
+			EXTI->IMR |= (1 << pGPIOHandler->GPIOx_PinConfig.GPIOx_PinNumber);			//0: Interrupt request from line x is masked
+																						//1: Interrupt request from line x is not masked
+
 
 		}
 	}
@@ -386,19 +415,131 @@ void GPIOx_ToggleOutputPin(GPIOx_RegDef_ty *pGPIOx, uint8_t PinNumber)
  *
  * @param[1]	-	IRQ number of the Interrupt
  *
- * @param[2]	-	Interrupt Priority
- *
- * @param[3]	-	Control: ENABLE or DISABLE
+ * @param[2]	-	Control: ENABLE or DISABLE
  *
  * @return		-	void
  *
  * @Note		-	none
  *
  */
-void GPIOx_IRQConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t Control)
+void GPIOx_IRQInterruptConfig(uint8_t IRQNumber, uint8_t Control)
 {
+	if(Control == ENABLE)
+	{
+		if(IRQNumber <= 31)
+		{
+			//ISER0
+			*NVIC_ISER0 |= (1 << IRQNumber);
+		}
+		else if(IRQNumber > 31 && IRQNumber < 64)
+		{
+			//ISER1
+			*NVIC_ISER1 |= (1 << (IRQNumber % 32));
+		}
+		else if(IRQNumber > 64 && IRQNumber < 96)
+		{
+			//ISER2
+			*NVIC_ISER2 |= (1 << (IRQNumber % 64));
+		}
+		else if(IRQNumber > 96 && IRQNumber < 128)
+		{
+			//ISER3
+			*NVIC_ISER3 |= (1 << (IRQNumber % 96));
+		}
+		else if(IRQNumber > 128 && IRQNumber < 160)
+		{
+			//ISER4
+			*NVIC_ISER4 |= (1 << (IRQNumber % 128));
+		}
+		else if(IRQNumber > 160 && IRQNumber < 192)
+		{
+			//ISER5
+			*NVIC_ISER5 |= (1 << (IRQNumber % 160));
+		}
+		else if(IRQNumber > 192 && IRQNumber < 224)
+		{
+			//ISER6
+			*NVIC_ISER6 |= (1 << (IRQNumber % 192));
+		}
+	}
+	else
+	{
+		if(IRQNumber <= 31)
+		{
+			//ICER0
+			*NVIC_ICER0 |= (1 << IRQNumber);
+		}
+		else if(IRQNumber > 31 && IRQNumber < 64)
+		{
+			//ICER1
+			*NVIC_ICER1 |= (1 << IRQNumber);
+		}
+		else if(IRQNumber > 64 && IRQNumber < 96)
+		{
+			//ICER2
+			*NVIC_ICER2 |= (1 << IRQNumber);
+		}
+		else if(IRQNumber > 96 && IRQNumber < 128)
+		{
+			//ICER3
+			*NVIC_ICER3 |= (1 << IRQNumber);
+		}
+		else if(IRQNumber > 128 && IRQNumber < 160)
+		{
+			//ICER4
+			*NVIC_ICER4 |= (1 << IRQNumber);
+		}
+		else if(IRQNumber > 160 && IRQNumber < 192)
+		{
+			//ICER5
+			*NVIC_ICER5 |= (1 << IRQNumber);
+		}
+		else if(IRQNumber > 192 && IRQNumber < 224)
+		{
+			//ICER6
+			*NVIC_ICER6 |= (1 << IRQNumber);
+		}
+	}
 
 }
+
+
+
+
+/***********************************************************************************
+ * 					 	GPIO Interrupt Priority Handler
+ *
+ * @fn: 		- 	GPIOx_IRQPriorityConfig
+ *
+ * @brief		-	This function configures the Interrupt Priority of a Port
+ *
+ * @param[1]	-	IRQ number of the Interrupt
+ *
+ * @param[2]	-	Interrupt Priority
+ *
+ * @return		-	void
+ *
+ * @Note		-	1.In STM32F446RE, Number of priority bits implemented are 4 (MSB) out of 8 bits for each IRQ Number.
+ * 					2.So we have to shift the desired priority vale left by 4 before finally writing it.
+ *
+ */
+void GPIOx_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority)
+{
+	//1.(IRQNumber / 4) will select the specific PR resister out of 60 PR registers then
+	//3.(NVIC_PR_BASE_ADDR + (IRQNumber / 4) will finally jumps to the required base address of the PR register
+	//4.(IRQNumber % 4) will select the specific bit section for a PR register.
+	//5.((IRQNumber % 4) * 8) will select the 8 bit section range.
+	//6.(8 - NVIC_NO_PR_BITS_IMPLEMENTED) will selct the required addition shifts, as NVIC_NO_PR_BITS_IMPLEMENTED is vendor specific
+	//7.(((IRQNumber % 4) * 8) + (8 - NVIC_NO_PR_BITS_IMPLEMENTED)) will finally give the required shift amount.
+
+	*(NVIC_PR_BASE_ADDR + (IRQNumber / 4)) |= (IRQPriority << (((IRQNumber % 4) * 8) + (8 - NVIC_NO_PR_BITS_IMPLEMENTED)));
+
+}
+
+
+
+
+
 
 
 /***********************************************************************************
@@ -417,7 +558,12 @@ void GPIOx_IRQConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t Control)
  */
 void GPIOx_IRQHandling(uint8_t PinNumber)
 {
+	//clear the EXTI Register bit corresponding to the Pin Number.
 
+	if(EXTI->PR & (1 << PinNumber))	//confirm the the intrust is pending EXTI
+	{
+		EXTI->PR |= (1 << PinNumber); //clear from EXTI PR
+	}
 }
 
 
