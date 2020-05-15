@@ -142,115 +142,6 @@
 
 
 
-
-/**********************************************************************************
- * GPIOx Peripheral Registers Structure
-***********************************************************************************/
-typedef struct
-{
-	__VOL uint32_t MODER;					//GPIO port mode register
-	__VOL uint32_t OTYPER;					//GPIO port output type register
-	__VOL uint32_t OSPEEDER;				//GPIO port output speed register
-	__VOL uint32_t PUPDR;					//GPIO port pull-up/pull-down register
-	__VOL uint32_t IDR;						//GPIO port input data register
-	__VOL uint32_t ODR;						//GPIO port output data register
-	__VOL uint32_t BSRR;					//GPIO port bit set/reset register
-	__VOL uint32_t LCKR;					//GPIO port configuration lock register
-	__VOL uint32_t AFR[2];					//AFR[0]: GPIO alternate function low register
-											//AFR[1]: GPIO alternate function high register
-
-}GPIOx_RegDef_ty;
-
-
-
-
-
-
-/**********************************************************************************
- * External Interrupts (EXTI) Registers Structure
-***********************************************************************************/
-typedef struct
-{
-	__VOL uint32_t IMR;						//Interrupt mask register
-	__VOL uint32_t EMR;						//Event mask register
-	__VOL uint32_t RTSR;					//Rising trigger selection register
-	__VOL uint32_t FTSR;					//Falling trigger selection register
-	__VOL uint32_t SWIER;					//Software interrupt event register
-	__VOL uint32_t PR;						//Pending register
-
-}EXTI_RegDef_ty;
-
-
-
-
-
-/**********************************************************************************
- * System Configuration (SYSCFG) Registers Structure
-***********************************************************************************/
-typedef struct
-{
-	__VOL uint32_t MEMRMP;					//SYSCFG memory remap register
-	__VOL uint32_t PMC;						//SYSCFG peripheral mode configuration register
-	__VOL uint32_t EXTICR[4];				//SYSCFG external interrupt configuration register 1
-		  uint32_t RESERVED1[2];			//Reserved memory regions
-	__VOL uint32_t CMPCR;					//Compensation cell control register
-		  uint32_t RESERVED2[2];			//Reserved memory regions
-	__VOL uint32_t CFGR;					//SYSCFG configuration register
-
-}SYSCFG_RegDef_ty;
-
-
-
-
-
-
-/**********************************************************************************
- * RCC Peripheral Registers Structure
-***********************************************************************************/
-typedef struct
-{
-	__VOL uint32_t CR;						//RCC clock control register
-	__VOL uint32_t PLL;						//RCC PLL configuration register
-	__VOL uint32_t CFGR;					//RCC clock configuration register
-	__VOL uint32_t CIR;						//RCC clock interrupt register
-	__VOL uint32_t AHB1RSTR;				//RCC AHB1 peripheral reset register
-	__VOL uint32_t AHB2RSTR;				//RCC AHB2 peripheral reset register
-	__VOL uint32_t AHB3RSTR;				//RCC AHB3 peripheral reset register
-		  uint32_t RESERVED0;				//Reserved Memory Region
-	__VOL uint32_t APB1RSTR;				//RCC APB1 peripheral reset register
-	__VOL uint32_t APB2RSTR;				//RCC APB2 peripheral reset register
-	      uint32_t RESERVED1[2];			//Reserved Memory Region
-	__VOL uint32_t AHB1ENR;					//RCC AHB1 peripheral clock enable register
-	__VOL uint32_t AHB2ENR;					//RCC AHB2 peripheral clock enable register
-	__VOL uint32_t AHB3ENR;					//RCC AHB3 peripheral clock enable register
-	      uint32_t RESERVED2;				//Reserved Memory Region
-	__VOL uint32_t APB1ENR;					//RCC APB1 peripheral clock enable register
-	__VOL uint32_t APB2ENR;					//RCC APB2 peripheral clock enable register
-	      uint32_t RESERVED3[2];			//Reserved Memory Region
-	__VOL uint32_t AHB1LPENR;				//RCC AHB1 peripheral clock enable in low power mode register
-	__VOL uint32_t AHB2LPENR;				//RCC AHB2 peripheral clock enable in low power mode register
-	__VOL uint32_t AHB3LPENR;				//RCC AHB3 peripheral clock enable in low power mode register
-	      uint32_t RESERVED4;				//Reserved Memory Region
-	__VOL uint32_t APB1LPENR;				//RCC APB1 peripheral clock enable in low power mode register
-	__VOL uint32_t APB2LPENR;				//RCC APB2 peripheral clock enable in low power mode register
-	      uint32_t RESERVED5[2];			//Reserved Memory Region
-	__VOL uint32_t BDCR;					//RCC Backup domain control register
-	__VOL uint32_t CSR;						//RCC clock control & status register
-	      uint32_t RESERVED6[2];			//Reserved Memory Region
-	__VOL uint32_t SSCGR;					//RCC spread spectrum clock generation register
-	__VOL uint32_t PLLI2SCFGR;				//RCC PLLI2S configuration register
-	__VOL uint32_t PLLSAICFGR;				//RCC Dedicated Clock Configuration Register
-	__VOL uint32_t DCKCFGR;					//RCC clocks gated enable register
-	__VOL uint32_t DCKGATENR;				//RCC clocks gated enable register
-	__VOL uint32_t DCKCFGR2;				//RCC dedicated clocks configuration register 2
-
-
-}RCC_RegDef_ty;
-
-
-
-
-
 /**********************************************************************************
  * GPIO Pin macros.
 ***********************************************************************************/
@@ -326,7 +217,7 @@ typedef struct
 
 
 /**********************************************************************************
- * Regsters Reset Macro Definitions for GPIOx Peripherals
+ * Registers Reset Macro Definitions for GPIOx Peripherals
 ***********************************************************************************/
 #define 	GPIOA_REG_RESET()		do{ ((RCC->AHB1RSTR)|= (1 << 0));	((RCC->AHB1RSTR)&= ~(1 << 0)); }while(0)
 #define 	GPIOB_REG_RESET()		do{ ((RCC->AHB1RSTR)|= (1 << 1));	((RCC->AHB1RSTR)&= ~(1 << 1)); }while(0)
@@ -576,6 +467,133 @@ typedef struct
 #define 	GPIO_PIN_NO_13						0xD
 #define 	GPIO_PIN_NO_14						0xE
 #define 	GPIO_PIN_NO_15						0xF
+
+
+
+
+
+
+
+
+/**********************************************************************************
+ * GPIOx Peripheral Registers Structure
+***********************************************************************************/
+typedef struct
+{
+	__VOL uint32_t MODER;					//GPIO port mode register
+	__VOL uint32_t OTYPER;					//GPIO port output type register
+	__VOL uint32_t OSPEEDER;				//GPIO port output speed register
+	__VOL uint32_t PUPDR;					//GPIO port pull-up/pull-down register
+	__VOL uint32_t IDR;						//GPIO port input data register
+	__VOL uint32_t ODR;						//GPIO port output data register
+	__VOL uint32_t BSRR;					//GPIO port bit set/reset register
+	__VOL uint32_t LCKR;					//GPIO port configuration lock register
+	__VOL uint32_t AFR[2];					//AFR[0]: GPIO alternate function low register
+											//AFR[1]: GPIO alternate function high register
+
+}GPIOx_RegDef_ty;
+
+
+
+
+
+
+/**********************************************************************************
+ * External Interrupts (EXTI) Registers Structure
+***********************************************************************************/
+typedef struct
+{
+	__VOL uint32_t IMR;						//Interrupt mask register
+	__VOL uint32_t EMR;						//Event mask register
+	__VOL uint32_t RTSR;					//Rising trigger selection register
+	__VOL uint32_t FTSR;					//Falling trigger selection register
+	__VOL uint32_t SWIER;					//Software interrupt event register
+	__VOL uint32_t PR;						//Pending register
+
+}EXTI_RegDef_ty;
+
+
+
+
+
+/**********************************************************************************
+ * System Configuration (SYSCFG) Registers Structure
+***********************************************************************************/
+typedef struct
+{
+	__VOL uint32_t MEMRMP;					//SYSCFG memory remap register
+	__VOL uint32_t PMC;						//SYSCFG peripheral mode configuration register
+	__VOL uint32_t EXTICR[4];				//SYSCFG external interrupt configuration register 1
+		  uint32_t RESERVED1[2];			//Reserved memory regions
+	__VOL uint32_t CMPCR;					//Compensation cell control register
+		  uint32_t RESERVED2[2];			//Reserved memory regions
+	__VOL uint32_t CFGR;					//SYSCFG configuration register
+
+}SYSCFG_RegDef_ty;
+
+
+
+
+
+
+/**********************************************************************************
+ * RCC Peripheral Registers Structure
+***********************************************************************************/
+typedef struct
+{
+	__VOL uint32_t CR;						//RCC clock control register
+	__VOL uint32_t PLL;						//RCC PLL configuration register
+	__VOL uint32_t CFGR;					//RCC clock configuration register
+	__VOL uint32_t CIR;						//RCC clock interrupt register
+	__VOL uint32_t AHB1RSTR;				//RCC AHB1 peripheral reset register
+	__VOL uint32_t AHB2RSTR;				//RCC AHB2 peripheral reset register
+	__VOL uint32_t AHB3RSTR;				//RCC AHB3 peripheral reset register
+		  uint32_t RESERVED0;				//Reserved Memory Region
+	__VOL uint32_t APB1RSTR;				//RCC APB1 peripheral reset register
+	__VOL uint32_t APB2RSTR;				//RCC APB2 peripheral reset register
+	      uint32_t RESERVED1[2];			//Reserved Memory Region
+	__VOL uint32_t AHB1ENR;					//RCC AHB1 peripheral clock enable register
+	__VOL uint32_t AHB2ENR;					//RCC AHB2 peripheral clock enable register
+	__VOL uint32_t AHB3ENR;					//RCC AHB3 peripheral clock enable register
+	      uint32_t RESERVED2;				//Reserved Memory Region
+	__VOL uint32_t APB1ENR;					//RCC APB1 peripheral clock enable register
+	__VOL uint32_t APB2ENR;					//RCC APB2 peripheral clock enable register
+	      uint32_t RESERVED3[2];			//Reserved Memory Region
+	__VOL uint32_t AHB1LPENR;				//RCC AHB1 peripheral clock enable in low power mode register
+	__VOL uint32_t AHB2LPENR;				//RCC AHB2 peripheral clock enable in low power mode register
+	__VOL uint32_t AHB3LPENR;				//RCC AHB3 peripheral clock enable in low power mode register
+	      uint32_t RESERVED4;				//Reserved Memory Region
+	__VOL uint32_t APB1LPENR;				//RCC APB1 peripheral clock enable in low power mode register
+	__VOL uint32_t APB2LPENR;				//RCC APB2 peripheral clock enable in low power mode register
+	      uint32_t RESERVED5[2];			//Reserved Memory Region
+	__VOL uint32_t BDCR;					//RCC Backup domain control register
+	__VOL uint32_t CSR;						//RCC clock control & status register
+	      uint32_t RESERVED6[2];			//Reserved Memory Region
+	__VOL uint32_t SSCGR;					//RCC spread spectrum clock generation register
+	__VOL uint32_t PLLI2SCFGR;				//RCC PLLI2S configuration register
+	__VOL uint32_t PLLSAICFGR;				//RCC Dedicated Clock Configuration Register
+	__VOL uint32_t DCKCFGR;					//RCC clocks gated enable register
+	__VOL uint32_t DCKGATENR;				//RCC clocks gated enable register
+	__VOL uint32_t DCKCFGR2;				//RCC dedicated clocks configuration register 2
+
+
+}RCC_RegDef_ty;
+
+
+
+typedef struct
+{
+	__VOL uint32_t CR1;						//SPIx control register 1
+	__VOL uint32_t CR2;						//SPIx control register 2
+	__VOL uint32_t SR;						//SPIx status register
+	__VOL uint32_t DR;						//SPIx data register
+	__VOL uint32_t CRCPR;					//SPIx CRC polynomial register
+	__VOL uint32_t RXCRCPR;					//SPIx RX CRC register
+	__VOL uint32_t TXCRCR;					//SPIx TX CRC register
+	__VOL uint32_t I2SCFGR;					//SPIx_I2S configuration register
+	__VOL uint32_t I2SPR;					//SPIx I2S prescaler register
+
+}SPIx_RegDef_ty;
 
 
 
