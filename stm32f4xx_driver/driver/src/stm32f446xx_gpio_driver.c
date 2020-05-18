@@ -47,6 +47,9 @@
  */
 void GPIOx_Init(GPIOx_Handler_ty *pGPIOHandler)
 {
+	//Enable the clock for GPIOx First
+	GPIOx_PeriClkControl(pGPIOHandler->pGPIOx, ENABLE);
+
 	{//Configure the mode of GPIOx Pin. Refer @GPIO_MODE
 		if(pGPIOHandler->GPIOx_PinConfig.GPIOx_PinMode <= GPIO_MODE_ANALOG)   //4 general GPIO pin Modes
 		{
