@@ -170,6 +170,7 @@ void SPIx_DeInit(SPIx_RegDef_ty *pSPIx);
 
 //SPI Data Send and Receive handlers
 void SPIx_SendData(SPIx_RegDef_ty *pSPIx, uint8_t *pTxBuffer, uint32_t Length);
+uint8_t SPI_GetFlagStatus(SPIx_RegDef_ty *pSPIx, uint32_t Flag);
 void SPIx_ReceiveData(SPIx_RegDef_ty *pSPIx, uint8_t *pRxBuffer, uint32_t Length);
 
 
