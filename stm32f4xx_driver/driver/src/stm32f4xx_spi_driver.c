@@ -116,6 +116,8 @@ void SPIx_PeriClkControl(SPIx_RegDef_ty *pSPIx, uint8_t Control)
  */
 void SPIx_Init(SPIx_Handler_ty *pSPIHandler)
 {
+	//Enable Peripheral Clock for SPIx first
+	SPIx_PeriClkControl(pSPIHandler->pSPIx, ENABLE);
 
 	{//1st Program SPI CR1 Register
 
