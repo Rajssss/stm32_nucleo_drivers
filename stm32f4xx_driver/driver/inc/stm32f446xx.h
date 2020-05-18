@@ -37,12 +37,15 @@
 //Generic Macros
 #define 	__VOL 	volatile
 
-#define 	SET			 1
-#define 	RESET	 	 0
-#define 	HIGH	 	 SET
-#define 	LOW		 	 RESET
-#define 	ENABLE		 SET
-#define		DISABLE		 RESET
+#define 	SET			 	1
+#define 	RESET	 	 	0
+#define 	HIGH	 	 	SET
+#define 	LOW		 	 	RESET
+#define 	ENABLE		 	SET
+#define		DISABLE		 	RESET
+#define		FLAG_SET		SET
+#define		FLAG_RESET		RESET
+
 
 
 /**********************************************************************************
@@ -184,6 +187,10 @@
 
 #define 	SYSCFG				((SYSCFG_RegDef_ty* )SYSCFG_BASEADDR)
 
+#define 	SPI1				((SPIx_RegDef_ty* )SPI1_BASEADDR)
+#define 	SPI2				((SPIx_RegDef_ty* )SPI2_I2S2_BASEADDR)
+#define 	SPI3				((SPIx_RegDef_ty* )SPI3_I2S3_BASEADDR)
+#define 	SPI4				((SPIx_RegDef_ty* )SPI4_BASEADDR)
 
 
 
@@ -333,7 +340,7 @@
 
 #define 	SDIO_PCLK_EN()			(RCC->APB2ENR |= (1<<11))
 
-#define 	SPI1_PCLK_EN()			(RCC->APB2eNR |= (1<<12))
+#define 	SPI1_PCLK_EN()			(RCC->APB2ENR |= (1<<12))
 #define 	SPI4_PCLK_EN()			(RCC->APB2ENR |= (1<<13))
 
 #define 	SYSCFG_PCLK_EN()		(RCC->APB2ENR |= (1<<14))
@@ -363,7 +370,7 @@
 
 #define 	SDIO_PCLK_DI()			(RCC->APB2ENR &= ~(1<<11))
 
-#define 	SPI1_PCLK_DI()			(RCC->APB2eNR &= ~(1<<12))
+#define 	SPI1_PCLK_DI()			(RCC->APB2ENR &= ~(1<<12))
 #define 	SPI4_PCLK_DI()			(RCC->APB2ENR &= ~(1<<13))
 
 #define 	SYSCFG_PCLK_DI()		(RCC->APB2ENR &= ~(1<<14))
@@ -470,6 +477,54 @@
 
 
 
+
+
+/**********************************************************************************
+ * SPIx Peripheral Control Register (CR1) Bitfields
+***********************************************************************************/
+#define 	SPI_CR1_CPHA						0x0			//Clock phase
+#define 	SPI_CR1_CPOL						0x1			//Clock polarity
+#define 	SPI_CR1_MSTR						0x2			//Master selection
+#define 	SPI_CR1_BR							0x3			//Baud rate control (SCLK)
+#define 	SPI_CR1_SPE							0x6			//SPI enable
+#define 	SPI_CR1_LSBFIRST					0x7			//Frame format
+#define 	SPI_CR1_SSL							0x8			//Internal slave select
+#define 	SPI_CR1_SSM							0x9			//Software slave management
+#define 	SPI_CR1_RXONLY						0xA			//Receive only mode enable
+#define 	SPI_CR1_DFF							0xB			//Data frame format
+#define 	SPI_CR1_CRCNEXT						0xC			//CRC transfer next
+#define 	SPI_CR1_CRCEN						0xD			//Hardware CRC calculation enable
+#define 	SPI_CR1_BIDIOE						0xE			//Output enable in bidirectional mode
+#define 	SPI_CR1_BIDIMODE					0xF			//Bidirectional data mode enable
+
+
+
+
+/**********************************************************************************
+ * SPIx Peripheral Control Register (CR2) Bitfields
+***********************************************************************************/
+#define 	SPI_CR2_RXDMAEN						0
+#define 	SPI_CR2_TXDMAEN						1
+#define 	SPI_CR2_SSOE						2
+#define 	SPI_CR2_FRF							4
+#define 	SPI_CR2_ERRIE						5
+#define 	SPI_CR2_RXNEIE						6
+#define 	SPI_CR2_TXNEIE						7
+
+
+
+/**********************************************************************************
+ * SPIx Peripheral Status Register (SR) Bitfields
+***********************************************************************************/
+#define 	SPI_SR_RXNE							0
+#define 	SPI_SR_TXE							1
+#define 	SPI_SR_CHSIDE						2
+#define 	SPI_SR_UDR							3
+#define 	SPI_SR_CRCERR						4
+#define 	SPI_SR_MODF							5
+#define 	SPI_SR_OVR							6
+#define 	SPI_SR_BSY							7
+#define 	SPI_SR_FRE							8
 
 
 
@@ -581,6 +636,11 @@ typedef struct
 
 
 
+
+
+/**********************************************************************************
+ * SPI Peripheral Registers Structure
+***********************************************************************************/
 typedef struct
 {
 	__VOL uint32_t CR1;						//SPIx control register 1

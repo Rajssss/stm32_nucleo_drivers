@@ -22,9 +22,8 @@
  *      Description: GPIO Driver for STM32F446RE-Nucleo Board
  *
  *      This file contains:
- *           - Function definations to perform various operation on a GPIO Port or Pin.
+ *           - Function definitions to perform various operation on a GPIO Port or Pin.
  *
- *		TODO: Interrupt handlers.
  */
 
 #include <stm32f446xx_gpio_driver.h>
@@ -194,7 +193,7 @@ void GPIOx_DeInit(GPIOx_RegDef_ty *pGPIOx)
  *
  * @fn: 		- 	GPIOx_PeriClkControl
  *
- * @brief		-	This function Deinitialize the given GPIO Port
+ * @brief		-	This function Enable or Disable the given GPIO Port
  *
  * @param[1]	-	Base Address of the GPIO Port
  *
