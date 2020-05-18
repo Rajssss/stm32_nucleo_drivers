@@ -180,7 +180,8 @@ void SPIx_IRQInterruptConfig(uint8_t IRQNumber, uint8_t Control);
 void SPIx_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority);
 void SPIx_IRQHandling(SPIx_Handler_ty *pSPIHandler);
 
-
+//Other handlers
+void SPIx_PeriControl(SPIx_RegDef_ty *pSPIx, uint8_t Control);		//Enable or Disable the SPIx Peripheral
 
 
 

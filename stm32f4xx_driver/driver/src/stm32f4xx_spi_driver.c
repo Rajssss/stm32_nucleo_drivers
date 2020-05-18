@@ -286,4 +286,34 @@ void SPIx_ReceiveData(SPIx_RegDef_ty *pSPIx, uint8_t *pRxBuffer, uint32_t Length
 
 
 
+/***********************************************************************************
+ * 					 	SPIx Peripheral Control Handler
+ *
+ * @fn: 		- 	SPI_PeriControl
+ *
+ * @brief		-	This function Enable or Disable the SPIx Peripheral.
+ *
+ * @param[1]	-	Base Address of the SPI Peripheral
+ * @param[2]	-	Control value (Enable or Disable)
+ *
+ * @return		-	void
+ *
+ * @Note		-	SPI peripherals must be kept disable in initialization and only
+ * 					enable before sending or receiving data.
+ *
+ */
+void SPIx_PeriControl(SPIx_RegDef_ty *pSPIx, uint8_t Control)
+{
+	if(Control == ENABLE)
+	{
+		pSPIx->CR1 |= (1 << SPI_CR1_SPE);
+	}
+	else
+	{
+		pSPIx->CR1 &= ~(1 << SPI_CR1_SPE);
+	}
+}
+
+
+
 
