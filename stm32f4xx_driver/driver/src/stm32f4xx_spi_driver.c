@@ -181,6 +181,22 @@ void SPIx_Init(SPIx_Handler_ty *pSPIHandler)
  */
 void SPIx_DeInit(SPIx_RegDef_ty *pSPIx)
 {
+	if(pSPIx == SPI1)
+	{
+		SPI1_PERI_RESET();
+	}
+	else if(pSPIx == SPI2)
+	{
+		SPI2_PERI_RESET();
+	}
+	else if(pSPIx == SPI3)
+	{
+		SPI3_PERI_RESET();
+	}
+	else if(pSPIx == SPI4)
+	{
+		SPI4_PERI_RESET();
+	}
 
 }
 
@@ -217,14 +233,14 @@ void SPIx_SendData(SPIx_RegDef_ty *pSPIx, uint8_t *pTxBuffer, uint32_t Length)
 		if((pSPIx->CR1 & (1 << SPI_CR1_DFF)))
 		{
 			//16-bit DFF
-			pSPIx->DR = *((uint16_t *)pTxBuffer);		//covert to 16-bit then deref to DR
+			pSPIx->DR = *((uint16_t *)pTxBuffer);		//covert to 16-bit then dereference to DR
 			Length -= 2;								//Decrease Tx Length 1 Bytes
 			(uint16_t *)pTxBuffer++;					//Increase Buffer by 1
 		}
 		else
 		{
 			//8-bit DFF
-			pSPIx->DR = *pTxBuffer;						//covert to 16-bit then deref to DR
+			pSPIx->DR = *pTxBuffer;
 			Length--;									//Decrease Tx Length 1 Bytes
 			pTxBuffer++;								//Increase Buffer by 1
 		}
@@ -266,20 +282,20 @@ uint8_t SPI_GetFlagStatus(SPIx_RegDef_ty *pSPIx, uint32_t Flag)
 
 
 /***********************************************************************************
- * 					 	SPI Data Transmit Handler
+ * 					 	SPI Data Receive Handler
  *
- * @fn: 		- 	SPIx_SendData
+ * @fn: 		- 	SPIx_ReceiveData
  *
- * @brief		-	This function writes the data to be transmitted to Data Register (DR)
+ * @brief		-	This function reads the data being received to Data Register (DR)
  * 					of SPIx Peripheral.
  *
  * @param[1]	-	Base Address of the SPI Peripheral
- * @param[2]	-	Transmit Buffer
- * @param[3]	-	Length of the data to be transmitted
+ * @param[2]	-	Receive Buffer
+ * @param[3]	-	Length of the data to be receive
  *
  * @return		-	void
  *
- * @Note		-
+ * @Note		-	TODO:
  *
  */
 void SPIx_ReceiveData(SPIx_RegDef_ty *pSPIx, uint8_t *pRxBuffer, uint32_t Length)
