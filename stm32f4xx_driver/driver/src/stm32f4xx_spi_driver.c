@@ -152,6 +152,10 @@ void SPIx_Init(SPIx_Handler_ty *pSPIHandler)
 
 		//DFF
 		pSPIHandler->pSPIx->CR1 |= (pSPIHandler->SPIx_Config.SPIx_DFF << SPI_CR1_DFF);
+
+		//SSM
+		pSPIHandler->pSPIx->CR1 |= (pSPIHandler->SPIx_Config.SPIx_SSM << SPI_CR1_SSM);
+
 	}
 
 
@@ -311,6 +315,37 @@ void SPIx_PeriControl(SPIx_RegDef_ty *pSPIx, uint8_t Control)
 	else
 	{
 		pSPIx->CR1 &= ~(1 << SPI_CR1_SPE);
+	}
+}
+
+
+
+
+
+/***********************************************************************************
+ * 					 	SPIx Peripheral NSS Config Handler
+ *
+ * @fn: 		- 	SPIx_SSIConfig
+ *
+ * @brief		-	This function Enable or Disable NSS of SPIx Peripheral.
+ *
+ * @param[1]	-	Base Address of the SPI Peripheral
+ * @param[2]	-	Control value (Enable or Disable)
+ *
+ * @return		-	void
+ *
+ * @Note		-
+ *
+ */
+void SPIx_SSIConfig(SPIx_RegDef_ty *pSPIx, uint8_t Control)
+{
+	if(Control == ENABLE)
+	{
+		pSPIx->CR1 |= (1 << SPI_CR1_SSI);
+	}
+	else
+	{
+		pSPIx->CR1 &= ~(1 << SPI_CR1_SSI);
 	}
 }
 

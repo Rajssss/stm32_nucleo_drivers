@@ -488,7 +488,7 @@
 #define 	SPI_CR1_BR							0x3			//Baud rate control (SCLK)
 #define 	SPI_CR1_SPE							0x6			//SPI enable
 #define 	SPI_CR1_LSBFIRST					0x7			//Frame format
-#define 	SPI_CR1_SSL							0x8			//Internal slave select
+#define 	SPI_CR1_SSI							0x8			//Internal slave select
 #define 	SPI_CR1_SSM							0x9			//Software slave management
 #define 	SPI_CR1_RXONLY						0xA			//Receive only mode enable
 #define 	SPI_CR1_DFF							0xB			//Data frame format

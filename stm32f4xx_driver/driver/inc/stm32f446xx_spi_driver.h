@@ -182,7 +182,7 @@ void SPIx_IRQHandling(SPIx_Handler_ty *pSPIHandler);
 
 //Other handlers
 void SPIx_PeriControl(SPIx_RegDef_ty *pSPIx, uint8_t Control);		//Enable or Disable the SPIx Peripheral
-
+void SPIx_SSIConfig(SPIx_RegDef_ty *pSPIx, uint8_t Control);		//Enable or Disable the NSS of SPIx Peripheral
 
 
 #endif /* INC_STM32F446XX_SPI_DRIVER_H_ */
