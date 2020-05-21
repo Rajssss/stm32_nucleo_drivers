@@ -182,7 +182,7 @@ void SPIx_IRQHandling(SPIx_Handler_ty *pSPIHandler);
 
 //Other handlers
 void SPIx_PeriControl(SPIx_RegDef_ty *pSPIx, uint8_t Control);		//Enable or Disable the SPIx Peripheral
-void SPOEx_PeriControl(SPIx_RegDef_ty *pSPIx, uint8_t Control);		//Enable or Disable the SPOE of SPIx Peripheral
+void SPIx_SSOEConfig(SPIx_RegDef_ty *pSPIx, uint8_t Control);		//Enable or Disable the SPOE of SPIx Peripheral
 void SPIx_SSIConfig(SPIx_RegDef_ty *pSPIx, uint8_t Control);		//Enable or Disable the NSS of SPIx Peripheral
 
 
