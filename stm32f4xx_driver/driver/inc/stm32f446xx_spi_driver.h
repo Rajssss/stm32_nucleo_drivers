@@ -93,7 +93,7 @@ typedef struct
 #define 	SPI_SCLK_DIV4							1
 #define 	SPI_SCLK_DIV8							2
 #define 	SPI_SCLK_DIV16							3
-#define 	SPI_SCLK_DIV13							4
+#define 	SPI_SCLK_DIV32							4
 #define 	SPI_SCLK_DIV64							5
 #define 	SPI_SCLK_DIV128							6
 #define 	SPI_SCLK_DIV256							7
@@ -182,6 +182,7 @@ void SPIx_IRQHandling(SPIx_Handler_ty *pSPIHandler);
 
 //Other handlers
 void SPIx_PeriControl(SPIx_RegDef_ty *pSPIx, uint8_t Control);		//Enable or Disable the SPIx Peripheral
+void SPOEx_PeriControl(SPIx_RegDef_ty *pSPIx, uint8_t Control);		//Enable or Disable the SPOE of SPIx Peripheral
 void SPIx_SSIConfig(SPIx_RegDef_ty *pSPIx, uint8_t Control);		//Enable or Disable the NSS of SPIx Peripheral
 
 

@@ -368,3 +368,33 @@ void SPIx_SSIConfig(SPIx_RegDef_ty *pSPIx, uint8_t Control)
 
 
 
+/***********************************************************************************
+ * 					 	SPIx Peripheral SSOE Config Handler
+ *
+ * @fn: 		- 	SPIx_SSOEConfig
+ *
+ * @brief		-	This function Enable or Disable SSOE of SPIx Peripheral.
+ *
+ * @param[1]	-	Base Address of the SPI Peripheral
+ * @param[2]	-	Control value (Enable or Disable)
+ *
+ * @return		-	void
+ *
+ * @Note		-
+ *
+ */
+void SPIx_SSOEConfig(SPIx_RegDef_ty *pSPIx, uint8_t Control)
+{
+	if(Control == ENABLE)
+	{
+		pSPIx->CR2 |= (1 << SPI_CR2_SSOE);
+	}
+	else
+	{
+		pSPIx->CR2 &= ~(1 << SPI_CR2_SSOE);
+	}
+}
+
+
+
+
