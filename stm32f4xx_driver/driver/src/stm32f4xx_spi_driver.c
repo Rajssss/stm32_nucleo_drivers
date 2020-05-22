@@ -227,7 +227,7 @@ void SPIx_SendData(SPIx_RegDef_ty *pSPIx, uint8_t *pTxBuffer, uint32_t Length)
 	while(Length > 0)
 	{
 		//wait till TXE is set
-		while(SPI_GetFlagStatus(pSPIx, SPI_FLAG_TXE) == FLAG_RESET);
+		while(SPIx_GetFlagStatus(pSPIx, SPI_FLAG_TXE) == FLAG_RESET);
 
 		//check DFF in CR1
 		if((pSPIx->CR1 & (1 << SPI_CR1_DFF)))
@@ -251,12 +251,11 @@ void SPIx_SendData(SPIx_RegDef_ty *pSPIx, uint8_t *pTxBuffer, uint32_t Length)
 
 
 /***********************************************************************************
- * 					 	Child function of SPIx_SendData
+ * 					 		SPI Flag Status Handler
  *
- * @fn: 		- 	SPI_GetFlagStatus
+ * @fn: 		- 	SPIx_GetFlagStatus
  *
- * @brief		-	Child function of SPIx_SendData which returns status of a flag
- * 					of Status Register (SR).
+ * @brief		-	Function which returns status of a flag of Status Register (SR).
  *
  * @param[1]	-	Base Address of the SPI Peripheral
  * @param[2]	-	Flag value from @SPI_FLAG_BITS
@@ -266,7 +265,7 @@ void SPIx_SendData(SPIx_RegDef_ty *pSPIx, uint8_t *pTxBuffer, uint32_t Length)
  * @Note		-
  *
  */
-uint8_t SPI_GetFlagStatus(SPIx_RegDef_ty *pSPIx, uint32_t Flag)
+uint8_t SPIx_GetFlagStatus(SPIx_RegDef_ty *pSPIx, uint32_t Flag)
 {
 	if(pSPIx->SR & Flag)
 	{
