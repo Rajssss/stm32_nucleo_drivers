@@ -250,6 +250,55 @@ void SPIx_SendData(SPIx_RegDef_ty *pSPIx, uint8_t *pTxBuffer, uint32_t Length)
 }
 
 
+
+
+
+/***********************************************************************************
+ * 					 	SPI Data Receive Handler
+ *
+ * @fn: 		- 	SPIx_ReceiveData
+ *
+ * @brief		-	This function reads the data being received to Data Register (DR)
+ * 					of SPIx Peripheral.
+ *
+ * @param[1]	-	Base Address of the SPI Peripheral
+ * @param[2]	-	Receive Buffer
+ * @param[3]	-	Length of the data to be receive
+ *
+ * @return		-	void
+ *
+ * @Note		-	TODO:
+ *
+ */
+void SPIx_ReceiveData(SPIx_RegDef_ty *pSPIx, uint8_t *pRxBuffer, uint32_t Length)
+{
+	while(Length > 0)
+	{
+		while(! SPIx_GetFlagStatus(pSPIx, SPI_SR_RXNE));
+
+		if(pSPIx->CR1 & (1 << SPI_CR1_DFF))
+		{
+			//16-bit
+			*((uint16_t *) pRxBuffer) = pSPIx->DR;
+			Length -= 2;
+			(uint16_t *)pRxBuffer++;
+
+		}
+		else
+		{
+			//8-bit
+			(*(uint8_t *) pRxBuffer)=pSPIx->DR;
+			Length--;
+			(uint8_t *)pRxBuffer++;
+
+		}
+	}
+
+}
+
+
+
+
 /***********************************************************************************
  * 					 		SPI Flag Status Handler
  *
@@ -275,31 +324,6 @@ uint8_t SPIx_GetFlagStatus(SPIx_RegDef_ty *pSPIx, uint32_t Flag)
 	{
 		return FLAG_RESET;
 	}
-}
-
-
-
-
-/***********************************************************************************
- * 					 	SPI Data Receive Handler
- *
- * @fn: 		- 	SPIx_ReceiveData
- *
- * @brief		-	This function reads the data being received to Data Register (DR)
- * 					of SPIx Peripheral.
- *
- * @param[1]	-	Base Address of the SPI Peripheral
- * @param[2]	-	Receive Buffer
- * @param[3]	-	Length of the data to be receive
- *
- * @return		-	void
- *
- * @Note		-	TODO:
- *
- */
-void SPIx_ReceiveData(SPIx_RegDef_ty *pSPIx, uint8_t *pRxBuffer, uint32_t Length)
-{
-
 }
 
 
