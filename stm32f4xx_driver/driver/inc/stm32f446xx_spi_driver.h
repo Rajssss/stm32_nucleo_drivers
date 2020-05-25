@@ -36,6 +36,7 @@
 
 #include "stm32f446xx.h"
 
+
 /*****************************************************************************************
  * SPIx Peripheral Configuration structure.
  *****************************************************************************************/
@@ -58,8 +59,14 @@ typedef struct
  *****************************************************************************************/
 typedef struct
 {
-	SPIx_RegDef_ty *pSPIx;							/*!<Holds the base address of the SPI Peripheral to which the Configuration belongs.>*/
-	SPIx_Config_ty SPIx_Config;						/*!<Holds SPI configurations settings.>*/
+	SPIx_RegDef_ty 		*pSPIx;							/*!<Holds the base address of the SPI Peripheral to which the Configuration belongs.>*/
+	SPIx_Config_ty 		SPIx_Config;					/*!<Holds SPI configurations settings.>*/
+	uint8_t				*pTxBuffer;
+	uint8_t				*pRxBuffer;
+	uint32_t			TxLength;
+	uint32_t			RxLength;
+	uint8_t				TxState;
+	uint8_t				RxState;
 
 }SPIx_Handler_ty;
 
@@ -154,6 +161,13 @@ typedef struct
 
 
 
+/*****************************************************************************************
+ * SPIx application States
+ *****************************************************************************************/
+#define		SPI_READY		0
+#define 	SPI_BUSY_RX		1
+#define 	SPI_BUSY_TX		2
+
 
 
 /*****************************************************************************************
@@ -169,9 +183,9 @@ void SPIx_DeInit(SPIx_RegDef_ty *pSPIx);
 
 
 //SPI Data Send and Receive handlers
-void SPIx_SendData(SPIx_RegDef_ty *pSPIx, uint8_t *pTxBuffer, uint32_t Length);
+uint8_t SPIx_SendData(SPIx_Handler_ty *pSPIhandler, uint8_t *pTxBuffer, uint32_t Length);
 uint8_t SPIx_GetFlagStatus(SPIx_RegDef_ty *pSPIx, uint32_t Flag);
-void SPIx_ReceiveData(SPIx_RegDef_ty *pSPIx, uint8_t *pRxBuffer, uint32_t Length);
+uint8_t SPIx_ReceiveData(SPIx_Handler_ty *pSPIhandler, uint8_t *pRxBuffer, uint32_t Length);
 
 
 

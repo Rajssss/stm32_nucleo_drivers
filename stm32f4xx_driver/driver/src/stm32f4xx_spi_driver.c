@@ -212,40 +212,34 @@ void SPIx_DeInit(SPIx_RegDef_ty *pSPIx)
  * @brief		-	This function writes the data to be transmitted to Data Register (DR)
  * 					of SPIx Peripheral.
  *
- * @param[1]	-	Base Address of the SPI Peripheral
+ * @param[1]	-	Pointer SPI handler
  * @param[2]	-	Transmit Buffer
  * @param[3]	-	Length of the data to be transmitted
  *
- * @return		-	void
+ * @return		-	uint8_t
  *
- * @Note		-	This is a blocking call.
- * 					TODO: I hate polling, so make it interrupt based.
+ * @Note		-	This function returns the Transmission state of SPI(Busy/Free)
  *
  */
-void SPIx_SendData(SPIx_RegDef_ty *pSPIx, uint8_t *pTxBuffer, uint32_t Length)
+uint8_t SPIx_SendData(SPIx_Handler_ty *pSPIhandler, uint8_t *pTxBuffer, uint32_t Length)
 {
-	while(Length > 0)
+	if(pSPIhandler->TxState != SPI_BUSY_TX)
 	{
-		//wait till TXE is set
-		while(SPIx_GetFlagStatus(pSPIx, SPI_FLAG_TXE) == FLAG_RESET);
+		//copy TxBuffer info to Handler
+		pSPIhandler->pTxBuffer = pTxBuffer;
+		pSPIhandler->TxLength = Length;
 
-		//check DFF in CR1
-		if((pSPIx->CR1 & (1 << SPI_CR1_DFF)))
-		{
-			//16-bit DFF
-			pSPIx->DR = *((uint16_t *)pTxBuffer);		//covert to 16-bit then dereference to DR
-			Length -= 2;								//Decrease Tx Length 1 Bytes
-			(uint16_t *)pTxBuffer++;					//Increase Buffer by 1
-		}
-		else
-		{
-			//8-bit DFF
-			pSPIx->DR = *pTxBuffer;
-			Length--;									//Decrease Tx Length 1 Bytes
-			pTxBuffer++;								//Increase Buffer by 1
-		}
+		//Mark SPIx as busy, so no other program can take it over
+		pSPIhandler->TxState = SPI_BUSY_TX;
+
+		//Enable TXEIE in CR2
+		pSPIhandler->pSPIx->CR2 |= (1 << SPI_CR2_TXEIE);
+
+		//Finally data transmission will be handled by ISR
 
 	}
+
+	return (pSPIhandler->TxState);
 
 }
 
@@ -261,38 +255,34 @@ void SPIx_SendData(SPIx_RegDef_ty *pSPIx, uint8_t *pTxBuffer, uint32_t Length)
  * @brief		-	This function reads the data being received to Data Register (DR)
  * 					of SPIx Peripheral.
  *
- * @param[1]	-	Base Address of the SPI Peripheral
+ * @param[1]	-	Pointer SPI handler
  * @param[2]	-	Receive Buffer
  * @param[3]	-	Length of the data to be receive
  *
- * @return		-	void
+ * @return		-	uint8_t
  *
- * @Note		-	TODO:
+ * @Note		-	This function returns the Transmission state of SPI(Busy/Free)
  *
  */
-void SPIx_ReceiveData(SPIx_RegDef_ty *pSPIx, uint8_t *pRxBuffer, uint32_t Length)
+uint8_t SPIx_ReceiveData(SPIx_Handler_ty *pSPIhandler, uint8_t *pRxBuffer, uint32_t Length)
 {
-	while(Length > 0)
+	if(pSPIhandler->RxState != SPI_BUSY_RX)
 	{
-		while(! SPIx_GetFlagStatus(pSPIx, SPI_SR_RXNE));
+		//copy TxBuffer info to Handler
+		pSPIhandler->pRxBuffer = pRxBuffer;
+		pSPIhandler->RxLength = Length;
 
-		if(pSPIx->CR1 & (1 << SPI_CR1_DFF))
-		{
-			//16-bit
-			*((uint16_t *) pRxBuffer) = pSPIx->DR;
-			Length -= 2;
-			(uint16_t *)pRxBuffer++;
+		//Mark SPIx as busy, so no other program can take it over
+		pSPIhandler->RxState = SPI_BUSY_RX;
 
-		}
-		else
-		{
-			//8-bit
-			(*(uint8_t *) pRxBuffer)=pSPIx->DR;
-			Length--;
-			(uint8_t *)pRxBuffer++;
+		//Enable TXEIE in CR2
+		pSPIhandler->pSPIx->CR2 |= (1 << SPI_CR2_RXNEIE);
 
-		}
+		//Finally data receive will be handled by ISR
+
 	}
+
+	return (pSPIhandler->RxState);
 
 }
 

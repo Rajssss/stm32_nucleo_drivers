@@ -524,7 +524,7 @@
 #define 	SPI_CR2_FRF							4
 #define 	SPI_CR2_ERRIE						5
 #define 	SPI_CR2_RXNEIE						6
-#define 	SPI_CR2_TXNEIE						7
+#define 	SPI_CR2_TXEIE						7
 
 
 
