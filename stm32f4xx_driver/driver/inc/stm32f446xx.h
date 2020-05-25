@@ -146,7 +146,7 @@
 
 
 /**********************************************************************************
- * GPIO Pin macros.
+ * IRQ (Interrup Request) Number Possible Priority Macros
 ***********************************************************************************/
 #define 	NVIC_IRQ_PRIO_0						0x0
 #define 	NVIC_IRQ_PRIO_1						0x1
@@ -410,6 +410,21 @@
 #define 	IRQ_NO_EXTI9_5					23
 #define 	IRQ_NO_EXTI15_10				40
 
+#define 	IRQ_NO_SPI1						35
+#define 	IRQ_NO_SPI2						36
+#define 	IRQ_NO_SPI3						51
+
+#define 	IRQ_NO_I2C1_EV					32
+#define 	IRQ_NO_I2C1_ER					33
+#define 	IRQ_NO_I2C2_EV					34
+#define 	IRQ_NO_I2C2_EV					35
+
+#define 	IRQ_NO_USART1					37
+#define 	IRQ_NO_USART2					38
+#define 	IRQ_NO_USART3					39
+#define 	IRQ_NO_UART4	  				52
+#define 	IRQ_NO_UART5	    			53
+#define 	IRQ_NO_USART6	    			71
 
 
 
