@@ -10,7 +10,7 @@ Please note that none of these drivers are CMSIS Compatable.
   
 Currently this repo contains drivers for:-  
 ->GPIO  
-->SPI (WIP)  
+->SPI  
   
   
 Upcoming:-  
