@@ -32,6 +32,11 @@
 #define INC_STM32F446XX_H_
 
 #include <stdint.h>
+#include <stddef.h>
+
+//Compiler Atrrributes
+#define 	__UNUSED	__attribute__((unused))
+#define 	__WEAK		__attribute__((weak))
 
 
 //Generic Macros

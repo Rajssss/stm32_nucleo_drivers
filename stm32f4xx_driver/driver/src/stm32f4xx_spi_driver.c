@@ -32,6 +32,9 @@
 #include "stm32f446xx_spi_driver.h"
 
 
+static void SPIx_OVR_ERR_INTR_Hanlder(SPIx_Handler_ty *pSPIHandler);
+static void SPIx_RXE_INTR_Hanlder(SPIx_Handler_ty *pSPIHandler);
+static void SPIx_TXE_INTR_Handler(SPIx_Handler_ty *pSPIHandler);
 
 
 /***********************************************************************************
@@ -209,7 +212,7 @@ void SPIx_DeInit(SPIx_RegDef_ty *pSPIx)
  *
  * @fn: 		- 	SPIx_SendData
  *
- * @brief		-	This function writes the data to be transmitted to Data Register (DR)
+ * @brief		-	This function confusers vacuous requirements of data transmission
  * 					of SPIx Peripheral.
  *
  * @param[1]	-	Pointer SPI handler
@@ -252,10 +255,10 @@ uint8_t SPIx_SendData(SPIx_Handler_ty *pSPIhandler, uint8_t *pTxBuffer, uint32_t
  *
  * @fn: 		- 	SPIx_ReceiveData
  *
- * @brief		-	This function reads the data being received to Data Register (DR)
+ * @brief		-	This function confusers vacuous requirements of data reception
  * 					of SPIx Peripheral.
  *
- * @param[1]	-	Pointer SPI handler
+ * @param[1]	-	Pointer to SPI handler
  * @param[2]	-	Receive Buffer
  * @param[3]	-	Length of the data to be receive
  *
@@ -409,5 +412,252 @@ void SPIx_SSOEConfig(SPIx_RegDef_ty *pSPIx, uint8_t Control)
 }
 
 
+
+
+
+/***********************************************************************************
+ * 					 	SPIx Peripheral SSOE Config Handler
+ *
+ * @fn: 		- 	SPIx_SSOEConfig
+ *
+ * @brief		-	This function Interrupt Requests configurations of SPIx Peripheral.
+ *
+ * @param[1]	-	Reference of the Handler of SPI Peripheral
+ *
+ * @return		-	void
+ *
+ * @Note		-	There are 6 checks (TXE, RXNE, MODF, OVR, CRCERR. FRE) out of which
+ * 					3 (TXE, RXNE, OVR) are implemented
+ *
+ */
+void SPIx_IRQHandling(SPIx_Handler_ty *pSPIHandler)
+{
+	//check if TXE and and TXEIE is set
+	if((pSPIHandler->pSPIx->SR & (1 << SPI_SR_TXE)) &&
+				(pSPIHandler->pSPIx->CR2 & (1 << SPI_CR2_TXEIE)))
+	{
+		//TXE Handler
+		SPIx_TXE_INTR_Handler(pSPIHandler);
+	}
+
+	//check if RXNE and RXNEIE is set
+	if((pSPIHandler->pSPIx->SR & (1 << SPI_SR_RXNE)) &&
+			(pSPIHandler->pSPIx->CR2 & (1 << SPI_CR2_RXNEIE)))
+	{
+		//RXE Handler
+		SPIx_RXE_INTR_Hanlder(pSPIHandler);
+	}
+
+	//check if RXNE and RXNEIE is set
+	if((pSPIHandler->pSPIx->SR & (1 << SPI_SR_OVR)) &&
+			(pSPIHandler->pSPIx->CR2 & (1 << SPI_CR2_ERRIE)))
+	{
+		////OVR Error Handler
+		SPIx_OVR_ERR_INTR_Hanlder(pSPIHandler);
+	}
+
+}
+
+
+
+
+/***********************************************************************************
+ * 					 	SPI Data Transmit Interrupt Handler
+ *
+ * @fn: 		- 	SPIx_TXE_INTR_Handler
+ *
+ * @brief		-	This function writes the data to be transmitted to Data Register (DR)
+ * 					of SPIx Peripheral.This is a helper function of SPIx_SendData.
+ *
+ * @param[1]	-	Pointer SPI handler
+ *
+ * @return		-	static void
+ *
+ * @Note		-
+ *
+ */
+static void SPIx_TXE_INTR_Handler(SPIx_Handler_ty *pSPIHandler)
+{
+	//check DFF in CR1
+	if(pSPIHandler->pSPIx->CR1 & (1 << SPI_CR1_DFF))
+	{
+		//16-bit Transmission
+		pSPIHandler->pSPIx->DR = *((uint16_t *) pSPIHandler->pTxBuffer);
+		pSPIHandler->TxLength -= 2;
+		(uint16_t *)pSPIHandler->pTxBuffer++;
+	}
+	else
+	{
+		//8-bit Transmission
+		pSPIHandler->pSPIx->DR = *((uint8_t *) pSPIHandler->pTxBuffer);
+		pSPIHandler->TxLength--;
+		pSPIHandler->pTxBuffer++;
+	}
+
+	if(! (pSPIHandler->TxLength))
+	{
+		//close transmission
+		SPIx_Abort_Tx(pSPIHandler);
+		//inform the application
+		SPIx_ApplicationEventCallback(pSPIHandler, SPI_EVENT_TX_CMPLT);
+	}
+
+}
+
+
+
+/***********************************************************************************
+ * 					 	SPI Data Receive Interrupt Handler
+ *
+ * @fn: 		- 	SPIx_RXE_INTR_Hanlder
+ *
+ * @brief		-	This function reads the data being received to Data Register (DR)
+ * 					of SPIx Peripheral.This is a helper function of SPIx_ReceiveData.
+ *
+ * @param[1]	-	Pointer to SPI handler
+ *
+ * @return		-	static void
+ *
+ * @Note		-
+ *
+ */
+static void SPIx_RXE_INTR_Hanlder(SPIx_Handler_ty *pSPIHandler)
+{
+	//check DFF in CR1
+	if(pSPIHandler->pSPIx->CR1 & (1 << SPI_CR1_DFF))
+	{
+		//16-bit Transmission
+		pSPIHandler->pSPIx->DR = *((uint16_t *) pSPIHandler->pTxBuffer);
+		pSPIHandler->TxLength -= 2;
+		(uint16_t *)pSPIHandler->pTxBuffer++;
+	}
+	else
+	{
+		//8-bit Transmission
+		pSPIHandler->pSPIx->DR = *((uint8_t *) pSPIHandler->pTxBuffer);
+		pSPIHandler->TxLength--;
+		pSPIHandler->pTxBuffer++;
+	}
+
+	if(! (pSPIHandler->RxLength))
+	{
+		//close Reception
+		SPIx_Abort_Rx(pSPIHandler);
+		//inform the application
+		SPIx_ApplicationEventCallback(pSPIHandler, SPI_EVENT_RX_CMPLT);
+	}
+
+}
+
+
+
+
+/***********************************************************************************
+ * 					 	SPI OVR Error Interrupt Handler
+ *
+ * @fn: 		- 	SPIx_OVR_ERR_INTR_Hanlder
+ *
+ * @brief		-	This function handles the Overrun Error Interrupt of
+ * 					SPIx Peripheral.
+ *
+ * @param[1]	-	Pointer to SPI handler
+ *
+ * @return		-	static void
+ *
+ * @Note		-
+ *
+ */
+static void SPIx_OVR_ERR_INTR_Hanlder(SPIx_Handler_ty *pSPIHandler)
+{
+	uint8_t __UNUSED temp;
+	//clear OVR Flag
+	if(pSPIHandler->TxState != SPI_BUSY_TX)
+	{
+		temp = pSPIHandler->pSPIx->DR;
+		temp = pSPIHandler->pSPIx->SR;
+	}
+
+	//Inform Application about OVR
+	SPIx_ApplicationEventCallback(pSPIHandler, SPI_EVENT_ERR_OVR);
+
+}
+
+
+
+
+/***********************************************************************************
+ * 					 	SPI Transmission Abort Handler
+ *
+ * @fn: 		- 	SPIx_Abort_Tx
+ *
+ * @brief		-	This function aborts the ongoing transmission of data in
+ * 					SPIx Peripheral.
+ *
+ * @param[1]	-	Pointer to SPI handler
+ *
+ * @return		-	void
+ *
+ * @Note		-
+ *
+ */
+void SPIx_Abort_Tx(SPIx_Handler_ty *pSPIHandler)
+{
+	pSPIHandler->pSPIx->CR2 &= ~(1 << SPI_CR2_TXEIE);		//disable TXE interrupt
+	pSPIHandler->pTxBuffer = NULL;							//Nullify the transmission buffer
+	pSPIHandler->TxLength = 0;								//set length of data to zero
+	pSPIHandler->TxState = SPI_READY;						//set SPIx status as READY
+}
+
+
+
+
+/***********************************************************************************
+ * 					 	SPI Reception Abort Handler
+ *
+ * @fn: 		- 	SPIx_Abort_Rx
+ *
+ * @brief		-	This function aborts the ongoing reception of data in
+ * 					SPIx Peripheral.
+ *
+ * @param[1]	-	Pointer to SPI handler
+ *
+ * @return		-	void
+ *
+ * @Note		-
+ *
+ */
+void SPIx_Abort_Rx(SPIx_Handler_ty *pSPIHandler)
+{
+	pSPIHandler->pSPIx->CR2 &= ~(1 << SPI_CR2_RXNEIE);		//disable RXNE interrupt
+	pSPIHandler->pRxBuffer = NULL;							//Nullify the Receiver buffer
+	pSPIHandler->RxLength = 0;								//set length of data to zero
+	pSPIHandler->RxState = SPI_READY;						//set SPIx status as READY
+}
+
+
+
+
+
+/***********************************************************************************
+ * 					 	SPI Reception Abort Handler
+ *
+ * @fn: 		- 	SPIx_Abort_Rx
+ *
+ * @brief		-	This function aborts the ongoing reception of data in
+ * 					SPIx Peripheral.
+ *
+ * @param[1]	-	Pointer to SPI handler
+ *
+ * @return		-	void
+ *
+ * @Note		-
+ *
+ */
+void SPIx_ClearOVRFlag(SPIx_RegDef_ty *pSPIx)
+{
+	uint8_t __UNUSED temp;
+	temp = pSPIx->DR;
+	temp = pSPIx->SR;
+}
 
 

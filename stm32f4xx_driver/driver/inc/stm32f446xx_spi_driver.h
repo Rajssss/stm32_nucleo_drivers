@@ -162,11 +162,21 @@ typedef struct
 
 
 /*****************************************************************************************
- * SPIx application States
+ * SPIx Application States
  *****************************************************************************************/
 #define		SPI_READY		0
 #define 	SPI_BUSY_RX		1
 #define 	SPI_BUSY_TX		2
+
+
+
+/*****************************************************************************************
+ * SPIx Application Events
+ *****************************************************************************************/
+#define 	SPI_EVENT_TX_CMPLT		1
+#define 	SPI_EVENT_RX_CMPLT		2
+#define 	SPI_EVENT_ERR_OVR		3
+#define 	SPI_EVENT_ERR_CRC		4
 
 
 
@@ -198,6 +208,12 @@ void SPIx_IRQHandling(SPIx_Handler_ty *pSPIHandler);
 void SPIx_PeriControl(SPIx_RegDef_ty *pSPIx, uint8_t Control);		//Enable or Disable the SPIx Peripheral
 void SPIx_SSOEConfig(SPIx_RegDef_ty *pSPIx, uint8_t Control);		//Enable or Disable the SPOE of SPIx Peripheral
 void SPIx_SSIConfig(SPIx_RegDef_ty *pSPIx, uint8_t Control);		//Enable or Disable the NSS of SPIx Peripheral
+void SPIx_Abort_Tx(SPIx_Handler_ty *pSPIHandler);					//Abort SPI Transmission
+void SPIx_Abort_Rx(SPIx_Handler_ty *pSPIHandler);					//Abort SPI Reception
+
+
+//Application Event Callback
+__WEAK void SPIx_ApplicationEventCallback(SPIx_Handler_ty *pSPIHandler, uint8_t AppEvent);		//User Application need to implement it as per need
 
 
 #endif /* INC_STM32F446XX_SPI_DRIVER_H_ */
