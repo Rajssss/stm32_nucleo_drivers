@@ -661,3 +661,17 @@ void SPIx_ClearOVRFlag(SPIx_RegDef_ty *pSPIx)
 }
 
 
+
+
+
+
+__WEAK void SPIx_ApplicationEventCallback(SPIx_Handler_ty *pSPIHandler, uint8_t AppEvent)
+{
+	//This is a weak implementation. The user applications may override this function.
+}
+
+
+
+
+
+
