@@ -38,8 +38,6 @@ int main(void)
 
 
 	//Configure the User Button, on GPIOC13
-	GPIOx_PeriClkControl(GPIOC, ENABLE);
-
 	GPIOButton.pGPIOx = GPIOC;
 	GPIOButton.GPIOx_PinConfig.GPIOx_PinNumber = GPIO_PIN_NO_13;
 	GPIOButton.GPIOx_PinConfig.GPIOx_PinMode = GPIO_MODE_IT_FT;
