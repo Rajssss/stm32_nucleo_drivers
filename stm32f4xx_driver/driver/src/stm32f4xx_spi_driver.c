@@ -114,7 +114,7 @@ void SPIx_PeriClkControl(SPIx_RegDef_ty *pSPIx, uint8_t Control)
  *
  * @return		-	void
  *
- * @Note		-	TODO: SPI Interrupts
+ * @Note		-
  *
  */
 void SPIx_Init(SPIx_Handler_ty *pSPIHandler)
@@ -179,7 +179,7 @@ void SPIx_Init(SPIx_Handler_ty *pSPIHandler)
  *
  * @return		-	void
  *
- * @Note		-	TODO: Complete DeInitialize
+ * @Note		-
  *
  */
 void SPIx_DeInit(SPIx_RegDef_ty *pSPIx)
@@ -346,6 +346,7 @@ void SPIx_PeriControl(SPIx_RegDef_ty *pSPIx, uint8_t Control)
 	}
 	else
 	{
+		while(SPIx_GetFlagStatus(SPI2, SPI_FLAG_BSY));					//wait till SPI2 is not Busy
 		pSPIx->CR1 &= ~(1 << SPI_CR1_SPE);
 	}
 }
