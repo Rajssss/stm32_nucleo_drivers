@@ -29,7 +29,7 @@ void GPIO_ButtonInit(void);			//to initialize User Button at GPIOC13
 
 void delay()
 {
-	for(uint32_t i=0; i<50000/2; i++);
+	for(uint32_t i=0; i<500000/2; i++);
 }
 
 
@@ -99,7 +99,7 @@ void SPI2_GPIOInit(void)
 	SPI2_Pins.GPIOx_PinConfig.GPIOx_PinMode = GPIO_MODE_ALTFN;
 	SPI2_Pins.GPIOx_PinConfig.GPIOx_PinAltFunMode = 5;
 	SPI2_Pins.GPIOx_PinConfig.GPIOx_PinOPType = GPIO_OP_TYPE_PP;
-	SPI2_Pins.GPIOx_PinConfig.GPIOx_PinPuPdControl = GPIO_PIN_NO_PUPD;
+	SPI2_Pins.GPIOx_PinConfig.GPIOx_PinPuPdControl = GPIO_PIN_PU;
 	SPI2_Pins.GPIOx_PinConfig.GPIOx_PinSpeed = GPIO_SPEED_FAST;
 
 
