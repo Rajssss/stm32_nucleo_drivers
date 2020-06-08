@@ -208,12 +208,12 @@ void SPIx_DeInit(SPIx_RegDef_ty *pSPIx)
 
 
 /***********************************************************************************
- * 					 	SPI Data Transmit Handler
+ * 					 	SPI Data Transmit Handler with Interrupt
  *
- * @fn: 		- 	SPIx_SendData
+ * @fn: 		- 	SPIx_SendDataIT
  *
  * @brief		-	This function confusers vacuous requirements of data transmission
- * 					of SPIx Peripheral.
+ * 					of SPIx Peripheral. This is an Interrupt based Transmission.
  *
  * @param[1]	-	Pointer SPI handler
  * @param[2]	-	Transmit Buffer
@@ -224,7 +224,7 @@ void SPIx_DeInit(SPIx_RegDef_ty *pSPIx)
  * @Note		-	This function returns the Transmission state of SPI(Busy/Free)
  *
  */
-uint8_t SPIx_SendData(SPIx_Handler_ty *pSPIhandler, uint8_t *pTxBuffer, uint32_t Length)
+uint8_t SPIx_SendDataIT(SPIx_Handler_ty *pSPIhandler, uint8_t *pTxBuffer, uint32_t Length)
 {
 	if(pSPIhandler->TxState != SPI_BUSY_TX)
 	{
@@ -251,12 +251,61 @@ uint8_t SPIx_SendData(SPIx_Handler_ty *pSPIhandler, uint8_t *pTxBuffer, uint32_t
 
 
 /***********************************************************************************
- * 					 	SPI Data Receive Handler
+ * 					 	SPI Data Transmit Handler
  *
- * @fn: 		- 	SPIx_ReceiveData
+ * @fn: 		- 	SPIx_SendData
+ *
+ * @brief		-	This function writes the data to be transmitted to Data Register (DR)
+ * 					of SPIx Peripheral.
+ *
+ * @param[1]	-	Base Address of the SPI Peripheral
+ * @param[2]	-	Transmit Buffer
+ * @param[3]	-	Length of the data to be transmitted
+ *
+ * @return		-	void
+ *
+ * @Note		-	This is a blocking call.
+ *
+ */
+void SPIx_SendData(SPIx_RegDef_ty *pSPIx, uint8_t *pTxBuffer, uint32_t Length)
+{
+	while(Length > 0)
+	{
+		//wait till TXE is set
+		while(SPIx_GetFlagStatus(pSPIx, SPI_FLAG_TXE) == FLAG_RESET);
+
+		//check DFF in CR1
+		if((pSPIx->CR1 & (1 << SPI_CR1_DFF)))
+		{
+			//16-bit DFF
+			pSPIx->DR = *((uint16_t *)pTxBuffer);		//covert to 16-bit then dereference to DR
+			Length -= 2;								//Decrease Tx Length 1 Bytes
+			(uint16_t *)pTxBuffer++;					//Increase Buffer by 1
+		}
+		else
+		{
+			//8-bit DFF
+			pSPIx->DR = *pTxBuffer;
+			Length--;									//Decrease Tx Length 1 Bytes
+			pTxBuffer++;								//Increase Buffer by 1
+		}
+
+	}
+
+}
+
+
+
+
+
+
+/***********************************************************************************
+ * 					 	SPI Data Receive Handler with Interrupt
+ *
+ * @fn: 		- 	SPIx_ReceiveDataIT
  *
  * @brief		-	This function confusers vacuous requirements of data reception
- * 					of SPIx Peripheral.
+ * 					of SPIx Peripheral. This is an Interrupt based Reception.
  *
  * @param[1]	-	Pointer to SPI handler
  * @param[2]	-	Receive Buffer
@@ -267,7 +316,7 @@ uint8_t SPIx_SendData(SPIx_Handler_ty *pSPIhandler, uint8_t *pTxBuffer, uint32_t
  * @Note		-	This function returns the Transmission state of SPI(Busy/Free)
  *
  */
-uint8_t SPIx_ReceiveData(SPIx_Handler_ty *pSPIhandler, uint8_t *pRxBuffer, uint32_t Length)
+uint8_t SPIx_ReceiveDataIT(SPIx_Handler_ty *pSPIhandler, uint8_t *pRxBuffer, uint32_t Length)
 {
 	if(pSPIhandler->RxState != SPI_BUSY_RX)
 	{
@@ -288,6 +337,53 @@ uint8_t SPIx_ReceiveData(SPIx_Handler_ty *pSPIhandler, uint8_t *pRxBuffer, uint3
 	return (pSPIhandler->RxState);
 
 }
+
+
+
+
+/***********************************************************************************
+ * 					 	SPI Data Receive Handler
+ *
+ * @fn: 		- 	SPIx_ReceiveData
+ *
+ * @brief		-	This function reads the data being received to Data Register (DR)
+ * 					of SPIx Peripheral.
+ *
+ * @param[1]	-	Base Address of the SPI Peripheral
+ * @param[2]	-	Receive Buffer
+ * @param[3]	-	Length of the data to be receive
+ *
+ * @return		-	void
+ *
+ * @Note		-	TODO:
+ *
+ */
+void SPIx_ReceiveData(SPIx_RegDef_ty *pSPIx, uint8_t *pRxBuffer, uint32_t Length)
+{
+	while(Length > 0)
+	{
+		while(! SPIx_GetFlagStatus(pSPIx, SPI_SR_RXNE));
+
+		if(pSPIx->CR1 & (1 << SPI_CR1_DFF))
+		{
+			//16-bit
+			*((uint16_t *) pRxBuffer) = pSPIx->DR;
+			Length -= 2;
+			(uint16_t *)pRxBuffer++;
+
+		}
+		else
+		{
+			//8-bit
+			(*(uint8_t *) pRxBuffer)=pSPIx->DR;
+			Length--;
+			(uint8_t *)pRxBuffer++;
+
+		}
+	}
+
+}
+
 
 
 

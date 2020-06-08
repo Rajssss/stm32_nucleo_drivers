@@ -193,9 +193,10 @@ void SPIx_DeInit(SPIx_RegDef_ty *pSPIx);
 
 
 //SPI Data Send and Receive handlers
-uint8_t SPIx_SendData(SPIx_Handler_ty *pSPIhandler, uint8_t *pTxBuffer, uint32_t Length);
-uint8_t SPIx_GetFlagStatus(SPIx_RegDef_ty *pSPIx, uint32_t Flag);
-uint8_t SPIx_ReceiveData(SPIx_Handler_ty *pSPIhandler, uint8_t *pRxBuffer, uint32_t Length);
+uint8_t SPIx_SendDataIT(SPIx_Handler_ty *pSPIhandler, uint8_t *pTxBuffer, uint32_t Length);		//Interrupt based transmission
+void SPIx_SendData(SPIx_RegDef_ty *pSPIx, uint8_t *pTxBuffer, uint32_t Length);
+uint8_t SPIx_ReceiveDataIT(SPIx_Handler_ty *pSPIhandler, uint8_t *pRxBuffer, uint32_t Length);	//Interrupt based reception
+void SPIx_ReceiveData(SPIx_RegDef_ty *pSPIx, uint8_t *pRxBuffer, uint32_t Length);
 
 
 
@@ -205,6 +206,7 @@ void SPIx_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority);
 void SPIx_IRQHandling(SPIx_Handler_ty *pSPIHandler);
 
 //Other handlers
+uint8_t SPIx_GetFlagStatus(SPIx_RegDef_ty *pSPIx, uint32_t Flag);	//Read the Status Register of SPIx
 void SPIx_PeriControl(SPIx_RegDef_ty *pSPIx, uint8_t Control);		//Enable or Disable the SPIx Peripheral
 void SPIx_SSOEConfig(SPIx_RegDef_ty *pSPIx, uint8_t Control);		//Enable or Disable the SPOE of SPIx Peripheral
 void SPIx_SSIConfig(SPIx_RegDef_ty *pSPIx, uint8_t Control);		//Enable or Disable the NSS of SPIx Peripheral
