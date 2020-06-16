@@ -1,2 +1,4 @@
 /Debug/
 /.cproject
+/stm32f4xx_driver Debug.cfg
+/stm32f4xx_driver Debug.launch
