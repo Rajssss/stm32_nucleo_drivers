@@ -28,7 +28,6 @@
  */
 
 
-#include "stm32f446xx.h"
 #include "stm32f446xx_spi_driver.h"
 
 
