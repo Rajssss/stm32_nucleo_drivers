@@ -362,7 +362,7 @@ void SPIx_ReceiveData(SPIx_RegDef_ty *pSPIx, uint8_t *pRxBuffer, uint32_t Length
 {
 	while(Length > 0)
 	{
-		while(! SPIx_GetFlagStatus(pSPIx, SPI_SR_RXNE));
+		while(SPIx_GetFlagStatus(pSPIx, SPI_FLAG_RXNE));
 
 		if(pSPIx->CR1 & (1 << SPI_CR1_DFF))
 		{
