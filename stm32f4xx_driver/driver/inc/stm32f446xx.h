@@ -117,7 +117,8 @@
 #define 	USART3_BASEADDR					(APB1PERIPH_BASEADDR + 0X4800U)
 #define 	UART4_BASEADDR					(APB1PERIPH_BASEADDR + 0X4C00U)
 #define 	UART5_BASEADDR					(APB1PERIPH_BASEADDR + 0X5000U)
-#define 	I2C2_BASEADDR					(APB1PERIPH_BASEADDR + 0X5400U)
+#define 	I2C1_BASEADDR					(APB1PERIPH_BASEADDR + 0X5400U)
+#define 	I2C2_BASEADDR					(APB1PERIPH_BASEADDR + 0X5800U)
 #define 	I2C3_BASEADDR					(APB1PERIPH_BASEADDR + 0X5C00U)
 #define 	CAN1_BASEADDR					(APB1PERIPH_BASEADDR + 0X6400U)
 #define 	CAN2_BASEADDR					(APB1PERIPH_BASEADDR + 0X6800U)
@@ -196,6 +197,10 @@
 #define 	SPI2				((SPIx_RegDef_ty* )SPI2_I2S2_BASEADDR)
 #define 	SPI3				((SPIx_RegDef_ty* )SPI3_I2S3_BASEADDR)
 #define 	SPI4				((SPIx_RegDef_ty* )SPI4_BASEADDR)
+
+#define 	I2C1				((I2Cx_RegDef_ty)I2C1_BASEADDR);
+#define 	I2C2				((I2Cx_RegDef_ty)I2C2_BASEADDR);
+#define 	I2C3				((I2Cx_RegDef_ty)I2C3_BASEADDR);
 
 
 
@@ -476,7 +481,7 @@
 
 
 /**********************************************************************************
- * NVIC Interrupt Priority value macros
+ * GPIO Pin macros
 ***********************************************************************************/
 #define 	GPIO_PIN_NO_0						0x0
 #define 	GPIO_PIN_NO_1						0x1
@@ -545,6 +550,101 @@
 #define 	SPI_SR_OVR							6
 #define 	SPI_SR_BSY							7
 #define 	SPI_SR_FRE							8
+
+
+
+
+/**********************************************************************************
+ * I2Cx Peripheral Control Register 1 (CR1) Bitfields
+***********************************************************************************/
+#define 	I2C_CR1_PE							0x0			//Peripheral enable
+#define 	I2C_CR1_SMBUS						0x1			//SMBus mode
+#define 	I2C_CR1_SMBTYPE						0x3			//SMBus type
+#define 	I2C_CR1_ENARP						0x4			//ARP enable
+#define 	I2C_CR1_ENPEC						0x5			//PEC enable
+#define 	I2C_CR1_ENGC						0x6			//General call enable
+#define 	I2C_CR1_NOSTRETCH					0x7			//Clock stretching disable (Slave mode)
+#define 	I2C_CR1_START						0x8			//Start generation
+#define 	I2C_CR1_STOP						0x9			//Stop generation
+#define 	I2C_CR1_ACK							0xA			//Acknowledge enable
+#define 	I2C_CR1_POS							0xB			//Acknowledge/PEC Position (for data reception)
+#define 	I2C_CR1_PEC							0xC			//Packet error checking
+#define 	I2C_CR1_ALERT						0xD			//SMBus alert
+#define 	I2C_CR1_SWRST						0xF			//Software reset
+
+
+
+/**********************************************************************************
+ * I2Cx Peripheral Control Register 2 (CR2) Bitfields
+***********************************************************************************/
+#define 	I2C_CR2_FREQ						0x0			//Peripheral clock frequency
+#define 	I2C_CR2_ITERREN						0x8			//Error interrupt enable
+#define 	I2C_CR2_ITEVTEN						0x9			//Event interrupt enable
+#define 	I2C_CR2_ITBUFEN						0xA			//Buffer interrupt enable
+#define 	I2C_CR2_DMAEN						0xB			//DMA requests enable
+#define 	I2C_CR2_LAST						0xC			//DMA last transfer
+
+
+
+/**********************************************************************************
+ * I2Cx Own Address Register 1 (OAR1) Bitfields
+***********************************************************************************/
+#define 	I2C_OAR1_ADD0					0x0			//Interface address
+#define 	I2C_OAR1_ADD7_1					0x1			//Interface address
+#define 	I2C_OAR1_ADD9_8					0x8			//Interface address
+#define 	I2C_OAR1_ADDMODE				0xF			//Addressing mode (slave mode)
+
+
+
+/**********************************************************************************
+ * I2Cx Own Address Register 2 (OAR2) Bitfields
+***********************************************************************************/
+#define 	I2C_OAR2_ENDUAL					0x0			//Dual addressing mode enable
+#define 	I2C_OAR2_ADD7_1					0x1			//Interface address
+
+
+
+/**********************************************************************************
+ * I2Cx Status Register 1 (SR1) Bitfields
+***********************************************************************************/
+#define 	I2C_SR1_SB						0x0			//Start bit (Master mode)
+#define 	I2C_SR1_ADDR					0x1			//Address sent (master mode)/matched (slave mode)
+#define 	I2C_SR1_BTF						0x2			//Byte transfer finished
+#define 	I2C_SR1_ADD10					0x3			//10-bit header sent (Master mode)
+#define 	I2C_SR1_STOPF					0x4			//Stop detection (slave mode)
+#define 	I2C_SR1_RXNE					0x6			//Data register not empty (receivers)
+#define 	I2C_SR1_TXE						0x7			//Data register empty (transmitters)
+#define 	I2C_SR1_BERR					0x8			//Bus error
+#define 	I2C_SR1_ARLO					0x9			//Arbitration lost (master mode)
+#define 	I2C_SR1_AF						0xA			//Acknowledge failure
+#define 	I2C_SR1_OVR						0xB			//Overrun/Underrun
+#define 	I2C_SR1_PECERR					0xC			//PEC Error in reception
+#define 	I2C_SR1_TIMEOUT					0xE			//Timeout or Tlow error
+#define 	I2C_SR1_SMBALERT				0xF			//SMBus alert
+
+
+
+/**********************************************************************************
+ * I2Cx Status Register 2 (SR2) Bitfields
+***********************************************************************************/
+#define 	I2C_SR2_MSL						0x0			//Master/slave
+#define 	I2C_SR2_BUSY					0x1			//Bus busy
+#define 	I2C_SR2_TRA						0x2			//Transmitter/receiver
+#define 	I2C_SR2_GENCALL					0x4			//General call address (Slave mode)
+#define 	I2C_SR2_SMBDEFAULT				0x5			//SMBus device default address (Slave mode)
+#define 	I2C_SR2_SMBHOST					0x6			//SMBus host header (Slave mode)
+#define 	I2C_SR2_DUALF					0x7			//Dual flag (Slave mode)
+#define 	I2C_SR2_PEC						0x8			//Packet error checking register
+
+
+
+/**********************************************************************************
+ * I2Cx Clock Control Register (CCR) Bitfields
+***********************************************************************************/
+#define 	I2C_CCR_CCR						0x0			//Clock control register in Fm/Sm mode (Master mode)
+#define 	I2C_CCR_DUTY					0xE			//Fm mode duty cycle
+#define 	I2C_CCR_FS						0xF			//I2C master mode speed selection
+
 
 
 
@@ -685,6 +785,28 @@ typedef struct
 	__VOL uint32_t I2SPR;					//SPIx I2S prescaler register
 
 }SPIx_RegDef_ty;
+
+
+
+
+/**********************************************************************************
+ * I2C Peripheral Registers Structure
+***********************************************************************************/
+typedef struct
+{
+	__VOL uint32_t CR1;						//I2Cx control register 1
+	__VOL uint32_t CR2;						//I2Cx control register 2
+	__VOL uint32_t OAR1;					//I2Cx Own Address register 1
+	__VOL uint32_t OAR2;					//I2Cx Own Address register 2
+	__VOL uint32_t DR;						//I2Cx Data register
+	__VOL uint32_t SR1;						//I2Cx Status register
+	__VOL uint32_t SR2;						//I2Cx Status register
+	__VOL uint32_t CCR;						//I2Cx Clock Control register
+	__VOL uint32_t TRISE;					//I2Cx Rise Time register
+	__VOL uint32_t FLTR;					//I2Cx Filter register
+
+}I2Cx_RegDef_ty;
+
 
 
 

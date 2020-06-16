@@ -11,10 +11,9 @@ Please note that none of these drivers are CMSIS Compatable.
 Currently this repo contains drivers for:-  
 ->GPIO  
 ->SPI  
+->I2C (WIP)
   
-  
-Upcoming:-  
-->I2C  
+Upcoming:-   
 ->USART/UART  
 ->USB  
   
