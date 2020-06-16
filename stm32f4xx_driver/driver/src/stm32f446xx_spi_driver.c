@@ -22,7 +22,7 @@
  *      Description: SPI Driver for STM32F446RE-Nucleo Board
  *
  *      This file contains:
- *           - Function definitions to perform various operation on a GPIO Port or Pin.
+ *           - Function definitions to perform various operation on a SPI Peripheral.
  *
  *
  */
