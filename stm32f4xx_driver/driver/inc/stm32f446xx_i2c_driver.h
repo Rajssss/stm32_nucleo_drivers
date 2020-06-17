@@ -37,7 +37,28 @@
 #include  "stm32f446xx.h"
 
 
+/*****************************************************************************************
+ * I2Cx Peripheral Configuration structure.
+ *****************************************************************************************/
+typedef struct
+{
+	uint32_t 		I2C_SCLSpeed;
+	uint8_t 		I2C_DeviceAddress;
+	uint8_t 		I2C_ACKControl;
+	uint16_t		I2C_FMDutyCycle;
+
+}I2Cx_Config_ty;
 
 
+
+/*****************************************************************************************
+ * I2Cx Handler structure.
+ *****************************************************************************************/
+typedef struct
+{
+	I2Cx_RegDef_ty *pI2Cx;
+	I2Cx_Config_ty I2Cx_Config;
+
+};
 
 #endif /* INC_STM32F446XX_I2C_DRIVER_H_ */
