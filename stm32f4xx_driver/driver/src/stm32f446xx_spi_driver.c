@@ -37,11 +37,11 @@ static void SPIx_TXE_INTR_Handler(SPIx_Handler_ty *pSPIHandler);
 
 
 /***********************************************************************************
- * 					 	GPIO Clock Control Handler
+ * 					 	SPI Clock Control Handler
  *
- * @fn: 		- 	GPIOx_PeriClkControl
+ * @fn: 		- 	SPIx_PeriClkControl
  *
- * @brief		-	This function Deinitialize the given GPIO Port
+ * @brief		-	This function Deinitialize the given SPI Port
  *
  * @param[1]	-	Base Address of the SPI Peripheral
  *
