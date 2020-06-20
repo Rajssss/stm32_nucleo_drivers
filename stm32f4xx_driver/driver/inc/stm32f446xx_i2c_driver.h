@@ -42,10 +42,10 @@
  *****************************************************************************************/
 typedef struct
 {
-	uint32_t 		I2C_SCLSpeed;
-	uint8_t 		I2C_DeviceAddress;
-	uint8_t 		I2C_ACKControl;
-	uint16_t		I2C_FMDutyCycle;
+	uint32_t 		I2C_SCLSpeed;					//@I2C_SCLSpeed
+	uint8_t 		I2C_DeviceAddress;				//Set by user
+	uint8_t 		I2C_ACKControl;					//@ACKControl
+	uint16_t		I2C_FMDutyCycle;				//@DutyCycle
 
 }I2Cx_Config_ty;
 
@@ -60,5 +60,35 @@ typedef struct
 	I2Cx_Config_ty I2Cx_Config;
 
 };
+
+
+
+
+/*****************************************************************************************
+ * I2Cx Maximum Speeds for different Modes. @I2C_SCLSpeed
+ * Note: These speeds are not fixed, you can take any values between them.
+ *****************************************************************************************/
+#define 	I2C_SCL_SPEED_STD		100000
+#define 	I2C_SCL_SPEED_FAST		400000
+
+
+
+
+/*****************************************************************************************
+ * I2Cx Auto Acknowledgment configuration macros. @ACKControl
+ *****************************************************************************************/
+#define		I2C_ACK_ENABLE			1
+#define 	I2C_ACK_DISABLE			0
+
+
+
+
+/*****************************************************************************************
+ * I2Cx Availabe Duty Cycles. @DutyCycle
+ *****************************************************************************************/
+#define 	I2C_DUTY_2				0
+#define 	I2C_DUTY_16_9			1
+
+
 
 #endif /* INC_STM32F446XX_I2C_DRIVER_H_ */
