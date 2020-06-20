@@ -198,9 +198,9 @@
 #define 	SPI3				((SPIx_RegDef_ty* )SPI3_I2S3_BASEADDR)
 #define 	SPI4				((SPIx_RegDef_ty* )SPI4_BASEADDR)
 
-#define 	I2C1				((I2Cx_RegDef_ty)I2C1_BASEADDR);
-#define 	I2C2				((I2Cx_RegDef_ty)I2C2_BASEADDR);
-#define 	I2C3				((I2Cx_RegDef_ty)I2C3_BASEADDR);
+#define 	I2C1				((I2Cx_RegDef_ty* )I2C1_BASEADDR)
+#define 	I2C2				((I2Cx_RegDef_ty* )I2C2_BASEADDR)
+#define 	I2C3				((I2Cx_RegDef_ty* )I2C3_BASEADDR)
 
 
 
@@ -312,12 +312,12 @@
 #define 	USART2_PCLK_DI()		(RCC->APB1ENR &= ~(1<<17))
 #define 	USART3_PCLK_DI()		(RCC->APB1ENR &= ~(1<<18))
 
-#define 	UART4_PCLK_DI()			(RCC->APB1 &= ~(1<<19))
-#define 	UART5_PCLK_DI()			(RCC->APB1 &= ~(1<<20))
+#define 	UART4_PCLK_DI()			(RCC->APB1ENR &= ~(1<<19))
+#define 	UART5_PCLK_DI()			(RCC->APB1ENR &= ~(1<<20))
 
-#define 	I2C1_PCLK_DI()			(RCC->APB1 &= ~(1<<21))
-#define 	I2C2_PCLK_DI()			(RCC->APB1 &= ~(1<<22))
-#define 	I2C3_PCLK_DI()			(RCC->APB1 &= ~(1<<23))
+#define 	I2C1_PCLK_DI()			(RCC->APB1ENR &= ~(1<<21))
+#define 	I2C2_PCLK_DI()			(RCC->APB1ENR &= ~(1<<22))
+#define 	I2C3_PCLK_DI()			(RCC->APB1ENR &= ~(1<<23))
 
 #define 	FMPI2C1_PCLK_DI()		(RCC->APB1 &= ~(1<<24))
 
