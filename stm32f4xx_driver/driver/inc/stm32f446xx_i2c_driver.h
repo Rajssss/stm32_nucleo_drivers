@@ -91,4 +91,31 @@ typedef struct
 
 
 
+
+
+
+
+/*****************************************************************************************
+ * 							APIs Supported by this Driver
+ * 				For more information about the APIs check definition.
+*****************************************************************************************/
+//I2C Clock Control Handler
+void I2Cx_PeriClkControl(I2Cx_RegDef_ty *pI2Cx, uint8_t Control);
+
+
+//I2C Initialize/Deinitialize Handler
+void I2Cx_Init(I2Cx_Handler_ty *pI2CHandler);
+void I2Cx_DeInit(I2Cx_RegDef_ty *pI2Cx);
+
+
+//I2C Data Send and Receive handlers (TODO)
+
+
+
+
+
+
+
+
+
 #endif /* INC_STM32F446XX_I2C_DRIVER_H_ */
