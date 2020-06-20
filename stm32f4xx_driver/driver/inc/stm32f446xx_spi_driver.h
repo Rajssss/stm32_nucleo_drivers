@@ -184,7 +184,7 @@ typedef struct
  * 							APIs Supported by this Driver
  * 				For more information about the APIs check definition.
 *****************************************************************************************/
-//GPIO Clock Control Handler
+//SPI Clock Control Handler
 void SPIx_PeriClkControl(SPIx_RegDef_ty *pSPIx, uint8_t Control);
 
 //SPI Initialize/Deinitialize Handler
