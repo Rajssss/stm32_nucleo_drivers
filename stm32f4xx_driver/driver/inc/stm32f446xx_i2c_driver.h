@@ -43,7 +43,10 @@
 typedef struct
 {
 	uint32_t 		I2C_SCLSpeed;					//@I2C_SCLSpeed
-	uint8_t 		I2C_DeviceAddress;				//Set by user
+	uint8_t			I2C_DeviceAddrMode;				//@Device_Addr_Mode (10/7-bit, Only for Primary address)
+	uint8_t			I2C_DualDeviceAddrConfig;		//Dual Device address config @Dual_Device_Addr
+	uint8_t 		I2C_DeviceAddress_Primary;		//Primary Device Own Address
+	uint8_t 		I2C_DeviceAddress_Secondary;	//Secondary Device Own Address
 	uint8_t 		I2C_ACKControl;					//@ACKControl
 	uint16_t		I2C_FMDutyCycle;				//@DutyCycle
 
@@ -59,7 +62,7 @@ typedef struct
 	I2Cx_RegDef_ty *pI2Cx;
 	I2Cx_Config_ty I2Cx_Config;
 
-};
+}I2Cx_Handler_ty;
 
 
 
@@ -84,14 +87,27 @@ typedef struct
 
 
 /*****************************************************************************************
- * I2Cx Availabe Duty Cycles. @DutyCycle
+ * I2Cx Available Duty Cycles. @DutyCycle
  *****************************************************************************************/
 #define 	I2C_DUTY_2				0
 #define 	I2C_DUTY_16_9			1
 
 
 
+/*****************************************************************************************
+ * I2Cx Device Address Mode. @Device_Addr_Mode
+ *****************************************************************************************/
+#define 	I2C_DeviceAddr_7BIT			0
+#define 	I2C_DeviceAddr_10BIT		1
 
+
+
+
+/*****************************************************************************************
+ * I2Cx  Dual Device Address Configs. @Dual_Device_Addr
+ *****************************************************************************************/
+#define 	I2C_DeviceAddr_Single		0
+#define 	I2C_DeviceAddr_Dual			1
 
 
 
