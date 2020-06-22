@@ -819,4 +819,14 @@ typedef struct
 
 
 
+/*****************************************************************************************
+ * 							Generic APIs Supported by this Driver
+ * 					For more information about the APIs check definition.
+*****************************************************************************************/
+uint32_t RCC_GetPeriCLK1_Value(void);			//APB1 Frequency Handler
+
+
+
+
+
 #endif /* INC_STM32F446XX_H_ */
