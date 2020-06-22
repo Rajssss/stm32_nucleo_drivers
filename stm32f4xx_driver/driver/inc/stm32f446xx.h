@@ -53,6 +53,14 @@
 
 
 
+//Available Clock Sources Frequencies (Oscillators)
+#define 	HSI_CLK_FREQ	16000000U							//16MHz On-Chip
+#define 	HSE_CLK_FREQ	8000000U							//8MHz STLink Crystal (X1)
+#define 	LSI_CLK_FREQ	32000U								//32KHz On-Chip
+#define 	LSE_CLK_FREQ	32768U								//32.768KHz (X2)
+
+
+
 /**********************************************************************************
  * Base Address of different memory chips
 ***********************************************************************************/
