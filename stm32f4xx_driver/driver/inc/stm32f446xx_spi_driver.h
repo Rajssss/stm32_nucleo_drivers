@@ -112,15 +112,15 @@ typedef struct
 /*****************************************************************************************
  * SPIx Status Flags macros for bit-masking. @SPI_FLAG_BITS
  *****************************************************************************************/
-#define 	SPI_FLAG_RXNE							(0 << SPI_SR_RXNE)
+#define 	SPI_FLAG_RXNE							(1 << SPI_SR_RXNE)
 #define 	SPI_FLAG_TXE							(1 << SPI_SR_TXE)
-#define 	SPI_FLAG_CHSIDE							(2 << SPI_SR_CHSIDE)
-#define 	SPI_FLAG_UDR							(3 << SPI_SR_UDR)
-#define 	SPI_FLAG_CRCERR							(4 << SPI_SR_CRCERR)
-#define 	SPI_FLAG_MODF							(5 << SPI_SR_MODF)
-#define 	SPI_FLAG_OVR							(6 << SPI_SR_OVR)
-#define 	SPI_FLAG_BSY							(7 << SPI_SR_BSY)
-#define 	SPI_FLAG_FRE							(8 << SPI_SR_FRE)
+#define 	SPI_FLAG_CHSIDE							(1 << SPI_SR_CHSIDE)
+#define 	SPI_FLAG_UDR							(1 << SPI_SR_UDR)
+#define 	SPI_FLAG_CRCERR							(1 << SPI_SR_CRCERR)
+#define 	SPI_FLAG_MODF							(1 << SPI_SR_MODF)
+#define 	SPI_FLAG_OVR							(1 << SPI_SR_OVR)
+#define 	SPI_FLAG_BSY							(1 << SPI_SR_BSY)
+#define 	SPI_FLAG_FRE							(1 << SPI_SR_FRE)
 
 
 
