@@ -567,7 +567,7 @@ void SPIx_IRQHandling(SPIx_Handler_ty *pSPIHandler)
  *
  * @param[1]	-	Pointer SPI handler
  *
- * @return		-	static void
+ * @return		-	void
  *
  * @Note		-
  *
@@ -612,7 +612,7 @@ static void SPIx_TXE_INTR_Handler(SPIx_Handler_ty *pSPIHandler)
  *
  * @param[1]	-	Pointer to SPI handler
  *
- * @return		-	static void
+ * @return		-	void
  *
  * @Note		-
  *
@@ -658,7 +658,7 @@ static void SPIx_RXE_INTR_Hanlder(SPIx_Handler_ty *pSPIHandler)
  *
  * @param[1]	-	Pointer to SPI handler
  *
- * @return		-	static void
+ * @return		-	void
  *
  * @Note		-
  *
@@ -735,14 +735,13 @@ void SPIx_Abort_Rx(SPIx_Handler_ty *pSPIHandler)
 
 
 /***********************************************************************************
- * 					 	SPI Reception Abort Handler
+ * 					 	SPI Clear Overrun Flag Handler
  *
- * @fn: 		- 	SPIx_Abort_Rx
+ * @fn: 		- 	SPIx_ClearOVRFlag
  *
- * @brief		-	This function aborts the ongoing reception of data in
- * 					SPIx Peripheral.
+ * @brief		-	This function clears the overrun flag of SPIx Peripheral.
  *
- * @param[1]	-	Pointer to SPI handler
+ * @param[1]	-	Base Address of SPI Peripheral
  *
  * @return		-	void
  *
@@ -759,11 +758,27 @@ void SPIx_ClearOVRFlag(SPIx_RegDef_ty *pSPIx)
 
 
 
-
+/***********************************************************************************
+ * 					 	SPI Application Even Callback Handler
+ *
+ * @fn: 		- 	SPIx_ApplicationEventCallback
+ *
+ * @brief		-	This function clears the overrun flag of SPIx Peripheral.
+ *
+ * @param[1]	-	Pointer to SPI Handler
+ *
+ * @param[2]	-	Application Event
+ *
+ * @return		-	void
+ *
+ * @Note		-	This is a weak implementation, and should be implemented is user
+ * 					application
+ *
+ */
 
 __WEAK void SPIx_ApplicationEventCallback(SPIx_Handler_ty *pSPIHandler, uint8_t AppEvent)
 {
-	//This is a weak implementation. The user applications may override this function.
+	//This is a weak implementation
 }
 
 
