@@ -102,7 +102,7 @@ void I2Cx_PeriClkControl(I2Cx_RegDef_ty *pI2Cx, uint8_t Control)
  *
  * @return		-	void
  *
- * @Note		-	TODO: 1. Dual Own Address Mode
+ * @Note		-
  *
  */
 void I2Cx_Init(I2Cx_Handler_ty *pI2CHandler)
@@ -149,5 +149,119 @@ void I2Cx_Init(I2Cx_Handler_ty *pI2CHandler)
 	 }
 
 }
+
+
+
+
+
+
+/***********************************************************************************
+ * 					 		I2C Flag Status Handler
+ *
+ * @fn: 		- 	I2C_GetFlagStatus
+ *
+ * @brief		-	Function which returns status of a flag of Status Register (SR).
+ *
+ * @param[1]	-	Base Address of the SPI Peripheral
+ * @param[2]	-	Flag value from @I2C_FLAG_BITS
+ *
+ * @return		-	uint8_t
+ *
+ * @Note		-	TODO: SR2 (Status Register 2) Support.
+ *
+ */
+uint8_t I2C_GetFlagStatus(I2Cx_RegDef_ty *pI2Cx, uint8_t FlagName)
+{
+	if(pI2Cx->SR1 & FlagName)
+	{
+		return	SET;
+	}
+	else
+	{
+		return	RESET;
+	}
+}
+
+
+
+
+
+
+/***********************************************************************************
+ * 					 	I2C Master Send Data Handler
+ *
+ * @fn: 		- 	I2C_SendData_Master
+ *
+ * @brief		-	This function handles data transmission of the given I2C
+ * 					peripheral.
+ *
+ * @param[1]	-	Pointer to the I2C Peripheral Handler
+ *
+ * @param[2]	-	Transmission buffer
+ *
+ * @param[3]	-	Transmission data length
+ *
+ * @param[4]	-	Slave Address to which data is to be sent.
+ *
+ * @return		-	void
+ *
+ * @Note		-	The Slave Address must be either 7-bit or 10-bit.
+ * 					TODO: 10-bit slave address support
+ *
+ */
+void I2C_SendData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint8_t length, uint8_t SlaveAddr)
+{
+	//Generate START condition
+	{
+		pI2CHandler->pI2Cx->CR1 |= (1 << I2C_CR1_START);
+	}
+
+	//Confirm START generation is completed by checking SB flag in SR1
+	{
+		while(! I2C_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_SB));
+	}
+
+	//Send Address of target slave + R/W = 0
+	{
+		pI2CHandler->pI2Cx->DR = (((SlaveAddr << 1) & 0) );			//free LSB of address byte and put 0 for R/W = 0
+	}
+
+	//Confirm address is sent by checking ADDR flag in SR1
+	{
+		while(! I2C_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_ADDR));
+	}
+
+	//Clear ADDR flag before
+	{
+		__UNUSED uint32_t dummyRead;				//Dummy read SR1 and SR2 to clear ADDR Flag
+
+		dummyRead = pI2CHandler->pI2Cx->SR1;
+		dummyRead = pI2CHandler->pI2Cx->SR2;
+	}
+
+	//Send Data
+	{
+		while(length > 0)
+		{
+			while(! I2C_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_TxE));		//wait till TxE is set
+			pI2CHandler->pI2Cx->DR = *pTxBuffer;
+			pTxBuffer++;
+			length--;
+		}
+	}
+
+	//wait for TxE=1 and BTF=1 ie SR and DR empty
+	{
+		while(! I2C_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_TxE));
+		while(! I2C_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_BTF));
+	}
+
+	//Generate STOP Condition
+	{
+		pI2CHandler->pI2Cx->CR1 |= (1 << I2C_CR1_STOP);
+	}
+}
+
+
 
 

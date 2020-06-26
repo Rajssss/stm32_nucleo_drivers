@@ -111,6 +111,38 @@ typedef struct
 
 
 
+
+
+/*****************************************************************************************
+ * I2Cx Status Flags macros for bit-masking. @I2C_FLAG_BITS
+ *****************************************************************************************/
+#define 	I2C_FLAG_SB					(1 << I2C_SR1_SB)
+#define 	I2C_FLAG_ADDR				(1 << I2C_SR1_ADDR)
+#define 	I2C_FLAG_BTF				(1 << I2C_SR1_BTF)
+#define 	I2C_FLAG_ADD10				(1 << I2C_SR1_ADD10)
+#define 	I2C_FLAG_STOPF				(1 << I2C_SR1_STOPF)
+#define 	I2C_FLAG_RxNE				(1 << I2C_SR1_RXNE)
+#define 	I2C_FLAG_TxE				(1 << I2C_SR1_TXE)
+#define 	I2C_FLAG_BERR				(1 << I2C_SR1_BERR)
+#define 	I2C_FLAG_ARLO				(1 << I2C_SR1_ARLO)
+#define 	I2C_FLAG_AF					(1 << I2C_SR1_AF)
+#define 	I2C_FLAG_OVR				(1 << I2C_SR1_OVR)
+#define 	I2C_FLAG_PECERR				(1 << I2C_SR1_PECERR)
+#define 	I2C_FLAG_TIMEOUT			(1 << I2C_SR1_TIMEOUT)
+#define 	I2C_FLAG_SMBALERT			(1 << I2C_SR1_SMBALERT)
+
+#define 	I2C_FLAG_MSL				(1 << I2C_SR2_MSL)
+#define 	I2C_FLAG_BUSY				(1 << I2C_SR2_BUSY)
+#define 	I2C_FLAG_TRA				(1 << I2C_SR2_TRA)
+#define 	I2C_FLAG_GENCALL			(1 << I2C_SR2_GENCALL)
+#define 	I2C_FLAG_SMB_DEFAULT		(1 << I2C_SR2_SMBDEFAULT)
+#define 	I2C_FLAG_SMB_HOST			(1 << I2C_SR2_SMBHOST)
+#define 	I2C_FLAG_DUALF				(1 << I2C_SR2_DUALF)
+
+
+
+
+
 /*****************************************************************************************
  * 							APIs Supported by this Driver
  * 				For more information about the APIs check definition.
@@ -125,12 +157,12 @@ void I2Cx_DeInit(I2Cx_RegDef_ty *pI2Cx);
 
 
 //I2C Data Send and Receive handlers (TODO)
+void I2C_SendData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint8_t length, uint8_t SlaveAddr);
 
 
 
-
-
-
+//Other handlers
+uint8_t I2C_GetFlagStatus(I2Cx_RegDef_ty *pI2Cx, uint8_t FlagName);
 
 
 
