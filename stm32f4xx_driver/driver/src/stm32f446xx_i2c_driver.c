@@ -148,6 +148,16 @@ void I2Cx_Init(I2Cx_Handler_ty *pI2CHandler)
 
 	 }
 
+	 //Rise Time: TRISE = (Max_TRise / TPclk)+ 1 = (PCLK_Freq / TRise in MHz) + 1 = (PCLK_Freq * TRise) + 1
+	 if(pI2CHandler->I2Cx_Config.I2C_SCLSpeed <= I2C_SCL_SPEED_STD)			//Standard Mode
+	 {
+		 pI2CHandler->pI2Cx->TRISE |= (((RCC_GetPeriCLK1_Value() / 1000000U) + 1) & 0x3F);
+	 }
+	 else
+	 {
+		 pI2CHandler->pI2Cx->TRISE |= ((((RCC_GetPeriCLK1_Value() * 300) / 1000000000U) + 1) & 0x3F);
+	 }
+
 }
 
 
