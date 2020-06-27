@@ -163,6 +163,7 @@ void I2C_SendData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint8
 
 //Other handlers
 uint8_t I2C_GetFlagStatus(I2Cx_RegDef_ty *pI2Cx, uint8_t FlagName);
+void I2C_PeripheralControl(I2Cx_RegDef_ty *pI2Cx, uint8_t Control);
 
 
 

@@ -37,7 +37,7 @@
  *
  * @fn: 		- 	I2Cx_PeriClkControl
  *
- * @brief		-	This function Deinitialize the given I2C Port
+ * @brief		-	This function Deinitialize the given I2C Peripheral
  *
  * @param[1]	-	Base Address of the I2C Peripheral
  *
@@ -84,6 +84,38 @@ void I2Cx_PeriClkControl(I2Cx_RegDef_ty *pI2Cx, uint8_t Control)
 			}
 
 
+}
+
+
+
+
+
+/***********************************************************************************
+ * 					 	I2C peripheral Control Handler
+ *
+ * @fn: 		- 	I2C_PeripheralControl
+ *
+ * @brief		-	This function Enable or Disable the given I2C Peripheral
+ *
+ * @param[1]	-	Base Address of the I2C Peripheral
+ *
+ * @param[2]	-	Control value: ENABLE or DISABLE
+ *
+ * @return		-	void
+ *
+ * @Note		-	none
+ *
+ */
+void I2C_PeripheralControl(I2Cx_RegDef_ty *pI2Cx, uint8_t Control)
+{
+	if(Control == ENABLE)
+	{
+		pI2Cx->CR1 |= (1 << I2C_CR1_PE);
+	}
+	else
+	{
+		pI2Cx->CR1 &= ~(1 << I2C_CR1_PE);
+	}
 }
 
 
