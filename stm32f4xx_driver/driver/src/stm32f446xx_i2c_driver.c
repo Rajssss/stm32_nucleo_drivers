@@ -107,6 +107,9 @@ void I2Cx_PeriClkControl(I2Cx_RegDef_ty *pI2Cx, uint8_t Control)
  */
 void I2Cx_Init(I2Cx_Handler_ty *pI2CHandler)
 {
+	//Enable Peripheral Clock for I2Cx
+	I2Cx_PeriClkControl(pI2CHandler->pI2Cx, ENABLE);
+
 	//ACK Control
 	pI2CHandler->pI2Cx->CR1 |= (pI2CHandler->I2Cx_Config.I2C_ACKControl << I2C_CR1_ACK);
 
