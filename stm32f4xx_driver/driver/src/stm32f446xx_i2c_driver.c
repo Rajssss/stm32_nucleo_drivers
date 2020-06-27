@@ -93,7 +93,7 @@ void I2Cx_PeriClkControl(I2Cx_RegDef_ty *pI2Cx, uint8_t Control)
 /***********************************************************************************
  * 					 	I2C peripheral Control Handler
  *
- * @fn: 		- 	I2C_PeripheralControl
+ * @fn: 		- 	I2Cx_PeripheralControl
  *
  * @brief		-	This function Enable or Disable the given I2C Peripheral
  *
@@ -106,7 +106,7 @@ void I2Cx_PeriClkControl(I2Cx_RegDef_ty *pI2Cx, uint8_t Control)
  * @Note		-	none
  *
  */
-void I2C_PeripheralControl(I2Cx_RegDef_ty *pI2Cx, uint8_t Control)
+void I2Cx_PeripheralControl(I2Cx_RegDef_ty *pI2Cx, uint8_t Control)
 {
 	if(Control == ENABLE)
 	{
@@ -203,7 +203,7 @@ void I2Cx_Init(I2Cx_Handler_ty *pI2CHandler)
 /***********************************************************************************
  * 					 		I2C Flag Status Handler
  *
- * @fn: 		- 	I2C_GetFlagStatus
+ * @fn: 		- 	I2Cx_GetFlagStatus
  *
  * @brief		-	Function which returns status of a flag of Status Register (SR).
  *
@@ -215,7 +215,7 @@ void I2Cx_Init(I2Cx_Handler_ty *pI2CHandler)
  * @Note		-	TODO: SR2 (Status Register 2) Support.
  *
  */
-uint8_t I2C_GetFlagStatus(I2Cx_RegDef_ty *pI2Cx, uint8_t FlagName)
+uint8_t I2Cx_GetFlagStatus(I2Cx_RegDef_ty *pI2Cx, uint8_t FlagName)
 {
 	if(pI2Cx->SR1 & FlagName)
 	{
@@ -235,7 +235,7 @@ uint8_t I2C_GetFlagStatus(I2Cx_RegDef_ty *pI2Cx, uint8_t FlagName)
 /***********************************************************************************
  * 					 	I2C Master Send Data Handler
  *
- * @fn: 		- 	I2C_SendData_Master
+ * @fn: 		- 	I2Cx_SendData_Master
  *
  * @brief		-	This function handles data transmission of the given I2C
  * 					peripheral.
@@ -254,7 +254,7 @@ uint8_t I2C_GetFlagStatus(I2Cx_RegDef_ty *pI2Cx, uint8_t FlagName)
  * 					TODO: 10-bit slave address support
  *
  */
-void I2C_SendData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint8_t length, uint8_t SlaveAddr)
+void I2Cx_SendData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint8_t length, uint8_t SlaveAddr)
 {
 	//Generate START condition
 	{
@@ -263,7 +263,7 @@ void I2C_SendData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint8
 
 	//Confirm START generation is completed by checking SB flag in SR1
 	{
-		while(! I2C_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_SB));
+		while(! I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_SB));
 	}
 
 	//Send Address of target slave + R/W = 0
@@ -273,7 +273,7 @@ void I2C_SendData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint8
 
 	//Confirm address is sent by checking ADDR flag in SR1
 	{
-		while(! I2C_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_ADDR));
+		while(! I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_ADDR));
 	}
 
 	//Clear ADDR flag before
@@ -288,7 +288,7 @@ void I2C_SendData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint8
 	{
 		while(length > 0)
 		{
-			while(! I2C_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_TxE));		//wait till TxE is set
+			while(! I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_TxE));		//wait till TxE is set
 			pI2CHandler->pI2Cx->DR = *pTxBuffer;
 			pTxBuffer++;
 			length--;
@@ -297,8 +297,8 @@ void I2C_SendData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint8
 
 	//wait for TxE=1 and BTF=1 ie SR and DR empty
 	{
-		while(! I2C_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_TxE));
-		while(! I2C_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_BTF));
+		while(! I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_TxE));
+		while(! I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_BTF));
 	}
 
 	//Generate STOP Condition

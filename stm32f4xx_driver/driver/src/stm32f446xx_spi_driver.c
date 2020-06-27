@@ -354,7 +354,7 @@ uint8_t SPIx_ReceiveDataIT(SPIx_Handler_ty *pSPIhandler, uint8_t *pRxBuffer, uin
  *
  * @return		-	void
  *
- * @Note		-	TODO:
+ * @Note		-
  *
  */
 void SPIx_ReceiveData(SPIx_RegDef_ty *pSPIx, uint8_t *pRxBuffer, uint32_t Length)

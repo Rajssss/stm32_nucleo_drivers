@@ -156,14 +156,14 @@ void I2Cx_Init(I2Cx_Handler_ty *pI2CHandler);
 void I2Cx_DeInit(I2Cx_RegDef_ty *pI2Cx);
 
 
-//I2C Data Send and Receive handlers (TODO)
-void I2C_SendData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint8_t length, uint8_t SlaveAddr);
+//I2C Data Send and Receive handlers
+void I2Cx_SendData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint8_t length, uint8_t SlaveAddr);
 
 
 
 //Other handlers
-uint8_t I2C_GetFlagStatus(I2Cx_RegDef_ty *pI2Cx, uint8_t FlagName);
-void I2C_PeripheralControl(I2Cx_RegDef_ty *pI2Cx, uint8_t Control);
+uint8_t I2Cx_GetFlagStatus(I2Cx_RegDef_ty *pI2Cx, uint8_t FlagName);
+void I2Cx_PeripheralControl(I2Cx_RegDef_ty *pI2Cx, uint8_t Control);
 
 
 
