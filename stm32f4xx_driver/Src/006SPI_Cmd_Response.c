@@ -5,6 +5,10 @@
  *      Author: Rajssss@GitHub.com
  *      Description: SPI Command and Response based communication for
  *      STM32F446RE-Nucleo Board with Arduino Slave.
+ *
+ *      !!!!NOTE:
+ *      !!!!	This Example uses Semihosting.
+ *
  */
 
 #include <string.h>
