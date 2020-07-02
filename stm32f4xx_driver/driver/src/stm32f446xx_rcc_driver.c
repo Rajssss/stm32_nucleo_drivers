@@ -20,7 +20,7 @@
  *  Created on: June 22, 2020
  *      Author: Rajssss@GitHub.com
  *
- *      Description: Device Peripheral Access Layer Header for STM32F446xx.
+ *      Description: Reset and Clock Control Peripheral Access Layer Header for STM32F446xx.
  *
  *      This file contains:
  *          - Generic Function Definitions
@@ -28,6 +28,7 @@
 
 
 //includes
+#include "stm32f446xx_rcc_driver.h"
 #include "stm32f446xx.h"
 
 
