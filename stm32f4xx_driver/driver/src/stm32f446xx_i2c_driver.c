@@ -29,6 +29,7 @@
 
 //includes
 #include "stm32f446xx_i2c_driver.h"
+#include "stm32f446xx_rcc_driver.h"
 
 
 
