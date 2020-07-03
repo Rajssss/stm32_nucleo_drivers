@@ -79,7 +79,7 @@ uint32_t RCC_GetPeriCLK1_Value(void)
 
 
 	//Check AHB Prescalar Value
-	if(((RCC->CFGR >> 4) & 0xF) > 8)				//((RCC->CFGR >> 4) & 0xF) = AHB Prescaler value
+	if(((RCC->CFGR >> 4) & 0xF) < 8)				//((RCC->CFGR >> 4) & 0xF) = AHB Prescaler value
 	{
 		AHBP = 1;
 	}
