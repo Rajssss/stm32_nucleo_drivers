@@ -203,6 +203,42 @@ void I2Cx_Init(I2Cx_Handler_ty *pI2CHandler)
 
 
 
+/***********************************************************************************
+ * 					 	I2C Deinitialize Handler
+ *
+ * @fn: 		- 	I2Cx_DeInit
+ *
+ * @brief		-	This function resets all the registers associated with that I2C Peripheral,
+ * 					thus Deinitialize the given I2C Peripheral.
+ *
+ * @param[1]	-	Base Address of the I2C Peripheral
+ *
+ * @return		-	void
+ *
+ * @Note		-
+ *
+ */
+void I2Cx_DeInit(I2Cx_RegDef_ty *pI2Cx)
+{
+	if(pI2Cx == I2C1)
+	{
+		I2C1_PERI_RESET();
+	}
+	else if(pI2Cx == I2C2)
+	{
+		I2C2_PERI_RESET();
+	}
+	else
+	{
+		I2C3_PERI_RESET();
+	}
+
+}
+
+
+
+
+
 
 /***********************************************************************************
  * 					 		I2C Flag Status Handler
