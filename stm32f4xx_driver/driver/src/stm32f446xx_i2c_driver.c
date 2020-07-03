@@ -143,11 +143,14 @@ void I2Cx_Init(I2Cx_Handler_ty *pI2CHandler)
 	//Enable Peripheral Clock for I2Cx
 	I2Cx_PeriClkControl(pI2CHandler->pI2Cx, ENABLE);
 
+	//Enable Peripheral
+	I2Cx_PeripheralControl(pI2CHandler->pI2Cx, ENABLE);
+
 	//ACK Control
 	pI2CHandler->pI2Cx->CR1 |= (pI2CHandler->I2Cx_Config.I2C_ACKControl << I2C_CR1_ACK);
 
 	//Frequency
-	 pI2CHandler->pI2Cx->CR2 |= (RCC_GetPeriCLK1_Value() / 1000000U & 0x3F);
+	 pI2CHandler->pI2Cx->CR2 |= ((RCC_GetPeriCLK1_Value() / 1000000U) & 0x3F);
 
 
 	 //Primary Device Address
@@ -269,7 +272,7 @@ void I2Cx_SendData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint
 
 	//Send Address of target slave + R/W = 0
 	{
-		pI2CHandler->pI2Cx->DR = (((SlaveAddr << 1) & 0) );			//free LSB of address byte and put 0 for R/W = 0
+		pI2CHandler->pI2Cx->DR = (((SlaveAddr << 1) & (~(1))) );			//free LSB of address byte and put 0 for R/W = 0
 	}
 
 	//Confirm address is sent by checking ADDR flag in SR1
