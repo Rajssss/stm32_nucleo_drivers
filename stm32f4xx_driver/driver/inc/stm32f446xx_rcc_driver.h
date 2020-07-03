@@ -28,6 +28,7 @@
 #ifndef INC_STM32F446XX_RCC_DRIVER_H_
 #define INC_STM32F446XX_RCC_DRIVER_H_
 
+#include "stm32f446xx.h"
 //This returns the APB1 clock value
 uint32_t RCC_GetPeriCLK1_Value(void);
 
