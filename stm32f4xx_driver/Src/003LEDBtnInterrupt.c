@@ -64,8 +64,9 @@ int main(void)
 //ISR
 void EXTI15_10_IRQHandler(void)
 {
-
+	//Warning: its an terrible idea to put a delay inside an ISR, but for the sake of simplicity
 	delay();
+
 	GPIOx_IRQHandling(GPIO_PIN_NO_13);
 
 	//Toggle the USER LED
