@@ -33,6 +33,12 @@
 
 
 
+//Private Handlers
+static void I2Cx_ClearADDRFlag(I2Cx_Handler_ty *pI2CHandler);
+
+
+
+
 /***********************************************************************************
  * 					 	I2C Clock Control Handler
  *
@@ -247,7 +253,7 @@ void I2Cx_DeInit(I2Cx_RegDef_ty *pI2Cx)
  *
  * @brief		-	Function which returns status of a flag of Status Register (SR).
  *
- * @param[1]	-	Base Address of the SPI Peripheral
+ * @param[1]	-	Base Address of the I2C Peripheral
  * @param[2]	-	Flag value from @I2C_FLAG_BITS
  *
  * @return		-	uint8_t
@@ -265,6 +271,66 @@ uint8_t I2Cx_GetFlagStatus(I2Cx_RegDef_ty *pI2Cx, uint8_t FlagName)
 	{
 		return	RESET;
 	}
+}
+
+
+
+
+
+/***********************************************************************************
+ * 					 		I2C ACK Control Handler
+ *
+ * @fn: 		- 	I2Cx_Acking
+ *
+ * @brief		-	Function to Enable or Disable Auto Acknowledge Bit generation.
+ *
+ * @param[1]	-	Base Address of the I2C Peripheral
+ * @param[2]	-	Control: ENABLE or DISABLE
+ *
+ * @return		-	void
+ *
+ * @Note		-
+ *
+ */
+void I2Cx_ACKControl(I2Cx_RegDef_ty *pI2Cx, uint8_t Control)
+{
+	if(Control == I2C_ACK_ENABLE)
+	{
+		pI2Cx->CR1 |= (1 << I2C_CR1_ACK);
+	}
+	else
+	{
+		pI2Cx->CR1 &= ~(1 <<I2C_CR1_ACK);
+	}
+}
+
+
+
+
+
+
+/***********************************************************************************
+ * 					 		I2C Clear ADDR Flag Handler
+ *
+ * @fn: 		- 	I2Cx_ClearADDRFlag
+ *
+ * @brief		-	Function clears the ADDR Flag of SR1 Register.
+ *
+ * @param[1]	-	Base Address of the I2C Handler.
+ *
+ * @return		-	void
+ *
+ * @Note		-
+ *
+ */
+static void I2Cx_ClearADDRFlag(I2Cx_Handler_ty *pI2CHandler)
+{
+	__UNUSED uint32_t dummyRead;
+
+	//Read SR1 and SR2 to clear ADDR Flag
+	dummyRead = pI2CHandler->pI2Cx->SR1;
+	dummyRead = pI2CHandler->pI2Cx->SR2;
+
 }
 
 
@@ -308,7 +374,7 @@ void I2Cx_SendData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint
 
 	//Send Address of target slave + R/W = 0
 	{
-		pI2CHandler->pI2Cx->DR = (((SlaveAddr << 1) & (~(1))) );			//free LSB of address byte and put 0 for R/W = 0
+		pI2CHandler->pI2Cx->DR = ((SlaveAddr << 1) & (~(1)));			//free LSB of address byte and put 0 for R/W = 0
 	}
 
 	//Confirm address is sent by checking ADDR flag in SR1
@@ -316,13 +382,8 @@ void I2Cx_SendData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint
 		while(! I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_ADDR));
 	}
 
-	//Clear ADDR flag before
-	{
-		__UNUSED uint32_t dummyRead;				//Dummy read SR1 and SR2 to clear ADDR Flag
-
-		dummyRead = pI2CHandler->pI2Cx->SR1;
-		dummyRead = pI2CHandler->pI2Cx->SR2;
-	}
+	//clear ADDR Flag
+	I2Cx_ClearADDRFlag(pI2CHandler);
 
 	//Send Data
 	{
@@ -348,5 +409,100 @@ void I2Cx_SendData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint
 }
 
 
+
+
+
+
+
+/***********************************************************************************
+ * 					 	I2C Master Receive Data Handler
+ *
+ * @fn: 		- 	I2Cx_ReceiveData_Master
+ *
+ * @brief		-	This function handles data reception by the master of the given I2C
+ * 					peripheral.
+ *
+ * @param[1]	-	Pointer to the I2C Peripheral Handler
+ *
+ * @param[2]	-	Reception buffer
+ *
+ * @param[3]	-	Receiving data length
+ *
+ * @param[4]	-	Slave Address from which data is to be received.
+ *
+ * @return		-	void
+ *
+ * @Note		-	The Slave Address must be either 7-bit or 10-bit.
+ * 					TODO: 10-bit slave address support
+ *
+ */
+void I2Cx_ReceiveData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pRxBuffer, uint8_t length, uint8_t SlaveAddr)
+{
+	//Generate START
+	pI2CHandler->pI2Cx->CR1 |= (1 << I2C_CR1_START);
+
+	//Verify START generation
+	while(! I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_SB));
+
+	//Send Address + R/W = 1
+	pI2CHandler->pI2Cx->DR = ((SlaveAddr << 1) | 1);
+
+	//Confirm Address generation
+	while(! I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_ADDR));
+
+	//Clear ADDR flag
+	I2Cx_ClearADDRFlag(pI2CHandler);
+
+	//Read One Byte if Length=1
+	if(length == 1)
+	{
+		//Disable ACK
+		I2Cx_ACKControl(pI2CHandler->pI2Cx, DISABLE);
+
+		//Wait till RXNE=1
+		while(! I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_RxNE));
+
+		//Generate STOP
+		pI2CHandler->pI2Cx->CR1 |= (1 << I2C_CR1_STOP);
+
+		//Read Data from DR
+		*pRxBuffer = pI2CHandler->pI2Cx->DR;
+
+	}
+
+	//Read More then One Byte if Length>1
+	else
+	{
+		for(uint32_t var=length; var>0; var--)
+		{
+			//Wait till RXNE=1
+			while(! I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_RxNE));
+
+			//if last 2 bytes remaining
+			if(var == 2)
+			{
+				//Disable ACK
+				I2Cx_ACKControl(pI2CHandler->pI2Cx, DISABLE);
+
+				//Generate STOP
+				pI2CHandler->pI2Cx->CR1 |= (1 << I2C_CR1_STOP);
+			}
+
+			//Read from DR
+			*pRxBuffer = pI2CHandler->pI2Cx->DR;
+
+			//Increment buffer address
+			pRxBuffer++;
+
+		}
+	}
+
+	//Restore ACK Config
+	if(pI2CHandler->I2Cx_Config.I2C_ACKControl == I2C_ACK_ENABLE)
+	{
+		I2Cx_ACKControl(pI2CHandler->pI2Cx, ENABLE);
+	}
+
+}
 
 
