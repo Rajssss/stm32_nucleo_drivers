@@ -358,6 +358,7 @@ static void I2Cx_ClearADDRFlag(I2Cx_Handler_ty *pI2CHandler)
  *
  * @Note		-	The Slave Address must be either 7-bit or 10-bit.
  * 					TODO: 10-bit slave address support
+ * 					TODO: Continuous data write to slave
  *
  */
 void I2Cx_SendData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint8_t length, uint8_t SlaveAddr)
@@ -434,6 +435,7 @@ void I2Cx_SendData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint
  *
  * @Note		-	The Slave Address must be either 7-bit or 10-bit.
  * 					TODO: 10-bit slave address support
+ * 					TODO: Continuous data read from slave
  *
  */
 void I2Cx_ReceiveData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pRxBuffer, uint8_t length, uint8_t SlaveAddr)
