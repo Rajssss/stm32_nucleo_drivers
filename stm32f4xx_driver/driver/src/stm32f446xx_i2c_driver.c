@@ -361,7 +361,7 @@ static void I2Cx_ClearADDRFlag(I2Cx_Handler_ty *pI2CHandler)
  * 					TODO: Continuous data write to slave
  *
  */
-void I2Cx_SendData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint8_t length, uint8_t SlaveAddr)
+void I2Cx_SendData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint8_t length, uint8_t SlaveAddr, uint8_t SR)
 {
 	//Generate START condition
 	{
@@ -405,6 +405,7 @@ void I2Cx_SendData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint
 
 	//Generate STOP Condition
 	{
+		if(SR == I2C_SR_DISABLE)
 		pI2CHandler->pI2Cx->CR1 |= (1 << I2C_CR1_STOP);
 	}
 }
@@ -438,7 +439,7 @@ void I2Cx_SendData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint
  * 					TODO: Continuous data read from slave
  *
  */
-void I2Cx_ReceiveData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pRxBuffer, uint8_t length, uint8_t SlaveAddr)
+void I2Cx_ReceiveData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pRxBuffer, uint8_t length, uint8_t SlaveAddr, uint8_t SR)
 {
 	//Generate START
 	pI2CHandler->pI2Cx->CR1 |= (1 << I2C_CR1_START);
@@ -465,6 +466,7 @@ void I2Cx_ReceiveData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pRxBuffer, u
 		while(! I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_RxNE));
 
 		//Generate STOP
+		if(SR == I2C_SR_DISABLE)
 		pI2CHandler->pI2Cx->CR1 |= (1 << I2C_CR1_STOP);
 
 		//Read Data from DR
@@ -475,6 +477,9 @@ void I2Cx_ReceiveData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pRxBuffer, u
 	//Read More then One Byte if Length>1
 	else
 	{
+		//Clear ADDR flag
+		I2Cx_ClearADDRFlag(pI2CHandler);
+
 		for(uint32_t var=length; var>0; var--)
 		{
 			//Wait till RXNE=1
@@ -487,6 +492,7 @@ void I2Cx_ReceiveData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pRxBuffer, u
 				I2Cx_ACKControl(pI2CHandler->pI2Cx, DISABLE);
 
 				//Generate STOP
+				if(SR == I2C_SR_DISABLE)
 				pI2CHandler->pI2Cx->CR1 |= (1 << I2C_CR1_STOP);
 			}
 
