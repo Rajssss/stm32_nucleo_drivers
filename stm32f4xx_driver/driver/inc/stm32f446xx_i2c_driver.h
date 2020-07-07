@@ -48,6 +48,7 @@ typedef struct
 	uint8_t 		I2C_DeviceAddress_Primary;		//Primary Device Own Address
 	uint8_t 		I2C_DeviceAddress_Secondary;	//Secondary Device Own Address
 	uint8_t 		I2C_ACKControl;					//@ACKControl
+	uint8_t			I2C_RepeatedSTART_Config;		//@SR
 	uint16_t		I2C_FMDutyCycle;				//@DutyCycle
 
 }I2Cx_Config_ty;
@@ -110,6 +111,13 @@ typedef struct
 #define 	I2C_DeviceAddr_Dual			1
 
 
+
+
+/*****************************************************************************************
+ * I2Cx  Repeated Start Configs. @SR
+ *****************************************************************************************/
+#define 	I2C_SR_ENABLE				1
+#define 	I2C_SR_DISABLE				0
 
 
 
