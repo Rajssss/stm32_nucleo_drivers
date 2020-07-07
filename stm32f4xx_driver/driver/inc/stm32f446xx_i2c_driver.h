@@ -111,6 +111,12 @@ typedef struct
 
 
 
+/*****************************************************************************************
+ * I2Cx  Dual Device Address Configs. @Dual_Device_Addr
+ *****************************************************************************************/
+#define 	I2C_SR_DISABLE				0
+#define 	I2C_SR_ENABLE				1
+
 
 
 /*****************************************************************************************
@@ -157,8 +163,8 @@ void I2Cx_DeInit(I2Cx_RegDef_ty *pI2Cx);
 
 
 //I2C Data Send and Receive handlers
-void I2Cx_SendData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint8_t length, uint8_t SlaveAddr);
-void I2Cx_ReceiveData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint8_t length, uint8_t SlaveAddr);
+void I2Cx_SendData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint8_t length, uint8_t SlaveAddr, uint8_t SR);
+void I2Cx_ReceiveData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint8_t length, uint8_t SlaveAddr, uint8_t SR);
 
 
 
