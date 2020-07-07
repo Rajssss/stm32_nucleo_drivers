@@ -452,14 +452,14 @@ void I2Cx_ReceiveData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pRxBuffer, u
 	//Confirm Address generation
 	while(! I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_ADDR));
 
-	//Clear ADDR flag
-	I2Cx_ClearADDRFlag(pI2CHandler);
-
 	//Read One Byte if Length=1
 	if(length == 1)
 	{
 		//Disable ACK
 		I2Cx_ACKControl(pI2CHandler->pI2Cx, DISABLE);
+
+		//Clear ADDR flag
+		I2Cx_ClearADDRFlag(pI2CHandler);
 
 		//Wait till RXNE=1
 		while(! I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_RxNE));
