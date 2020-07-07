@@ -135,7 +135,7 @@ void EXTI15_10_IRQHandler(void)
 	GPIOx_ToggleOutputPin(GPIOA, GPIO_PIN_NO_5);
 
 	//Initiate Data transfer
-	I2Cx_SendData_Master(&I2C2Handler, user_data, strlen((char *)user_data), SLAVE_ADDR);
+	I2Cx_SendData_Master(&I2C2Handler, user_data, strlen((char *)user_data), SLAVE_ADDR, I2C_SR_ENABLE);
 }
 
 
