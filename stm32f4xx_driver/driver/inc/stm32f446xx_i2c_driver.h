@@ -61,6 +61,14 @@ typedef struct
 {
 	I2Cx_RegDef_ty *pI2Cx;
 	I2Cx_Config_ty I2Cx_Config;
+	uint8_t *pTxBuffer;						//Transmission buffer pointer
+	uint8_t *pRxBuffer;						//Reception buffer pointer
+	uint32_t TxLength;						//Transmission length
+	uint32_t RxLength;						//Reception length
+	uint8_t TxRxState;						//Transmission/Reception State @I2C_STATES
+	uint8_t	Device_Slave_ADDR;				//Device/Slave address
+	uint32_t RxSize;						//Receiving data size
+	uint8_t SR;								//Repeated START Config @I2C_SR_CONFIG
 
 }I2Cx_Handler_ty;
 
@@ -102,7 +110,6 @@ typedef struct
 
 
 
-
 /*****************************************************************************************
  * I2Cx  Dual Device Address Configs. @Dual_Device_Addr
  *****************************************************************************************/
@@ -112,11 +119,19 @@ typedef struct
 
 
 /*****************************************************************************************
- * I2Cx  Dual Device Address Configs. @Dual_Device_Addr
+ * I2Cx Repeated START Configs. @I2C_SR_CONFIG
  *****************************************************************************************/
 #define 	I2C_SR_DISABLE				0
 #define 	I2C_SR_ENABLE				1
 
+
+
+/*****************************************************************************************
+ * I2Cx  Application States. @I2C_STATES
+ *****************************************************************************************/
+#define 	I2C_READY				0
+#define 	I2C_BUSY_RX				1
+#define 	I2C_BUSY_TX				2
 
 
 /*****************************************************************************************
@@ -165,6 +180,8 @@ void I2Cx_DeInit(I2Cx_RegDef_ty *pI2Cx);
 //I2C Data Send and Receive handlers
 void I2Cx_SendData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint8_t length, uint8_t SlaveAddr, uint8_t SR);
 void I2Cx_ReceiveData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint8_t length, uint8_t SlaveAddr, uint8_t SR);
+uint8_t I2Cx_SendData_MasterIT(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint8_t length, uint8_t SlaveAddr, uint8_t SR);
+uint8_t I2Cx_ReceiveData_MasterIT(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint8_t length, uint8_t SlaveAddr, uint8_t SR);
 
 
 
