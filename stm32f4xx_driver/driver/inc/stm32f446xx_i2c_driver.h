@@ -184,6 +184,13 @@ uint8_t I2Cx_SendData_MasterIT(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer,
 uint8_t I2Cx_ReceiveData_MasterIT(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint8_t length, uint8_t SlaveAddr, uint8_t SR);
 
 
+//I2C IRQ and ISR Handlers
+void I2C_IRQInterruptConfig(uint8_t IRQNumber, uint8_t Control);
+void I2C_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority);
+void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandler);
+void I2C_ER_IRQHandling(I2C_Handle_t *pI2CHandler);
+
+
 
 //Other handlers
 uint8_t I2Cx_GetFlagStatus(I2Cx_RegDef_ty *pI2Cx, uint8_t FlagName);
