@@ -436,6 +436,8 @@
 #define 	IRQ_NO_I2C1_ER					33
 #define 	IRQ_NO_I2C2_EV					34
 #define 	IRQ_NO_I2C2_ER					35
+#define 	IRQ_NO_I2C3_EV					72
+#define 	IRQ_NO_I2C3_ER					73
 
 #define 	IRQ_NO_USART1					37
 #define 	IRQ_NO_USART2					38
