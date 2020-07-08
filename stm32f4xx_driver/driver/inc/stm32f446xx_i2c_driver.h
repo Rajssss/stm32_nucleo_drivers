@@ -185,10 +185,10 @@ uint8_t I2Cx_ReceiveData_MasterIT(I2Cx_Handler_ty *pI2CHandler, uint8_t *pRxBuff
 
 
 //I2C IRQ and ISR Handlers
-void I2C_IRQInterruptConfig(uint8_t IRQNumber, uint8_t Control);
-void I2C_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority);
-void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandler);
-void I2C_ER_IRQHandling(I2C_Handle_t *pI2CHandler);
+void I2Cx_IRQInterruptConfig(uint8_t IRQNumber, uint8_t Control);
+void I2Cx_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority);
+void I2Cx_EV_IRQHandling(I2Cx_Handler_ty *pI2CHandler);
+void I2Cx_ER_IRQHandling(I2Cx_Handler_ty *pI2CHandler);
 
 
 
