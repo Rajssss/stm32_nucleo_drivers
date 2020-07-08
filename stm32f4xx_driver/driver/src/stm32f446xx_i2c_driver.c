@@ -354,6 +354,8 @@ static void I2Cx_ClearADDRFlag(I2Cx_Handler_ty *pI2CHandler)
  *
  * @param[4]	-	Slave Address to which data is to be sent.
  *
+ * @param[5]	-	Repeated START Configuration, I2C_SR_ENABLE/I2C_SR_DISABLE
+ *
  * @return		-	void
  *
  * @Note		-	The Slave Address must be either 7-bit or 10-bit.
@@ -431,6 +433,8 @@ void I2Cx_SendData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint
  * @param[3]	-	Receiving data length
  *
  * @param[4]	-	Slave Address from which data is to be received.
+ *
+ * @param[5]	-	Repeated START Configuration, I2C_SR_ENABLE/I2C_SR_DISABLE
  *
  * @return		-	void
  *
@@ -512,5 +516,63 @@ void I2Cx_ReceiveData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pRxBuffer, u
 	}
 
 }
+
+
+
+
+
+
+/***********************************************************************************
+ * 					Interrupt based I2C Master Transmission Data Handler
+ *
+ * @fn: 		- 	I2Cx_SendData_MasterIT
+ *
+ * @brief		-	This function handles data reception by the master of the given I2C
+ * 					peripheral based on interrupt.
+ *
+ * @param[1]	-	Pointer to the I2C Peripheral Handler
+ *
+ * @param[2]	-	Transmission buffer
+ *
+ * @param[3]	-	Transmitting  data length
+ *
+ * @param[4]	-	Slave Address to which data is to be sent
+ *
+ * @param[5]	-	Repeated START Configuration, I2C_SR_ENABLE/I2C_SR_DISABLE
+ *
+ * @return		-	uint8_t
+ *
+ * @Note		-	The Slave Address must be either 7-bit or 10-bit.
+ * 					TODO: 10-bit slave address support
+ * 					TODO: Continuous data read from slave
+ *
+ */
+uint8_t I2Cx_SendData_MasterIT(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint8_t length, uint8_t SlaveAddr, uint8_t SR)
+{
+	if((pI2CHandler->TxRxState != I2C_BUSY_TX) && (pI2CHandler->TxRxState != I2C_BUSY_RX))
+	{
+		pI2CHandler->pTxBuffer = pTxBuffer;
+		pI2CHandler->TxLength = length;
+		pI2CHandler->TxRxState = I2C_BUSY_TX;
+		pI2CHandler->Device_Slave_ADDR = SlaveAddr;
+		pI2CHandler->SR = SR;
+
+		//Generate START
+		pI2CHandler->pI2Cx->CR1 |= (1 << I2C_CR1_START);
+
+		//Enable ITBUFEN (Buffer Interrupt Enable) Bit in CR2
+		pI2CHandler->pI2Cx->CR2 |= (1 << I2C_CR2_ITBUFEN);
+
+		//Enable ITEVFEN (Event Interrupt Enable) Bit in CR2
+		pI2CHandler->pI2Cx->CR2 |= (1 << I2C_CR2_ITEVTEN);
+
+		//Enable ITERREN (Error Interrupt Enable) Bit in CR2
+		pI2CHandler->pI2Cx->CR2 |= (1 << I2C_CR2_ITERREN);
+
+	}
+
+	return (pI2CHandler->TxRxState);
+}
+
 
 
