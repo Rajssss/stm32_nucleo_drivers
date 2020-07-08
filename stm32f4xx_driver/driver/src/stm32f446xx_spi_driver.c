@@ -512,13 +512,13 @@ void SPIx_SSOEConfig(SPIx_RegDef_ty *pSPIx, uint8_t Control)
 
 
 /***********************************************************************************
- * 					 	SPIx Peripheral SSOE Config Handler
+ * 					 	SPIx Peripheral Interrupt Handler
  *
  * @fn: 		- 	SPIx_SSOEConfig
  *
- * @brief		-	This function Interrupt Requests configurations of SPIx Peripheral.
+ * @brief		-	This function configures Interrupt Requests configurations of SPIx Peripheral.
  *
- * @param[1]	-	Reference of the Handler of SPI Peripheral
+ * @param[1]	-	pointer to the Handler of SPI Peripheral
  *
  * @return		-	void
  *
@@ -771,7 +771,7 @@ void SPIx_ClearOVRFlag(SPIx_RegDef_ty *pSPIx)
  *
  * @return		-	void
  *
- * @Note		-	This is a weak implementation, and should be implemented is user
+ * @Note		-	This is a weak implementation, and should be implemented in user
  * 					application
  *
  */
