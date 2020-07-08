@@ -527,7 +527,7 @@ void I2Cx_ReceiveData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pRxBuffer, u
  *
  * @fn: 		- 	I2Cx_SendData_MasterIT
  *
- * @brief		-	This function handles data reception by the master of the given I2C
+ * @brief		-	This function handles data transmission by the master of the given I2C
  * 					peripheral based on interrupt.
  *
  * @param[1]	-	Pointer to the I2C Peripheral Handler
@@ -573,6 +573,5 @@ uint8_t I2Cx_SendData_MasterIT(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer,
 
 	return (pI2CHandler->TxRxState);
 }
-
 
 
