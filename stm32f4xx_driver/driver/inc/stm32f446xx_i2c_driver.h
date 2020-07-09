@@ -137,11 +137,22 @@ typedef struct
 
 
 /*****************************************************************************************
- * I2Cx  Application Event macros.
+ * I2Cx  Application Event and Error macros.
  *****************************************************************************************/
 #define 	I2C_EV_TX_CMPLT			0
 #define 	I2C_EV_RX_CMPLT			1
 #define 	I2C_EV_STOP				2
+
+#define 	I2C_ER_BERR 			3
+#define 	I2C_ER_ARLO 			4
+#define 	I2C_ER_AF 				5
+#define 	I2C_ER_OVR 				6
+#define 	I2C_ER_PECERR 			7
+#define 	I2C_ER_TIMEOUT 			8
+#define 	I2C_ER_SMBALERT 		9
+
+
+
 
 /*****************************************************************************************
  * I2Cx Status Flags macros for bit-masking. @I2C_FLAG_BITS
