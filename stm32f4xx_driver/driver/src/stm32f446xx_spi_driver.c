@@ -763,7 +763,8 @@ void SPIx_ClearOVRFlag(SPIx_RegDef_ty *pSPIx)
  *
  * @fn: 		- 	SPIx_ApplicationEventCallback
  *
- * @brief		-	This function clears the overrun flag of SPIx Peripheral.
+ * @brief		-	This function handles the callback after an application event
+ * 					is occurred.
  *
  * @param[1]	-	Pointer to SPI Handler
  *
