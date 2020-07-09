@@ -938,7 +938,7 @@ void I2Cx_EV_IRQHandling(I2Cx_Handler_ty *pI2CHandler)
 		}
 	}
 
-	//Event due to TxE = 1, applicable for both master/slave mode
+	//Event due to RxNE = 1, applicable for both master/slave mode
 	else if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITEVTEN)) && pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITBUFEN)
 															   && (I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_RxNE)))
 	{
@@ -953,6 +953,107 @@ void I2Cx_EV_IRQHandling(I2Cx_Handler_ty *pI2CHandler)
 		}
 	}
 }
+
+
+
+
+
+
+/***********************************************************************************
+ * 					 	I2C Error Interrupt Handler
+ *
+ * @fn: 		- 	I2Cx_ER_IRQHandling
+ *
+ * @brief		-	This function handles the interrupts caused by various errors
+ * 					given below.
+ *
+ * @param[1]	-	Pointer I2C handler
+ *
+ * @return		-	void
+ *
+ * @Note		-	This interrupt is generated when:
+ *										 	BERR = 1
+ *										 	ARLO = 1
+ *										 	AF = 1
+ *										 	OVR = 1
+ *										 	PECERR = 1
+ *										 	TIMEOUT = 1
+ *										 	SMBALERT = 1
+ *
+ */
+void I2Cx_ER_IRQHandling(I2Cx_Handler_ty *pI2CHandler)
+{
+	//Bus Error
+	if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITERREN)) && (I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_BERR)))
+	{
+		//clear BEER flag
+		pI2CHandler->pI2Cx->SR1 &= ~(1 << I2C_SR1_BERR);
+
+		//Notify the application
+		I2Cx_ApplicationEventCallback(pI2CHandler, I2C_ER_BEER);
+	}
+
+	//Arbitration loss (Master)
+	else if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITERREN)) && (I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_ARLO)))
+	{
+		//clear BEER flag
+		pI2CHandler->pI2Cx->SR1 &= ~(1 << I2C_SR1_ARLO);
+
+		//Notify the application
+		I2Cx_ApplicationEventCallback(pI2CHandler, I2C_ER_ARLO);
+	}
+
+	//Acknowledge failure
+	else if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITERREN)) && (I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_AF)))
+	{
+		//clear BEER flag
+		pI2CHandler->pI2Cx->SR1 &= ~(1 << I2C_SR1_AF);
+
+		//Notify the application
+		I2Cx_ApplicationEventCallback(pI2CHandler, I2C_ER_AF);
+	}
+
+	//Overrun/Underrun
+	else if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITERREN)) && (I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_OVR)))
+	{
+		//clear BEER flag
+		pI2CHandler->pI2Cx->SR1 &= ~(1 << I2C_SR1_OVR);
+
+		//Notify the application
+		I2Cx_ApplicationEventCallback(pI2CHandler, I2C_ER_OVR);
+	}
+
+	//PEC error
+	else if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITERREN)) && (I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_PECERR)))
+	{
+		//clear BEER flag
+		pI2CHandler->pI2Cx->SR1 &= ~(1 << I2C_SR1_PECERR);
+
+		//Notify the application
+		I2Cx_ApplicationEventCallback(pI2CHandler, I2C_ER_PECERR);
+	}
+
+	//Timeout/Tlow error
+	else if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITERREN)) && (I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_TIMEOUT)))
+	{
+		//clear BEER flag
+		pI2CHandler->pI2Cx->SR1 &= ~(1 << I2C_SR1_TIMEOUT);
+
+		//Notify the application
+		I2Cx_ApplicationEventCallback(pI2CHandler, I2C_ER_TIMEOUT);
+	}
+
+	//SMBus Alert
+	else if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITERREN)) && (I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_SMBALERT)))
+	{
+		//clear BEER flag
+		pI2CHandler->pI2Cx->SR1 &= ~(1 << I2C_SR1_SMBALERT);
+
+		//Notify the application
+		I2Cx_ApplicationEventCallback(pI2CHandler, I2C_ER_SMBALERT);
+	}
+}
+
 
 
 
