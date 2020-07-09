@@ -677,7 +677,7 @@ uint8_t I2Cx_ReceiveData_MasterIT(I2Cx_Handler_ty *pI2CHandler, uint8_t *pRxBuff
  *
  *
  */
-void I2Cx_Close_INTRReceiveData_(I2Cx_Handler_ty *pI2CHandler)
+void I2Cx_Close_INTRReceiveData(I2Cx_Handler_ty *pI2CHandler)
 {
 	//Disable ITBUFEN
 	pI2CHandler->pI2Cx->CR2 &= ~(1 << I2C_CR2_ITBUFEN);
@@ -813,7 +813,7 @@ static void I2Cx_MasterHandle_RXNEInterrupt(I2Cx_Handler_ty *pI2CHandler)
 		pI2CHandler->pI2Cx->CR1 |= (1 << I2C_CR1_STOP);
 
 		//Close Rx
-		I2Cx_Close_INTRReceiveData_(pI2CHandler);
+		I2Cx_Close_INTRReceiveData(pI2CHandler);
 
 		//Notify the application
 		I2Cx_ApplicationEventCallback(pI2CHandler, I2C_EV_RX_CMPLT);
