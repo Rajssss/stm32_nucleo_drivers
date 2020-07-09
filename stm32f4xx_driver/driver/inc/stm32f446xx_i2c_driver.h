@@ -218,7 +218,7 @@ __WEAK void I2Cx_ApplicationEventCallback(I2Cx_Handler_ty *pI2CHandler, uint8_t 
 
 
 //Other handlers
-uint8_t I2Cx_GetFlagStatus(I2Cx_RegDef_ty *pI2Cx, uint8_t FlagName);
+uint8_t I2Cx_GetFlagStatus(I2Cx_RegDef_ty *pI2Cx, uint32_t FlagName);
 void I2Cx_PeripheralControl(I2Cx_RegDef_ty *pI2Cx, uint8_t Control);
 void I2Cx_ACKControl(I2Cx_RegDef_ty *pI2Cx, uint8_t Control);
 void I2Cx_Close_INTRSendData(I2Cx_Handler_ty *pI2CHandler);
