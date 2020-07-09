@@ -830,4 +830,11 @@ typedef struct
 
 
 
+//Reverse Include
+#include "stm32f446xx_gpio_driver.h"
+#include "stm32f446xx_rcc_driver.h"
+#include "stm32f446xx_i2c_driver.h"
+#include "stm32f446xx_spi_driver.h"
+
+
 #endif /* INC_STM32F446XX_H_ */
