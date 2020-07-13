@@ -971,19 +971,19 @@ void I2Cx_EV_IRQHandling(I2Cx_Handler_ty *pI2CHandler)
 	 * 	   	   	   	   	   	  2. 2nd Byte is sent of address is sent and ACK is received (10-bit address/Master mode)
 	 * 	   	   	   	   	   	  3. Address is matched with own device address (Slave mode)
 	 */
-	else if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITEVTEN)) && (I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_ADDR)))
+	if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITEVTEN)) && (I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_ADDR)))
 	{
 		I2Cx_ClearADDRFlag(pI2CHandler);
 	}
 
 	//Event due to ADD10 = 1, applicable only in master mode
-	else if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITEVTEN)) && (I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_ADD10)))
+	if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITEVTEN)) && (I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_ADD10)))
 	{
 		//ADD10 is set TODO
 	}
 
 	//Event due to BTF = 1
-	else if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITEVTEN)) && (I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_BTF)))
+	if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITEVTEN)) && (I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_BTF)))
 	{
 		if(pI2CHandler->TxRxState == I2C_BUSY_TX)
 		{
@@ -1014,7 +1014,7 @@ void I2Cx_EV_IRQHandling(I2Cx_Handler_ty *pI2CHandler)
 	}
 
 	//Event due to STOPF = 1 (STOP is detected), applicable only in slave mode
-	else if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITEVTEN)) && (I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_STOPF)))
+	if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITEVTEN)) && (I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_STOPF)))
 	{
 		//clear STOPF, Read SR1 (already done above) then write to CR1
 		pI2CHandler->pI2Cx->CR1 |= 0x0000;
@@ -1024,7 +1024,7 @@ void I2Cx_EV_IRQHandling(I2Cx_Handler_ty *pI2CHandler)
 	}
 
 	//Event due to TxE = 1, applicable for both master/slave mode
-	else if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITEVTEN)) && pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITBUFEN)
+	if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITEVTEN)) && pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITBUFEN)
 															   && (I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_TxE)))
 	{
 		//check whether I2Cx is in master mode
@@ -1039,7 +1039,7 @@ void I2Cx_EV_IRQHandling(I2Cx_Handler_ty *pI2CHandler)
 	}
 
 	//Event due to RxNE = 1, applicable for both master/slave mode
-	else if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITEVTEN)) && pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITBUFEN)
+	if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITEVTEN)) && pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITBUFEN)
 															   && (I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_RxNE)))
 	{
 		//check I2Cx is in master mode
