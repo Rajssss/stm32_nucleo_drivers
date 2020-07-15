@@ -857,10 +857,10 @@ static void I2Cx_MasterHandle_TXEInterrupt(I2Cx_Handler_ty *pI2CHandler)
 		pI2CHandler->pI2Cx->DR = *(pI2CHandler->pTxBuffer);
 
 		//decrement Tx length
-		(pI2CHandler->TxLength)--;
+		pI2CHandler->TxLength--;
 
 		//Increment Tx pointer
-		(pI2CHandler->pTxBuffer)++;
+		pI2CHandler->pTxBuffer++;
 	}
 }
 
@@ -889,10 +889,10 @@ static void I2Cx_MasterHandle_RXNEInterrupt(I2Cx_Handler_ty *pI2CHandler)
 	if(pI2CHandler->RxLength == 1)
 	{
 		pI2CHandler->pI2Cx->DR = *(pI2CHandler->pRxBuffer);
-		(pI2CHandler->RxLength)--;
+		pI2CHandler->RxLength--;
 	}
 
-	else if(pI2CHandler->RxLength > 1)
+	if(pI2CHandler->RxLength > 1)
 	{
 		if(pI2CHandler->RxLength == 2)
 		{
@@ -906,7 +906,7 @@ static void I2Cx_MasterHandle_RXNEInterrupt(I2Cx_Handler_ty *pI2CHandler)
 
 	}
 
-	else
+	if(pI2CHandler->RxLength == 0)
 	{
 		if(pI2CHandler->SR == I2C_SR_DISABLE)
 		//generate STOP
@@ -1008,7 +1008,7 @@ void I2Cx_EV_IRQHandling(I2Cx_Handler_ty *pI2CHandler)
 		}
 		/*else if(pI2CHandler->TxRxState == I2C_BUSY_RX)
 		{
-			if I2C is busy in Rx then its not in out hand to generate STOP
+			if I2C is busy in Rx then its not in our hand to generate STOP
 
 		}*/
 	}
@@ -1024,7 +1024,7 @@ void I2Cx_EV_IRQHandling(I2Cx_Handler_ty *pI2CHandler)
 	}
 
 	//Event due to TxE = 1, applicable for both master/slave mode
-	if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITEVTEN)) && pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITBUFEN)
+	if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITEVTEN)) && (pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITBUFEN))
 															   && (I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_TxE)))
 	{
 		//check whether I2Cx is in master mode
