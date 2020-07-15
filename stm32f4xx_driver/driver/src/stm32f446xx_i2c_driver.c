@@ -886,13 +886,13 @@ static void I2Cx_MasterHandle_TXEInterrupt(I2Cx_Handler_ty *pI2CHandler)
  */
 static void I2Cx_MasterHandle_RXNEInterrupt(I2Cx_Handler_ty *pI2CHandler)
 {
-	if(pI2CHandler->RxLength == 1)
+	if(pI2CHandler->RxSize == 1)
 	{
-		pI2CHandler->pI2Cx->DR = *(pI2CHandler->pRxBuffer);
+		*(pI2CHandler->pRxBuffer) = pI2CHandler->pI2Cx->DR;
 		pI2CHandler->RxLength--;
 	}
 
-	if(pI2CHandler->RxLength > 1)
+	if(pI2CHandler->RxSize > 1)
 	{
 		if(pI2CHandler->RxLength == 2)
 		{
@@ -900,7 +900,7 @@ static void I2Cx_MasterHandle_RXNEInterrupt(I2Cx_Handler_ty *pI2CHandler)
 		}
 
 		//Read from DR
-		pI2CHandler->pI2Cx->DR = *(pI2CHandler->pRxBuffer);
+		*(pI2CHandler->pRxBuffer) = pI2CHandler->pI2Cx->DR;
 		pI2CHandler->pRxBuffer++;
 		pI2CHandler->RxLength--;
 
