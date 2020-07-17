@@ -1026,6 +1026,7 @@ void I2Cx_EV_IRQHandling(I2Cx_Handler_ty *pI2CHandler)
 
 	//Event due to TxE = 1, applicable for both master/slave mode
 	if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITEVTEN)) && (pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITBUFEN))
+
 															   && (I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_TxE)))
 	{
 		//check whether I2Cx is in master mode
