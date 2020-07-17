@@ -638,6 +638,7 @@ uint8_t I2Cx_ReceiveData_MasterIT(I2Cx_Handler_ty *pI2CHandler, uint8_t *pRxBuff
 	{
 		pI2CHandler->pRxBuffer = pRxBuffer;
 		pI2CHandler->RxLength = length;
+		pI2CHandler->RxSize = length;
 		pI2CHandler->TxRxState = I2C_BUSY_RX;
 		pI2CHandler->Device_Slave_ADDR = SlaveAddr;
 		pI2CHandler->SR = SR;
