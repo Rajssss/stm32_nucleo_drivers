@@ -551,6 +551,54 @@ void I2Cx_ReceiveData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pRxBuffer, u
 
 
 
+/***********************************************************************************
+ * 					 		I2C Slave Transmission Handler
+ *
+ * @fn: 		- 	I2Cx_SendData_Slave
+ *
+ * @brief		-	This function handles data transmission by the slave of the
+ * 					given I2C peripheral.
+ *
+ * @param[1]	-	Base Address of the I2C peripheral.
+ *
+ * @param[1]	-	8-bit data to be sent.
+ *
+ * @return		-	void
+ *
+ * @Note		-
+ *
+ */
+void I2Cx_SendData_Slave(I2Cx_RegDef_ty *pI2Cx, uint8_t data)
+{
+	pI2Cx->DR = data;		//put data in DR Register
+}
+
+
+
+
+/***********************************************************************************
+ * 					 		I2C Slave Reception Handler
+ *
+ * @fn: 		- 	I2Cx_ReceiveData_Slave
+ *
+ * @brief		-	This function handles data reception by the slave of the
+ * 					given I2C peripheral.
+ *
+ * @param[1]	-	Base Address of the I2C peripheral.
+ *
+ * @return		-	uint8_t
+ *
+ * @Note		-
+ *
+ */
+uint8_t I2Cx_ReceiveData_Slave(I2Cx_RegDef_ty *pI2Cx)
+{
+	return (uint8_t)pI2Cx->DR;				//return contents of DR
+}
+
+
+
+
 
 /***********************************************************************************
  * 					Interrupt based I2C Master Transmission Data Handler
@@ -978,10 +1026,10 @@ void I2Cx_EV_IRQHandling(I2Cx_Handler_ty *pI2CHandler)
 	}
 
 	//Event due to ADD10 = 1, applicable only in master mode
-	if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITEVTEN)) && (I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_ADD10)))
+	/*if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITEVTEN)) && (I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_ADD10)))
 	{
 		//ADD10 is set TODO
-	}
+	}*/
 
 	//Event due to BTF = 1
 	if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITEVTEN)) && (I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_BTF)))
@@ -1037,10 +1085,19 @@ void I2Cx_EV_IRQHandling(I2Cx_Handler_ty *pI2CHandler)
 				I2Cx_MasterHandle_TXEInterrupt(pI2CHandler);
 			}
 		}
+		else
+		{
+			//confirm slave is in Tx mode
+			if(pI2CHandler->pI2Cx->SR2 & (1 << I2C_FLAG_TRA))
+			{
+				I2Cx_ApplicationEventCallback(pI2CHandler, I2C_EV_DATA_REQ);
+			}
+
+		}
 	}
 
 	//Event due to RxNE = 1, applicable for both master/slave mode
-	if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITEVTEN)) && pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITBUFEN)
+	if((pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITEVTEN)) && (pI2CHandler->pI2Cx->CR2 & (1 << I2C_CR2_ITBUFEN))
 															   && (I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_RxNE)))
 	{
 		//check I2Cx is in master mode
@@ -1050,6 +1107,13 @@ void I2Cx_EV_IRQHandling(I2Cx_Handler_ty *pI2CHandler)
 			if(I2Cx_GetFlagStatus(pI2CHandler->pI2Cx, I2C_FLAG_RxNE))
 			{
 				I2Cx_MasterHandle_RXNEInterrupt(pI2CHandler);
+			}
+		}
+		else
+		{
+			if(pI2CHandler->pI2Cx->SR2 & (1 << I2C_FLAG_TRA))
+			{
+				I2Cx_ApplicationEventCallback(pI2CHandler, I2C_EV_DATA_RCV);
 			}
 		}
 	}
@@ -1183,4 +1247,40 @@ __WEAK void I2Cx_ApplicationEventCallback(I2Cx_Handler_ty *pI2CHandler, uint8_t 
 	//weak implementation, application needs to implement it
 }
 
+
+
+
+/***********************************************************************************
+ * 					 	I2C Application Even Callback Handler
+ *
+ * @fn: 		- 	I2Cx_CallbackEV_SlaveControl
+ *
+ * @brief		-	This function Enable or Disable the callback after an application event
+ * 					is occurred in Slave mode.
+ *
+ * @param[1]	-	Pointer to I2C peripheral
+ *
+ * @param[2]	-	Control: ENABLE or DISABLE
+ *
+ * @return		-	void
+ *
+ * @Note		-
+ *
+ */
+void I2Cx_CallbackEV_SlaveControl(I2Cx_RegDef_ty *pI2Cx, uint8_t Control)
+{
+	if(Control == ENABLE)
+	{
+		pI2Cx->CR2 |= (1 << I2C_CR2_ITBUFEN);
+		pI2Cx->CR2 |= (1 << I2C_CR2_ITERREN);
+		pI2Cx->CR2 |= (1 << I2C_CR2_ITEVTEN);
+	}
+	else
+	{
+		pI2Cx->CR2 &= ~(1 << I2C_CR2_ITBUFEN);
+		pI2Cx->CR2 &= ~(1 << I2C_CR2_ITERREN);
+		pI2Cx->CR2 &= ~(1 << I2C_CR2_ITEVTEN);
+	}
+
+}
 

@@ -139,19 +139,20 @@ typedef struct
 /*****************************************************************************************
  * I2Cx  Application Event and Error macros.
  *****************************************************************************************/
-#define 	I2C_EV_TX_CMPLT			0
-#define 	I2C_EV_RX_CMPLT			1
-#define 	I2C_EV_STOP				2
+#define 	I2C_EV_TX_CMPLT			0x0
+#define 	I2C_EV_RX_CMPLT			0x1
+#define 	I2C_EV_STOP				0x2
 
-#define 	I2C_ER_BERR 			3
-#define 	I2C_ER_ARLO 			4
-#define 	I2C_ER_AF 				5
-#define 	I2C_ER_OVR 				6
-#define 	I2C_ER_PECERR 			7
-#define 	I2C_ER_TIMEOUT 			8
-#define 	I2C_ER_SMBALERT 		9
+#define 	I2C_ER_BERR 			0x3
+#define 	I2C_ER_ARLO 			0x4
+#define 	I2C_ER_AF 				0x5
+#define 	I2C_ER_OVR 				0x6
+#define 	I2C_ER_PECERR 			0x7
+#define 	I2C_ER_TIMEOUT 			0x8
+#define 	I2C_ER_SMBALERT 		0x9
 
-
+#define 	I2C_EV_DATA_REQ			0xA
+#define 	I2C_EV_DATA_RCV			0xB
 
 
 /*****************************************************************************************
@@ -203,6 +204,8 @@ void I2Cx_ReceiveData_Master(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, u
 uint8_t I2Cx_SendData_MasterIT(I2Cx_Handler_ty *pI2CHandler, uint8_t *pTxBuffer, uint8_t length, uint8_t SlaveAddr, uint8_t SR);
 uint8_t I2Cx_ReceiveData_MasterIT(I2Cx_Handler_ty *pI2CHandler, uint8_t *pRxBuffer, uint8_t length, uint8_t SlaveAddr, uint8_t SR);
 
+void I2Cx_SendData_Slave(I2Cx_RegDef_ty *pI2Cx, uint8_t data);
+uint8_t I2Cx_ReceiveData_Slave(I2Cx_RegDef_ty *pI2Cx);
 
 
 //I2C IRQ and ISR Handlers
@@ -223,6 +226,6 @@ void I2Cx_PeripheralControl(I2Cx_RegDef_ty *pI2Cx, uint8_t Control);
 void I2Cx_ACKControl(I2Cx_RegDef_ty *pI2Cx, uint8_t Control);
 void I2Cx_Close_INTRSendData(I2Cx_Handler_ty *pI2CHandler);
 void I2Cx_Close_INTRReceiveData(I2Cx_Handler_ty *pI2CHandler);
-
+void I2Cx_CallbackEV_SlaveControl(I2Cx_RegDef_ty *pI2Cx, uint8_t Control);
 
 #endif /* INC_STM32F446XX_I2C_DRIVER_H_ */
