@@ -21,9 +21,9 @@ Currently this repo contains drivers for:-
 ->SPI  
 ->I2C (Broken and WIP)  
 ->RCC (WIP)  
+->USART/UART (WIP)  
   
 Upcoming:-   
-->USART/UART  
 ->CAN  
 ->PWM  
 ->RTC  
