@@ -35,6 +35,101 @@
 #ifndef INC_STM32F446XX_USART_DRIVER_H_
 #define INC_STM32F446XX_USART_DRIVER_H_
 
+#include  "stm32f446xx.h"
+
+/*****************************************************************************************
+ * USARTx Peripheral Configuration structure.
+ *****************************************************************************************/
+typedef struct
+{
+	uint8_t			USART_Mode;					//USART Peripheral MODE. @USART_MODE
+	uint32_t		USART_Baud;					//USART Baud Rate. @USART_BAUD for standard baud rates
+	uint8_t			USART_StopBits_No;			//USART Stop bits. @USART_STOPBITS
+	uint8_t			USART_WordLength;			//USART Word Length. @USART_WORDLEN
+	uint8_t			USART_ParityControl;		//USART Parity Control. @USART_PARITY
+	uint8_t			USART_HWFlowControl;		//USART HW Flow Control. @USART_HWFLOW
+
+}USARTx_Config_ty;
+
+
+
+/*****************************************************************************************
+ * USARTx Handler structure.
+ *****************************************************************************************/
+typedef struct
+{
+	USARTx_RegDef_ty *pUSARTx;
+	USARTx_Config_ty USARTx_Config;
+
+}USARTx_Handler_ty;
+
+
+
+
+/*****************************************************************************************
+ * USARTx Mode configuration macros. @USART_MODE
+ *****************************************************************************************/
+#define 	USART_MODE_TX					0
+#define 	USART_MODE_RX					1
+#define 	USART_MODE_TXRX					2
+
+
+
+/*****************************************************************************************
+ * USARTx standard Baud rate configuration macros. @USART_BAUD
+ *****************************************************************************************/
+#define USART_BAUD_STD_1200					1200
+#define USART_BAUD_STD_2400					2400
+#define USART_BAUD_STD_9600					9600
+#define USART_BAUD_STD_19200				19200
+#define USART_BAUD_STD_38400 				38400
+#define USART_BAUD_STD_57600 				57600
+#define USART_BAUD_STD_115200 				115200
+#define USART_BAUD_STD_230400 				230400
+#define USART_BAUD_STD_460800 				460800
+#define USART_BAUD_STD_921600 				921600
+#define USART_BAUD_STD_2M 					2000000
+#define USART_BAUD_STD_3M 					3000000
+
+
+
+/*****************************************************************************************
+ * USARTx Word Length configuration macros. @USART_WORDLEN
+ *****************************************************************************************/
+#define USART_WORD_LEN_8BITS				0
+#define USART_WORD_LEN_9BITS				1
+
+
+
+/*****************************************************************************************
+ * USARTx Parity configuration macros. @USART_PARITY
+ *****************************************************************************************/
+#define USART_PARITY_DISABLE				0
+#define USART_PARITY_EVEN					1
+#define USART_PARITY_ODD					2
+
+
+
+/*****************************************************************************************
+ * USARTx Stop Bits configuration macros. @USART_STOPBITS
+ *****************************************************************************************/
+#define USART_STOP_BITS_1					0
+#define USART_STOP_BITS_0_5					1
+#define USART_STOP_BITS_2					2
+#define USART_STOP_BITS_3					3
+
+
+
+/*****************************************************************************************
+ * USARTx Hardware Flow configuration macros. @USART_HWFLOW
+ *****************************************************************************************/
+#define USART_HW_FLOW_NONE					0
+#define USART_HW_FLOW_CTS					1
+#define USART_HW_FLOW_RTS					2
+#define USART_HW_FLOW_CTS_RTS				3
+
+
+
 
 
 #endif /* INC_STM32F446XX_USART_DRIVER_H_ */
