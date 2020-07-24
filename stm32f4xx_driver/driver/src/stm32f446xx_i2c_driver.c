@@ -45,7 +45,8 @@ static void I2Cx_MasterHandle_TXEInterrupt(I2Cx_Handler_ty *pI2CHandler);
  *
  * @fn: 		- 	I2Cx_PeriClkControl
  *
- * @brief		-	This function Deinitialize the given I2C Peripheral
+ * @brief		-	This function Enables or Disables the peripheral clock of
+ * 					the given I2C Peripheral
  *
  * @param[1]	-	Base Address of the I2C Peripheral
  *
@@ -286,6 +287,7 @@ uint8_t I2Cx_GetFlagStatus(I2Cx_RegDef_ty *pI2Cx, uint32_t FlagName)
  * @brief		-	Function to Enable or Disable Auto Acknowledge Bit generation.
  *
  * @param[1]	-	Base Address of the I2C Peripheral
+ *
  * @param[2]	-	Control: ENABLE or DISABLE
  *
  * @return		-	void
@@ -315,7 +317,7 @@ void I2Cx_ACKControl(I2Cx_RegDef_ty *pI2Cx, uint8_t Control)
  *
  * @fn: 		- 	I2Cx_ClearADDRFlag
  *
- * @brief		-	Function clears the ADDR Flag of SR1 Register.
+ * @brief		-	This Function clears the ADDR Flag of SR1 Register.
  *
  * @param[1]	-	Base Address of the I2C Handler.
  *

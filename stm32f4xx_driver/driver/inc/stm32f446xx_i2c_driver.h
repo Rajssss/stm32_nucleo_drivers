@@ -59,16 +59,16 @@ typedef struct
  *****************************************************************************************/
 typedef struct
 {
-	I2Cx_RegDef_ty *pI2Cx;
-	I2Cx_Config_ty I2Cx_Config;
-	uint8_t *pTxBuffer;						//Transmission buffer pointer
-	uint8_t *pRxBuffer;						//Reception buffer pointer
-	uint32_t TxLength;						//Transmission length
-	uint32_t RxLength;						//Reception length
-	uint8_t TxRxState;						//Transmission/Reception State @I2C_STATES
-	uint8_t	Device_Slave_ADDR;				//Device/Slave address
-	uint32_t RxSize;						//Receiving data size
-	uint8_t SR;								//Repeated START Config @I2C_SR_CONFIG
+	I2Cx_RegDef_ty 	*pI2Cx;
+	I2Cx_Config_ty 	I2Cx_Config;
+	uint8_t 		*pTxBuffer;						//Transmission buffer pointer
+	uint8_t 		*pRxBuffer;						//Reception buffer pointer
+	uint32_t 		TxLength;						//Transmission length
+	uint32_t 		RxLength;						//Reception length
+	uint8_t 		TxRxState;						//Transmission/Reception State @I2C_STATES
+	uint8_t			Device_Slave_ADDR;				//Device/Slave address
+	uint32_t 		RxSize;							//Receiving data size
+	uint8_t 		SR;								//Repeated START Config @I2C_SR_CONFIG
 
 }I2Cx_Handler_ty;
 
@@ -79,8 +79,8 @@ typedef struct
  * I2Cx Maximum Speeds for different Modes. @I2C_SCLSpeed
  * Note: These speeds are not fixed, you can take any values between them.
  *****************************************************************************************/
-#define 	I2C_SCL_SPEED_STD		100000
-#define 	I2C_SCL_SPEED_FAST		400000
+#define 	I2C_SCL_SPEED_STD			100000
+#define 	I2C_SCL_SPEED_FAST			400000
 
 
 
@@ -88,8 +88,8 @@ typedef struct
 /*****************************************************************************************
  * I2Cx Auto Acknowledgment configuration macros. @ACKControl
  *****************************************************************************************/
-#define		I2C_ACK_ENABLE			1
-#define 	I2C_ACK_DISABLE			0
+#define		I2C_ACK_ENABLE				1
+#define 	I2C_ACK_DISABLE				0
 
 
 
@@ -97,8 +97,8 @@ typedef struct
 /*****************************************************************************************
  * I2Cx Available Duty Cycles. @DutyCycle
  *****************************************************************************************/
-#define 	I2C_DUTY_2				0
-#define 	I2C_DUTY_16_9			1
+#define 	I2C_DUTY_2					0
+#define 	I2C_DUTY_16_9				1
 
 
 
@@ -129,9 +129,9 @@ typedef struct
 /*****************************************************************************************
  * I2Cx  Application States. @I2C_STATES
  *****************************************************************************************/
-#define 	I2C_READY				0
-#define 	I2C_BUSY_RX				1
-#define 	I2C_BUSY_TX				2
+#define 	I2C_READY					0
+#define 	I2C_BUSY_RX					1
+#define 	I2C_BUSY_TX					2
 
 
 
@@ -139,20 +139,20 @@ typedef struct
 /*****************************************************************************************
  * I2Cx  Application Event and Error macros.
  *****************************************************************************************/
-#define 	I2C_EV_TX_CMPLT			0x0
-#define 	I2C_EV_RX_CMPLT			0x1
-#define 	I2C_EV_STOP				0x2
+#define 	I2C_EV_TX_CMPLT				0x0
+#define 	I2C_EV_RX_CMPLT				0x1
+#define 	I2C_EV_STOP					0x2
 
-#define 	I2C_ER_BERR 			0x3
-#define 	I2C_ER_ARLO 			0x4
-#define 	I2C_ER_AF 				0x5
-#define 	I2C_ER_OVR 				0x6
-#define 	I2C_ER_PECERR 			0x7
-#define 	I2C_ER_TIMEOUT 			0x8
-#define 	I2C_ER_SMBALERT 		0x9
+#define 	I2C_ER_BERR 				0x3
+#define 	I2C_ER_ARLO 				0x4
+#define 	I2C_ER_AF 					0x5
+#define 	I2C_ER_OVR 					0x6
+#define 	I2C_ER_PECERR 				0x7
+#define 	I2C_ER_TIMEOUT 				0x8
+#define 	I2C_ER_SMBALERT 			0x9
 
-#define 	I2C_EV_DATA_REQ			0xA
-#define 	I2C_EV_DATA_RCV			0xB
+#define 	I2C_EV_DATA_REQ				0xA
+#define 	I2C_EV_DATA_RCV				0xB
 
 
 /*****************************************************************************************
