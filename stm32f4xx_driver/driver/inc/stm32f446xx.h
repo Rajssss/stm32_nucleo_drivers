@@ -210,6 +210,13 @@
 #define 	I2C2				((I2Cx_RegDef_ty* )I2C2_BASEADDR)
 #define 	I2C3				((I2Cx_RegDef_ty* )I2C3_BASEADDR)
 
+#define 	USART1				((USARTx_RegDef_ty* )USART1_BASEADDR)
+#define 	USART2				((USARTx_RegDef_ty* )USART2_BASEADDR)
+#define 	USART3				((USARTx_RegDef_ty* )USART3_BASEADDR)
+#define 	UART4				((USARTx_RegDef_ty* )UART4_BASEADDR)
+#define 	UART5				((USARTx_RegDef_ty* )UART5_BASEADDR)
+#define 	USART6				((USARTx_RegDef_ty* )USART6_BASEADDR)
+
 
 
 
@@ -827,6 +834,23 @@ typedef struct
 
 }I2Cx_RegDef_ty;
 
+
+
+
+/**********************************************************************************
+ * USART Peripheral Registers Structure
+***********************************************************************************/
+typedef struct
+{
+	__VOL uint32_t SR;						//USARTx Status register
+	__VOL uint32_t DR;						//USARTx Data register
+	__VOL uint32_t BRR;						//USARTx Baud rate register
+	__VOL uint32_t CR1;						//USARTx Control register 1
+	__VOL uint32_t CR2;						//USARTx Control register 2
+	__VOL uint32_t CR3;						//USARTx Control register 3
+	__VOL uint32_t GTPR;					//USARTx Guard time and prescaler register
+
+}USARTx_RegDef_ty;
 
 
 
