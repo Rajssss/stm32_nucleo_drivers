@@ -667,6 +667,94 @@
 
 
 /**********************************************************************************
+ * USARTx Status register (SR) Bitfields
+***********************************************************************************/
+#define 	USART_SR_PE						0x0
+#define 	USART_SR_FE						0x1
+#define 	USART_SR_NF						0x2
+#define 	USART_SR_ORE					0x3
+#define 	USART_SR_IDLE					0x4
+#define 	USART_SR_RXNE					0x5
+#define 	USART_SR_TC						0x6
+#define 	USART_SR_TXE					0x7
+#define 	USART_SR_LBD					0x8
+#define 	USART_SR_CTS					0x9
+
+
+
+/**********************************************************************************
+ * USARTx Baud rate register (BRR) Bitfields
+***********************************************************************************/
+#define 	USART_BRR_DIV_FRACTION			0x0
+#define 	USART_BRR_DIV_MANTISSA			0x4
+
+
+
+/**********************************************************************************
+ * USARTx Control register 1 (CR1) Bitfields
+***********************************************************************************/
+#define 	USART_CR1_SBK					0x0
+#define 	USART_CR1_RWU					0x1
+#define 	USART_CR1_RE					0x2
+#define 	USART_CR1_TE					0x3
+#define 	USART_CR1_IDLEIE				0x4
+#define 	USART_CR1_RXNEIE				0x5
+#define 	USART_CR1_TCIE					0x6
+#define 	USART_CR1_TXEIE					0x7
+#define 	USART_CR1_PEIE					0x8
+#define 	USART_CR1_PS					0x9
+#define 	USART_CR1_PCE					0xA
+#define 	USART_CR1_WAKE					0xB
+#define 	USART_CR1_M						0xC
+#define 	USART_CR1_UE					0xD
+#define 	USART_CR1_OVER8					0xF
+
+
+
+/**********************************************************************************
+ * USARTx Control register 2 (CR2) Bitfields
+***********************************************************************************/
+#define 	USART_CR2_ADD					0x0
+#define 	USART_CR2_LBDL					0x5
+#define 	USART_CR2_LBDIE					0x6
+#define 	USART_CR2_LBCL					0x8
+#define 	USART_CR2_CPHA					0x9
+#define 	USART_CR2_CPOL					0xA
+#define 	USART_CR2_CLKEN					0xB
+#define 	USART_CR2_STOP					0xC
+#define 	USART_CR2_LINEN					0xE
+
+
+
+/**********************************************************************************
+ * USARTx Control register 3 (CR3) Bitfields
+***********************************************************************************/
+#define 	USART_CR3_EIE					0x0
+#define 	USART_CR3_EIE					0x1
+#define 	USART_CR3_EIE					0x2
+#define 	USART_CR3_EIE					0x3
+#define 	USART_CR3_EIE					0x4
+#define 	USART_CR3_EIE					0x5
+#define 	USART_CR3_EIE					0x6
+#define 	USART_CR3_EIE					0x7
+#define 	USART_CR3_EIE					0x8
+#define 	USART_CR3_EIE					0x9
+#define 	USART_CR3_EIE					0xA
+#define 	USART_CR3_EIE					0xB
+
+
+
+/**********************************************************************************
+ * USARTx Guard time and prescaler register (GTPR) Bitfields
+***********************************************************************************/
+#define 	USART_GTPR_PSC					0x0
+#define 	USART_GTPR_GT					0x8
+
+
+
+
+
+/**********************************************************************************
  * SPIx peripheral Reset Macros
 ***********************************************************************************/
 #define 	SPI1_PERI_RESET()		do{ ((RCC->APB2RSTR)|= (1 << 12));	((RCC->APB2RSTR)&= ~(1 << 12)); }while(0)
