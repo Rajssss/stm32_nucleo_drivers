@@ -132,4 +132,41 @@ typedef struct
 
 
 
+
+/******************************************************************************************
+ *								APIs supported by this driver
+ *		     For more information about the APIs check the function definitions
+ ******************************************************************************************/
+//USART/UART Clock Control Handler
+void USARTx_PeriClkControl(USARTx_RegDef_ty *pUSARTx, uint8_t Control);
+
+
+//USART/UART Initialize/Deinitialize Handler
+void USARTx_Init(USARTx_Handler_ty *pUSARTHandler);
+void USARTx_DeInit(USARTx_RegDef_ty *pUSARTx);
+
+//USART/UART Data Send and Receive handlers
+void USARTx_SendData_Master(USARTx_Handler_ty *pUSARTHandler, uint8_t *pTxBuffer, uint8_t length);
+void USARTx_ReceiveData_Master(USARTx_Handler_ty *pUSARTHandler, uint8_t *pTxBuffer, uint8_t length);
+uint8_t USARTx_SendData_MasterIT(USARTx_Handler_ty *pUSARTHandler, uint8_t *pTxBuffer, uint8_t length);
+uint8_t USARTx_ReceiveData_MasterIT(USARTx_Handler_ty *pUSARTHandler, uint8_t *pRxBuffer, uint8_t length);
+
+//USART/UART IRQ and ISR Handlers
+void USARTx_IRQInterruptConfig(uint8_t IRQNumber, uint8_t Control);
+void USARTx_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority);
+void USARTx_EV_IRQHandling(USARTx_Handler_ty *pUSARTHandler);
+void USARTx_ER_IRQHandling(USARTx_Handler_ty *pUSARTHandler);
+
+//Other handlers
+uint8_t USARTx_GetFlagStatus(USARTx_RegDef_ty *pUSARTx, uint32_t FlagName);
+void USARTx_PeripheralControl(USARTx_RegDef_ty *pUSARTx, uint8_t Control);
+void USART_ClearFlag(USARTx_RegDef_ty *pUSARTx, uint16_t FlagName);
+
+//Application Event Callback
+__WEAK void USARTx_ApplicationEventCallback(USARTx_Handler_ty *pUSARTHandler, uint8_t AppEvent);
+
+
+
+
+
 #endif /* INC_STM32F446XX_USART_DRIVER_H_ */
