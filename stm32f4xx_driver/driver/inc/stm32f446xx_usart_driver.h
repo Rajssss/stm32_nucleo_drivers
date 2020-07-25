@@ -131,6 +131,23 @@ typedef struct
 
 
 
+/*****************************************************************************************
+ * USARTx Status Flags macros for bit-masking. @USART_FLAG_BITS
+ *****************************************************************************************/
+#define USART_FLAG_PE						(1 << USART_SR_PE)
+#define USART_FLAG_FE						(1 << USART_SR_FE)
+#define USART_FLAG_NF						(1 << USART_SR_NF)
+#define USART_FLAG_ORE						(1 << USART_SR_ORE)
+#define USART_FLAG_IDLE						(1 << USART_SR_IDLE)
+#define USART_FLAG_RXNE						(1 << USART_SR_RXNE)
+#define USART_FLAG_TC						(1 << USART_SR_TC)
+#define USART_FLAG_TXE						(1 << USART_SR_TXE)
+#define USART_FLAG_LBD						(1 << USART_SR_LBD)
+#define USART_FLAG_CTS						(1 << USART_SR_CTS)
+
+
+
+
 
 
 /******************************************************************************************
