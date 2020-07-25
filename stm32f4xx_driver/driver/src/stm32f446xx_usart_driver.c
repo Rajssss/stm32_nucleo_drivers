@@ -141,3 +141,62 @@ void USARTx_PeripheralControl(USARTx_RegDef_ty *pUSARTx, uint8_t Control)
 
 
 
+
+
+/***********************************************************************************
+ * 					 		USART/UART Flag Status Handler
+ *
+ * @fn: 		- 	USARTx_GetFlagStatus
+ *
+ * @brief		-	Function which returns status of a flag of Status Register (SR).
+ *
+ * @param[1]	-	Base Address of the USART/UART Peripheral
+ *
+ * @param[2]	-	Flag value from @USART_FLAG_BITS
+ *
+ * @return		-	uint8_t
+ *
+ * @Note		-
+ *
+ */
+uint8_t USARTx_GetFlagStatus(USARTx_RegDef_ty *pUSARTx, uint32_t FlagName)
+{
+	if(pUSARTx->SR & FlagName)
+	{
+		return SET;
+	}
+	else
+	{
+		return RESET;
+	}
+}
+
+
+
+
+
+/***********************************************************************************
+ * 					 		USART/UART Flag Status Handler
+ *
+ * @fn: 		- 	USARTx_ClearFlag
+ *
+ * @brief		-	Function to clear a specific flag of Status Register (SR).
+ *
+ * @param[1]	-	Base Address of the USART/UART Peripheral
+ *
+ * @param[2]	-	Flag value from @USART_FLAG_BITS
+ *
+ * @return		-	void
+ *
+ * @Note		-	Applicable only for RXNE,TC,LBD and CTS Flags.
+ *
+ */
+void USARTx_ClearFlag(USARTx_RegDef_ty *pUSARTx, uint16_t FlagName)
+{
+	pUSARTx->SR &= ~FlagName;
+}
+
+
+
+
+
