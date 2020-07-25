@@ -142,7 +142,7 @@
 ***********************************************************************************/
 #define 	TIM1_BASEADDR					(APB2PERIPH_BASEADDR + 0X0000U)
 #define 	TIM8_BASEADDR					(APB2PERIPH_BASEADDR + 0X0400U)
-#define 	USART1_BASEADDR					(APBP2ERIPH_BASEADDR + 0X1000U)
+#define 	USART1_BASEADDR					(APB2PERIPH_BASEADDR + 0X1000U)
 #define 	USART6_BASEADDR					(APB2PERIPH_BASEADDR + 0X1400U)
 #define 	ADC_1_3_BASEADDR				(APB2PERIPH_BASEADDR + 0X2000U)
 #define 	SDMMC_BASEADDR					(APB2PERIPH_BASEADDR + 0X2C00U)
@@ -730,17 +730,17 @@
  * USARTx Control register 3 (CR3) Bitfields
 ***********************************************************************************/
 #define 	USART_CR3_EIE					0x0
-#define 	USART_CR3_EIE					0x1
-#define 	USART_CR3_EIE					0x2
-#define 	USART_CR3_EIE					0x3
-#define 	USART_CR3_EIE					0x4
-#define 	USART_CR3_EIE					0x5
-#define 	USART_CR3_EIE					0x6
-#define 	USART_CR3_EIE					0x7
-#define 	USART_CR3_EIE					0x8
-#define 	USART_CR3_EIE					0x9
-#define 	USART_CR3_EIE					0xA
-#define 	USART_CR3_EIE					0xB
+#define 	USART_CR3_IREN					0x1
+#define 	USART_CR3_IRLP					0x2
+#define 	USART_CR3_HDSEL					0x3
+#define 	USART_CR3_NACK					0x4
+#define 	USART_CR3_SCEN					0x5
+#define 	USART_CR3_DMAR					0x6
+#define 	USART_CR3_DMAT					0x7
+#define 	USART_CR3_RTSE					0x8
+#define 	USART_CR3_CTSE					0x9
+#define 	USART_CR3_CTSIE					0xA
+#define 	USART_CR3_ONEBIT				0xB
 
 
 
