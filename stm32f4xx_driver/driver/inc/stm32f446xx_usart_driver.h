@@ -163,16 +163,15 @@ void USARTx_Init(USARTx_Handler_ty *pUSARTHandler);
 void USARTx_DeInit(USARTx_RegDef_ty *pUSARTx);
 
 //USART/UART Data Send and Receive handlers
-void USARTx_SendData_Master(USARTx_Handler_ty *pUSARTHandler, uint8_t *pTxBuffer, uint8_t length);
-void USARTx_ReceiveData_Master(USARTx_Handler_ty *pUSARTHandler, uint8_t *pTxBuffer, uint8_t length);
-uint8_t USARTx_SendData_MasterIT(USARTx_Handler_ty *pUSARTHandler, uint8_t *pTxBuffer, uint8_t length);
-uint8_t USARTx_ReceiveData_MasterIT(USARTx_Handler_ty *pUSARTHandler, uint8_t *pRxBuffer, uint8_t length);
+void USARTx_SendData(USARTx_Handler_ty *pUSARTHandler, uint8_t *pTxBuffer, uint8_t length);
+void USARTx_ReceiveData(USARTx_Handler_ty *pUSARTHandler, uint8_t *pRxBuffer, uint8_t length);
+uint8_t USARTx_SendData_IT(USARTx_Handler_ty *pUSARTHandler, uint8_t *pTxBuffer, uint8_t length);
+uint8_t USARTx_ReceiveData_IT(USARTx_Handler_ty *pUSARTHandler, uint8_t *pRxBuffer, uint8_t length);
 
 //USART/UART IRQ and ISR Handlers
 void USARTx_IRQInterruptConfig(uint8_t IRQNumber, uint8_t Control);
 void USARTx_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority);
-void USARTx_EV_IRQHandling(USARTx_Handler_ty *pUSARTHandler);
-void USARTx_ER_IRQHandling(USARTx_Handler_ty *pUSARTHandler);
+void USARTx_IRQHandling(USARTx_Handler_ty *pUSARTHandler);
 
 //Other handlers
 uint8_t USARTx_GetFlagStatus(USARTx_RegDef_ty *pUSARTx, uint32_t FlagName);
