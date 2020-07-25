@@ -769,7 +769,7 @@
 /**********************************************************************************
  * I2Cx peripheral Reset Macros
 ***********************************************************************************/
-#define 	I2C1_PERI_RESET()		do{ ((RCC->APB2RSTR)|= (1 << 21));	((RCC->APB2RSTR)&= ~(1 << 21)); }while(0)
+#define 	I2C1_PERI_RESET()		do{ ((RCC->APB1RSTR)|= (1 << 21));	((RCC->APB1RSTR)&= ~(1 << 21)); }while(0)
 #define 	I2C2_PERI_RESET()		do{ ((RCC->APB1RSTR)|= (1 << 22));	((RCC->APB1RSTR)&= ~(1 << 22)); }while(0)
 #define 	I2C3_PERI_RESET()		do{ ((RCC->APB1RSTR)|= (1 << 23));	((RCC->APB1RSTR)&= ~(1 << 23)); }while(0)
 
