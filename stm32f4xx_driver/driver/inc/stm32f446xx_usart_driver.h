@@ -160,7 +160,7 @@ void USARTx_ER_IRQHandling(USARTx_Handler_ty *pUSARTHandler);
 //Other handlers
 uint8_t USARTx_GetFlagStatus(USARTx_RegDef_ty *pUSARTx, uint32_t FlagName);
 void USARTx_PeripheralControl(USARTx_RegDef_ty *pUSARTx, uint8_t Control);
-void USART_ClearFlag(USARTx_RegDef_ty *pUSARTx, uint16_t FlagName);
+void USARTx_ClearFlag(USARTx_RegDef_ty *pUSARTx, uint16_t FlagName);
 
 //Application Event Callback
 __WEAK void USARTx_ApplicationEventCallback(USARTx_Handler_ty *pUSARTHandler, uint8_t AppEvent);
