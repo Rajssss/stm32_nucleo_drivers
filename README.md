@@ -3,6 +3,7 @@ Various Drivers APIs for STM32F446RE-Nucleo Board written from scratch.
 -> Written for User Applications running on the same MCU.  
 -> The "driver" source folder contains the actual sources for this driver.  
 -> Check the Src folder for various examples to strt with.  
+-> I will really appreciate any kind of help on this project, please correct my mistakes if needed:)  
 
 # HOW TO USE:  
                 Just Clone this repository in STM32Cube IDE (or any other), 
@@ -19,9 +20,9 @@ Please note that none of these drivers are CMSIS Compatable.
 Currently this repo contains drivers for:-  
 ->GPIO  
 ->SPI  
-->I2C (Broken and WIP)  
+->I2C (Interrrupt Broken / WIP)  
 ->RCC (WIP)  
-->USART/UART (WIP)  
+->USART/UART (Aynchronous Mode Only)  
   
 Upcoming:-   
 ->CAN  
