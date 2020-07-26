@@ -200,3 +200,151 @@ void USARTx_ClearFlag(USARTx_RegDef_ty *pUSARTx, uint16_t FlagName)
 
 
 
+/***********************************************************************************
+ * 					 	  	 USART/UART Initialize Handler
+ *
+ * @fn: 		- 	USARTx_Init
+ *
+ * @brief		-	This function will configure the various Registers associated with that
+ * 					USART/UART Peripheral with the values present in USARTx_Config_ty structure.
+ *
+ * @param[1]	-	Address of the USART/UART Handler Request.
+ *
+ * @return		-	void
+ *
+ * @Note		-
+ *
+ */
+void USARTx_Init(USARTx_Handler_ty *pUSARTHandler)
+{
+	//Enable peripheral clock
+	USARTx_PeriClkControl(pUSARTHandler->pUSARTx, ENABLE);
+
+	//Configure USART/UART Rx/Tx as per USART_MODE
+	if(pUSARTHandler->USARTx_Config.USART_Mode == USART_MODE_RX)
+	{
+		pUSARTHandler->pUSARTx->CR1 |= (1 << USART_CR1_RE);
+	}
+	else if(pUSARTHandler->USARTx_Config.USART_Mode == USART_MODE_TX)
+	{
+		pUSARTHandler->pUSARTx->CR1 |= (1 << USART_CR1_TE);
+	}
+	else if(pUSARTHandler->USARTx_Config.USART_Mode == USART_MODE_TXRX)
+	{
+		pUSARTHandler->pUSARTx->CR1 |= (1 << USART_CR1_TE);
+		pUSARTHandler->pUSARTx->CR1 |= (1 << USART_CR1_RE);
+	}
+
+	//Configure Word Length
+	pUSARTHandler->pUSARTx->CR1 |= (pUSARTHandler->USARTx_Config.USART_WordLength << USART_CR1_M);
+
+	//Configure Parity
+	if(pUSARTHandler->USARTx_Config.USART_ParityControl == USART_PARITY_EVEN)
+	{
+		pUSARTHandler->pUSARTx->CR1 |= (1 << USART_CR1_PCE);
+	}
+	else if(pUSARTHandler->USARTx_Config.USART_ParityControl == USART_PARITY_ODD)
+	{
+		pUSARTHandler->pUSARTx->CR1 |= (1 << USART_CR1_PCE);
+		pUSARTHandler->pUSARTx->CR1 |= (1 << USART_CR1_PS);
+	}
+
+	//Configure STOP Bits
+	pUSARTHandler->pUSARTx->CR2 |= (pUSARTHandler->USARTx_Config.USART_StopBits_No << USART_CR2_STOP);
+
+	//Configure HW Flow Control
+	if(pUSARTHandler->USARTx_Config.USART_HWFlowControl == USART_HW_FLOW_CTS)
+	{
+		pUSARTHandler->pUSARTx->CR3 |= (1 << USART_CR3_CTSE);
+	}
+	else if(pUSARTHandler->USARTx_Config.USART_HWFlowControl == USART_HW_FLOW_RTS)
+	{
+		pUSARTHandler->pUSARTx->CR3 |= (1 << USART_CR3_RTSE);
+	}
+	else if(pUSARTHandler->USARTx_Config.USART_HWFlowControl == USART_HW_FLOW_CTS_RTS)
+	{
+		pUSARTHandler->pUSARTx->CR3 |= (1 << USART_CR3_CTSE);
+		pUSARTHandler->pUSARTx->CR3 |= (1 << USART_CR3_RTSE);
+	}
+
+	//Configure Baudrate
+	USARTx_BaudRate_Config(pUSARTHandler->pUSARTx, pUSARTHandler->USARTx_Config.USART_Baud);
+
+}
+
+
+
+
+
+
+/***********************************************************************************
+ * 					 	USART/UART Baud Rate Config Handler
+ *
+ * @fn: 		- 	USARTx_BaudRate_Config
+ *
+ * @brief		-	This function Enables or Disables the peripheral clock of
+ * 					the given USART/UART Peripheral
+ *
+ * @param[1]	-	Base Address of the USART/UART Peripheral
+ *
+ * @param[2]	-	Baud Rate.
+ *
+ * @return		-	void
+ *
+ * @Note		-	Applicable only in asynchronous mode.
+ *
+ */
+void USARTx_BaudRate_Config(USARTx_RegDef_ty *pUSARTx, uint32_t BaudRate)
+{
+	uint32_t PCLKx;
+	uint32_t USARTDIV_Mantissa, USARTDIV_Fraction, USARTDIV;
+
+	//get PCLK value based on APB Bus Clock
+	if(pUSARTx == USART1 || pUSARTx == USART1)
+	{
+		PCLKx = RCC_GetPeriCLK2_Value();
+	}
+	else
+	{
+		PCLKx = RCC_GetPeriCLK1_Value();
+	}
+
+	//if OVER8=1
+	if(pUSARTx->CR1 & (1 << USART_CR1_OVER8))
+	{
+		//multiply by 100 to get rid of fraction part
+		USARTDIV = ((PCLKx / (8 * BaudRate)) * 100);
+
+		//Calculate Mantissa
+		USARTDIV_Mantissa = USARTDIV/100;
+
+		//Calculate Fraction
+		USARTDIV_Fraction = (USARTDIV - (USARTDIV_Mantissa * 100));
+
+		//Round Off the fraction
+		//when OVER8=1, the DIV_Fraction3 bit is not considered and must be kept cleared.
+		USARTDIV_Fraction = (((USARTDIV_Fraction * 8) + 50) / 100) & ((uint8_t)0x07);
+	}
+	else
+	{
+		//multiply by 100 to get rid of fraction part
+		USARTDIV = ((PCLKx / (16 * BaudRate)) * 100);
+
+		//Calculate Mantissa
+		USARTDIV_Mantissa = USARTDIV/100;
+
+		//Calculate Fraction
+		USARTDIV_Fraction = (USARTDIV - (USARTDIV_Mantissa * 100));
+
+		//Round Off the fraction
+		USARTDIV_Fraction = (((USARTDIV_Fraction * 16) + 50) / 100) & ((uint8_t)0x0F);
+	}
+
+	//Program Baudrate (BRR) Register
+	pUSARTx->BRR |= ((USARTDIV_Mantissa << 0x4) + USARTDIV_Fraction);
+
+}
+
+
+
+
