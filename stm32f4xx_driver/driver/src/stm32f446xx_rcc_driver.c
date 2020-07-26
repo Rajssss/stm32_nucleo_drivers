@@ -103,3 +103,73 @@ uint32_t RCC_GetPeriCLK1_Value(void)
 	return ((SYSCLK / AHBP) / APB1P);				//Peripheral Clock = (System_Clock / AHB Prescaler) / APB Low Speed Prescaler
 
 }
+
+
+
+
+
+/***********************************************************************************
+ * 					Peripheral_Clock-2 (APB2) Frequency Handler
+ *
+ * @fn: 		- 	RCC_GetPeriCLK2_Value
+ *
+ * @brief		-	This function returns the Peripheral clock frequency in Hz.
+ *
+ * @param[1]	-	None
+ *
+ * @return		-	uint32_t
+ *
+ * @Note		-
+ *
+ */
+uint32_t RCC_GetPeriCLK2_Value(void)
+{
+	uint32_t SYSCLK, AHBP, APB2P;
+
+	//Check for Clock source
+	if(((RCC->CFGR >> 2) & 0x3) == 0x0)				//((RCC->CFGR >> 2) & 0x3) = Clock source
+	{
+		SYSCLK = HSI_CLK_FREQ;
+	}
+	else if(((RCC->CFGR >> 2) & 0x3) == 0x1)
+	{
+		SYSCLK = HSE_CLK_FREQ;
+	}
+	else if(((RCC->CFGR >> 2) & 0x3) == 0x2)
+	{
+		//TODO
+	}
+	else
+	{
+		//TODO
+	}
+
+
+	//Check AHB Prescalar Value
+	if(((RCC->CFGR >> 4) & 0xF) < 8)				//((RCC->CFGR >> 4) & 0xF) = AHB Prescaler value
+	{
+		AHBP = 1;
+	}
+	else
+	{
+		AHBP = AHB_Prescaler[((RCC->CFGR >> 4) & 0xF) - 8];
+	}
+
+
+	//Check APB Low Speed (APB1 Bus) Prescaler Value
+	if((((RCC->CFGR) >> 10) & 0x7) < 4)				//(((RCC->CFGR) >> 10) & 0x7) = APB Low Speed (APB1 Bus) Prescaler value
+	{
+		APB2P = 1;
+	}
+	else
+	{
+		APB2P = APB1_Prescaler[(((RCC->CFGR) >> 10) & 0x7) - 4];
+	}
+
+
+	return ((SYSCLK / AHBP) / APB2P);				//Peripheral Clock = (System_Clock / AHB Prescaler) / APB Low Speed Prescaler
+
+}
+
+
+
