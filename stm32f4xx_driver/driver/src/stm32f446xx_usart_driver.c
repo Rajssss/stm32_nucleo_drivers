@@ -300,7 +300,7 @@ void USARTx_BaudRate_Config(USARTx_RegDef_ty *pUSARTx, uint32_t BaudRate)
 	uint32_t USARTDIV_Mantissa, USARTDIV_Fraction, USARTDIV;
 
 	//get PCLK value based on APB Bus Clock
-	if(pUSARTx == USART1 || pUSARTx == USART1)
+	if(pUSARTx == USART1 || pUSARTx == USART6)
 	{
 		PCLKx = RCC_GetPeriCLK2_Value();
 	}
@@ -313,7 +313,7 @@ void USARTx_BaudRate_Config(USARTx_RegDef_ty *pUSARTx, uint32_t BaudRate)
 	if(pUSARTx->CR1 & (1 << USART_CR1_OVER8))
 	{
 		//multiply by 100 to get rid of fraction part
-		USARTDIV = ((PCLKx / (8 * BaudRate)) * 100);
+		USARTDIV = (((float)PCLKx / (8 * BaudRate)) * 100);
 
 		//Calculate Mantissa
 		USARTDIV_Mantissa = USARTDIV/100;
@@ -328,7 +328,7 @@ void USARTx_BaudRate_Config(USARTx_RegDef_ty *pUSARTx, uint32_t BaudRate)
 	else
 	{
 		//multiply by 100 to get rid of fraction part
-		USARTDIV = ((PCLKx / (16 * BaudRate)) * 100);
+		USARTDIV = (((float)PCLKx / (16 * BaudRate)) * 100);
 
 		//Calculate Mantissa
 		USARTDIV_Mantissa = USARTDIV/100;
@@ -344,6 +344,141 @@ void USARTx_BaudRate_Config(USARTx_RegDef_ty *pUSARTx, uint32_t BaudRate)
 	pUSARTx->BRR |= ((USARTDIV_Mantissa << 0x4) + USARTDIV_Fraction);
 
 }
+
+
+
+
+
+
+/***********************************************************************************
+ * 					 	USART/UART Tx Handler
+ *
+ * @fn: 		- 	USARTx_SendData
+ *
+ * @brief		-	This function handles the data transmission the given USART/UART
+ * 					Peripheral.
+ *
+ * @param[1]	-	Base Address of the USART/UART Handler
+ *
+ * @param[2]	-	Transmission data Buffer
+ *
+ * @param[3]	-	Transmission data length
+ *
+ * @return		-	void
+ *
+ * @Note		-
+ *
+ */
+void USARTx_SendData(USARTx_Handler_ty *pUSARTHandler, uint8_t *pTxBuffer, uint8_t length)
+{
+	//loop till length no of data are transferred
+	for(uint32_t var=0; var < length; var++)
+	{
+		//wait till TXE is set
+		while(! USARTx_GetFlagStatus(pUSARTHandler->pUSARTx, USART_FLAG_TXE));
+
+		//check word length
+		if(pUSARTHandler->USARTx_Config.USART_WordLength == USART_WORD_LEN_9BITS)
+		{
+			//extract 9-Bit and put it in DR
+			pUSARTHandler->pUSARTx->DR = (*(uint16_t* )pTxBuffer & (uint16_t)0x01FF);
+
+			//check whether parity is enable
+			if(pUSARTHandler->USARTx_Config.USART_ParityControl == USART_PARITY_DISABLE)
+			{
+				pTxBuffer += 2;
+			}
+			else
+			{
+				pTxBuffer++;
+			}
+
+
+		}
+		else
+		{
+			//write 1-Byte to DR
+			pUSARTHandler->pUSARTx->DR = *pTxBuffer & (uint8_t)0xFF;
+			pTxBuffer++;
+		}
+	}
+
+	//wait till TC is set in SR
+	while(! USARTx_GetFlagStatus(pUSARTHandler->pUSARTx, USART_FLAG_TC));
+}
+
+
+
+
+
+
+/***********************************************************************************
+ * 					 	USART/UART Rx Handler
+ *
+ * @fn: 		- 	USARTx_ReceiveData
+ *
+ * @brief		-	This function handles the data reception the given USART/UART
+ * 					Peripheral.
+ *
+ * @param[1]	-	Base Address of the USART/UART Handler
+ *
+ * @param[2]	-	Receiving data Buffer
+ *
+ * @param[3]	-	Receiving  data length
+ *
+ * @return		-	void
+ *
+ * @Note		-
+ *
+ */
+void USARTx_ReceiveData(USARTx_Handler_ty *pUSARTHandler, uint8_t *pRxBuffer, uint8_t length)
+{
+	//loop till length number of data is received
+	for (uint32_t var = 0; var < length; ++var)
+	{
+		//wait till RXNE is set in SR
+		while(! USARTx_GetFlagStatus(pUSARTHandler->pUSARTx, USART_FLAG_RXNE));
+
+		//check word length
+		if(pUSARTHandler->USARTx_Config.USART_WordLength == USART_WORD_LEN_9BITS)
+		{
+			//check parity is enable or not
+			if(pUSARTHandler->USARTx_Config.USART_ParityControl == USART_PARITY_DISABLE)
+			{
+				//Read 9-Bits from DR
+				*((uint16_t*) pRxBuffer) = (pUSARTHandler->pUSARTx->DR & (uint16_t)0x1FF);
+				pRxBuffer += 2;
+			}
+			else
+			{
+				//Read 8-Bits from DR
+				*pRxBuffer = (pUSARTHandler->pUSARTx->DR & (uint8_t)0xFF);
+				pRxBuffer++;
+			}
+
+		}
+		else
+		{
+			//check parity is enable or not
+			if(pUSARTHandler->USARTx_Config.USART_ParityControl == USART_PARITY_DISABLE)
+			{
+				//Read 8-Bits from DR
+				*pRxBuffer = (pUSARTHandler->pUSARTx->DR & (uint8_t)0xFF);
+				pRxBuffer++;
+			}
+			else
+			{
+				//Read 7-Bits from DR
+				*pRxBuffer = (uint8_t)(pUSARTHandler->pUSARTx->DR & (uint8_t)0x7F);
+				pRxBuffer++;
+			}
+
+		}
+
+	}
+
+}
+
 
 
 
