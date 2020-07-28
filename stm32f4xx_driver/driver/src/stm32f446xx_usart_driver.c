@@ -220,6 +220,9 @@ void USARTx_Init(USARTx_Handler_ty *pUSARTHandler)
 	//Enable peripheral clock
 	USARTx_PeriClkControl(pUSARTHandler->pUSARTx, ENABLE);
 
+	//Enable USART Peripheral
+	USARTx_PeripheralControl(pUSARTHandler->pUSARTx, ENABLE);
+
 	//Configure USART/UART Rx/Tx as per USART_MODE
 	if(pUSARTHandler->USARTx_Config.USART_Mode == USART_MODE_RX)
 	{
