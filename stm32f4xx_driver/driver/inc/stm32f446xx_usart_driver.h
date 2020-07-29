@@ -162,6 +162,18 @@ typedef struct
 
 
 
+/*****************************************************************************************
+ * USARTx Application Events
+ *****************************************************************************************/
+#define 	USART_EVENT_TX_CMPLT			0
+#define 	USART_EVENT_RX_CMPLT			1
+#define 	USART_EVENT_CTS					2
+#define 	USART_EVENT_TC					3
+#define 	USART_EVENT_IDLE				4
+#define 	USART_EVENT_ERR_ORE				5
+#define 	USART_EVENT_ERR_PE				6
+
+
 
 
 
