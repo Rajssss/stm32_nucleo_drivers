@@ -723,7 +723,7 @@ uint8_t I2Cx_ReceiveData_MasterIT(I2Cx_Handler_ty *pI2CHandler, uint8_t *pRxBuff
  * @brief		-	This function configures the interrupt related configurations of
  * 					given I2C Peripheral.
  *
- * @param[1]	-	Base Address of the I2C Peripheral
+ * @param[1]	-	IRQ number of the Interrupt
  *
  * @param[2]	-	Control: ENABLE or DISABLE
  *
@@ -791,11 +791,15 @@ void I2Cx_IRQInterruptConfig(uint8_t IRQNumber, uint8_t Control)
  *
  * @param[1]	-	Base Address of the I2C Peripheral
  *
- * @param[2]	-	Control: ENABLE or DISABLE
+ *
+ * @param[1]	-	IRQ number of the Interrupt
+ *
+ * @param[2]	-	Interrupt Priority
  *
  * @return		-	void
  *
- * @Note		-
+ * @Note		-	1.In STM32F446RE, Number of priority bits implemented are 4 (MSB) out of 8 bits for each IRQ Number.
+ * 					2.So we have to shift the desired priority vale left by 4 before finally writing it.
  *
  */
 void I2Cx_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority)
