@@ -60,6 +60,12 @@ typedef struct
 {
 	USARTx_RegDef_ty *pUSARTx;
 	USARTx_Config_ty USARTx_Config;
+	uint8_t *pTxBuffer;
+	uint8_t *pRxBuffer;
+	uint8_t TxLen;
+	uint8_t RxLen;
+	uint8_t BusyTxState;					//USART Application State @USART_APP_STATS
+	uint8_t BusyRxState;
 
 }USARTx_Handler_ty;
 
@@ -144,6 +150,15 @@ typedef struct
 #define USART_FLAG_TXE						(1 << USART_SR_TXE)
 #define USART_FLAG_LBD						(1 << USART_SR_LBD)
 #define USART_FLAG_CTS						(1 << USART_SR_CTS)
+
+
+
+/*****************************************************************************************
+ * USARTx Application State. @USART_APP_STATS
+ *****************************************************************************************/
+#define USART_READY							0
+#define USART_BUSY_RX						1
+#define USART_BUSY_TX						2
 
 
 

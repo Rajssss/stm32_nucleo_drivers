@@ -486,3 +486,88 @@ void USARTx_ReceiveData(USARTx_Handler_ty *pUSARTHandler, uint8_t *pRxBuffer, ui
 
 
 
+/***********************************************************************************
+ * 					 		USART/UART Tx Interrupt Handler
+ *
+ * @fn: 		- 	USARTx_SendData_IT
+ *
+ * @brief		-	This function handles the interrupt based data transmission the given USART/UART
+ * 					Peripheral.
+ *
+ * @param[1]	-	Base Address of the USART/UART Handler
+ *
+ * @param[2]	-	Transmission data Buffer
+ *
+ * @param[3]	-	Transmission data length
+ *
+ * @return		-	uint8_t
+ *
+ * @Note		-
+ *
+ */
+uint8_t USARTx_SendData_IT(USARTx_Handler_ty *pUSARTHandler, uint8_t *pTxBuffer, uint8_t length)
+{
+	//check if busy in Tx
+	if(pUSARTHandler->TxState != USART_BUSY_TX)
+	{
+		pUSARTHandler->TxLen = length;
+		pUSARTHandler->pTxBuffer = pTxBuffer;
+		pUSARTHandler->TxState = USART_BUSY_TX;
+
+		//Enable Tx Interrupt
+		pUSARTHandler->pUSARTx->CR1 |= (1 << USART_CR1_TXEIE);
+
+		//Enable TC Interrupt
+		pUSARTHandler->pUSARTx->CR1 |= (1 << USART_CR1_TCIE);
+
+	}
+
+	return pUSARTHandler->BusyTxState;
+
+}
+
+
+
+
+
+
+
+/***********************************************************************************
+ * 					 		USART/UART Rx Interrupt Handler
+ *
+ * @fn: 		- 	USARTx_ReceiveData_IT
+ *
+ * @brief		-	This function handles the interrupt based data reception the given USART/UART
+ * 					Peripheral.
+ *
+ * @param[1]	-	Base Address of the USART/UART Handler
+ *
+ * @param[2]	-	Receiving data Buffer
+ *
+ * @param[3]	-	Receiving  data length
+ *
+ * @return		-	uint8_t
+ *
+ * @Note		-
+ *
+ */
+uint8_t USARTx_ReceiveData_IT(USARTx_Handler_ty *pUSARTHandler, uint8_t *pRxBuffer, uint8_t length)
+{
+	//check if Busy in Rx
+	if(pUSARTHandler->BusyRxState != USART_BUSY_RX)
+	{
+		pUSARTHandler->RxLen = length;
+		pUSARTHandler->pRxBuffer = pRxBuffer;
+		pUSARTHandler->BusyRxState = USART_BUSY_RX;
+
+		//Enable Rx Interrupt
+		pUSARTHandler->pUSARTx->CR1 |= (1 << USART_CR1_RXNEIE);
+
+	}
+
+	return pUSARTHandler->BusyRxState;
+}
+
+
+
+
