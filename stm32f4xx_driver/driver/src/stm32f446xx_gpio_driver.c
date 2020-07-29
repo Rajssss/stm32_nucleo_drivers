@@ -533,7 +533,7 @@ void GPIOx_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority)
 	//3.(NVIC_PR_BASE_ADDR + (IRQNumber / 4) will finally jumps to the required base address of the PR register
 	//4.(IRQNumber % 4) will select the specific bit section for a PR register.
 	//5.((IRQNumber % 4) * 8) will select the 8 bit section range.
-	//6.(8 - NVIC_NO_PR_BITS_IMPLEMENTED) will selct the required addition shifts, as NVIC_NO_PR_BITS_IMPLEMENTED is vendor specific
+	//6.(8 - NVIC_NO_PR_BITS_IMPLEMENTED) will select the required addition shifts, as NVIC_NO_PR_BITS_IMPLEMENTED is vendor specific
 	//7.(((IRQNumber % 4) * 8) + (8 - NVIC_NO_PR_BITS_IMPLEMENTED)) will finally give the required shift amount.
 
 	*(NVIC_PR_BASE_ADDR + (IRQNumber / 4)) |= (IRQPriority << (((IRQNumber % 4) * 8) + (8 - NVIC_NO_PR_BITS_IMPLEMENTED)));
